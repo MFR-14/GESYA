@@ -3,55 +3,74 @@ body {
   background: #f7f7f7;
   text-align: center;
   margin: 0;
-  padding: 20px;
+  padding: 0;
+}
+
+.container {
+  max-width: 480px;
+  margin: auto;
+  padding: 16px;
 }
 
 h1 {
   color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
-/* GRID EMOT */
+.gambar {
+  max-width: 100%;
+  border-radius: 16px;
+  margin-bottom: 12px;
+}
+
+.status {
+  margin: 12px 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .emotions {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
-  max-width: 500px;
-  margin: 30px auto;
+  margin-top: 20px;
 }
 
-/* KOTAK EMOT */
 .emotion {
-  background: white;
-  border-radius: 18px;
-  padding: 12px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 14px;
+  border: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-/* GAMBAR EMOT */
 .emotion img {
-  width: 64px;
-  height: 64px;
-  object-fit: contain;
-  user-select: none;
-  pointer-events: none; /* biar klik ke div */
+  width: 100%;
+  max-width: 110px;
+  height: auto;
 }
 
-/* FEEDBACK KLIK (penting buat anak) */
 .emotion:active {
   transform: scale(0.92);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
 
-/* RESPONSIVE – HP KECIL */
-@media (max-width: 360px) {
-  .emotion img {
-    width: 56px;
-    height: 56px;
-  }
+.nav {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav button {
+  font-size: 16px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  background: #4caf50;
+  color: white;
+  cursor: pointer;
+}
+
+.nav button:disabled {
+  background: #ccc;
 }
