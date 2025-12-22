@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbxOLAIldiNatjvkl8KcPUalWy6fCSPz7DRFTrYyb2_4N7ZuzTF9mm2uCIePhLo7Dqgk/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwVpwe_oZJa8QZqfNRR3i8ZXq8ImAf1ISW19_4AIKjszvXzYv9-4JtrroIbUGTpKaNo/exec";
 
 let startTime = Date.now();
 const namaAnak = "A01";
@@ -27,16 +27,11 @@ window.pilihEmosi = function (emosi) {
   const statusEl = document.getElementById("status");
   if (statusEl) statusEl.textContent = "Menyimpan...";
 
+  // fire-and-forget beacon (tanpa error popup palsu)
   const img = new Image();
-
-  img.onload = () => {
-    // walaupun ini kadang gak kepanggil, gak masalah
-  };
-
-  // ⛔ JANGAN pakai onerror → bikin false alarm
   img.src = fullUrl;
 
-  // Anggap sukses secara UX
+  // UX: anggap sukses (karena backend sudah terbukti nyimpan)
   setTimeout(() => {
     soal++;
     startTime = Date.now();
@@ -44,5 +39,5 @@ window.pilihEmosi = function (emosi) {
 
     if (statusEl) statusEl.textContent = `Tersimpan: ${emosi}`;
     alert(`Emosi "${emosi}" berhasil dicatat!`);
-  }, 300); // delay kecil biar UX halus
+  }, 250);
 };
