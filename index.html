@@ -15,18 +15,77 @@
 
 <body>
   <main class="container">
-    <h1>Bagaimana perasaanmu?</h1>
 
-    <img src="img/12.jpg" alt="Gambar" class="gambar" />
+    <!-- ====== HALAMAN TES ====== -->
+    <section id="screenTest">
+      <h1>Bagaimana perasaanmu?</h1>
 
-    <p id="status" class="status">Klik salah satu emosi.</p>
+      <img src="img/12.jpg" alt="Gambar" class="gambar" />
 
-    <div class="emotions" id="emotionsGrid"></div>
+      <div class="topbar">
+        <div>
+          <div class="small">Nama Anak</div>
+          <input id="namaInput" class="input" value="A01" />
+        </div>
 
-    <div class="nav">
-      <button id="prevBtn" type="button" onclick="prevPage()">⬅ Sebelumnya</button>
-      <button id="nextBtn" type="button" onclick="nextPage()">Berikutnya ➡</button>
-    </div>
+        <div>
+          <div class="small">Sesi</div>
+          <input id="sesiInput" class="input" value="S1" />
+        </div>
+      </div>
+
+      <p id="status" class="status">Klik salah satu emosi.</p>
+
+      <div class="emotions" id="emotionsGrid"></div>
+
+      <div class="nav">
+        <button id="prevBtn" type="button" onclick="prevPage()">⬅ Sebelumnya</button>
+        <button id="nextBtn" type="button" onclick="nextPage()">Berikutnya ➡</button>
+      </div>
+
+      <div class="nav2">
+        <button class="btnDanger" type="button" onclick="selesaiSesi()">Selesai</button>
+      </div>
+    </section>
+
+    <!-- ====== HALAMAN REKAP ====== -->
+    <section id="screenRekap" style="display:none;">
+      <h1>Rekapan Sesi</h1>
+
+      <div class="card">
+        <div class="row">
+          <div class="k">Nama Anak</div>
+          <div class="v" id="rekapNama">-</div>
+        </div>
+        <div class="row">
+          <div class="k">Sesi</div>
+          <div class="v" id="rekapSesi">-</div>
+        </div>
+        <div class="row">
+          <div class="k">Jumlah Jawaban</div>
+          <div class="v" id="rekapJumlah">0</div>
+        </div>
+        <div class="row">
+          <div class="k">Rata-rata Waktu Respon</div>
+          <div class="v" id="rekapRata2">0 dtk</div>
+        </div>
+        <div class="row">
+          <div class="k">Emosi Paling Sering</div>
+          <div class="v" id="rekapTop">-</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="h2">Detail Jawaban</h2>
+        <div id="rekapList" class="list"></div>
+      </div>
+
+      <div class="nav2">
+        <button class="btnPrimary" type="button" onclick="mulaiTesBaru()">Mulai Tes Baru</button>
+        <button class="btnGhost" type="button" onclick="kembaliKeTes()">Kembali</button>
+      </div>
+    </section>
+
   </main>
 
   <script src="script.js"></script>
@@ -38,34 +97,13 @@
   </script>
 
   <script>
-    // 25 label emosi (Indonesia)
-    // Kalau urutan gambar kamu beda, tinggal tukar labelnya di sini
+    // 25 label emosi (silakan kamu sesuaikan urutan kalau gambar kamu beda)
     const EMOTIONS = [
-      "Gugup",
-      "Takut",
-      "Bangga",
-      "Malu",
-      "Khawatir",
-      "Dicintai",
-      "Kesepian",
-      "Senang",
-      "Bosan",
-      "Kecewa",
-      "Marah",
-      "Lelah",
-      "Cemas",
-      "Frustrasi",
-      "Sedih",
-      "Biasa Saja",
-      "Tenang",
-      "Semangat",
-      "Kaget",
-      "Jijik",
-      "Sakit Hati",
-      "Iri",
-      "Rindu",
-      "Bersyukur",
-      "Percaya Diri"
+      "Gugup","Takut","Bangga","Malu","Khawatir",
+      "Dicintai","Kesepian","Senang","Bosan","Kecewa",
+      "Marah","Lelah","Cemas","Frustrasi","Sedih",
+      "Biasa Saja","Tenang","Semangat","Kaget","Jijik",
+      "Sakit Hati","Iri","Rindu","Bersyukur","Percaya Diri"
     ];
 
     const PER_PAGE = 12;
@@ -105,15 +143,8 @@
       document.getElementById("nextBtn").disabled = endIndex >= EMOTIONS.length;
     }
 
-    function nextPage() {
-      currentPage++;
-      renderEmotions();
-    }
-
-    function prevPage() {
-      currentPage--;
-      renderEmotions();
-    }
+    function nextPage() { currentPage++; renderEmotions(); }
+    function prevPage() { currentPage--; renderEmotions(); }
 
     renderEmotions();
   </script>
