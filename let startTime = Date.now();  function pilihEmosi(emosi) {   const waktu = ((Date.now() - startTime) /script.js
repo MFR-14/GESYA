@@ -5,6 +5,7 @@ const namaAnak = "A01";
 const sesi = "S1";
 let soal = 1;
 
+// Buat fungsi tersedia di global scope supaya bisa dipanggil dari HTML onclick
 window.pilihEmosi = function(emosi) {
   console.log("Klik emosi:", emosi);
 
@@ -12,14 +13,22 @@ window.pilihEmosi = function(emosi) {
 
   fetch(API_URL, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ nama: namaAnak, sesi: sesi, soal, emosi, waktu })
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      nama: namaAnak,
+      sesi: sesi,
+      soal: soal,
+      emosi: emosi,
+      waktu: waktu
+    })
   })
   .then(res => res.text())
   .then(res => {
     console.log("Response API:", res);
-    soal++;
-    startTime = Date.now();
+    soal++;              // naikkan nomor soal
+    startTime = Date.now(); // reset timer untuk soal berikutnya
   })
   .catch(err => {
     console.error("FETCH ERROR:", err);
