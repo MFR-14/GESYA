@@ -1,0 +1,29 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  text-align: center;
+}
+
+h1 {
+  color: #333;
+}
+
+.emotions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.emotion {
+  font-size: 48px;
+  cursor: pointer;
+  padding: 20px;
+  border-radius: 20px;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.emotion:active {
+  transform: scale(0.9);
+}
