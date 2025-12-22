@@ -14,22 +14,33 @@ window.pilihEmosi = function (emosi) {
     soal: String(soal),
     emosi: String(emosi),
     waktu: String(waktu),
-    t: String(Date.now())
+    t: String(Date.now()) // anti-cache
   }).toString();
 
+  const fullUrl = `${API_URL}?${qs}`;
+  console.log("BEACON URL:", fullUrl);
+
+  // (opsional) tampilkan status di halaman kalau kamu pakai <p id="status">
+  const statusEl = document.getElementById("status");
+  if (statusEl) statusEl.textContent = "Menyimpan...";
+
   const img = new Image();
+
   img.onload = () => {
     soal++;
     startTime = Date.now();
+
+    if (statusEl) statusEl.textContent = `Tersimpan: ${emosi}`;
     alert(`Emosi "${emosi}" berhasil dicatat!`);
   };
+
   img.onerror = (e) => {
     console.error("Beacon error:", e);
+
+    if (statusEl) statusEl.textContent = "Gagal menyimpan data.";
     alert("Gagal menyimpan data");
   };
-const fullUrl = `${API_URL}?${qs}`;
-console.log("BEACON URL:", fullUrl);
-img.src = fullUrl;
 
-  img.src = `${API_URL}?${qs}`;
+  // PENTING: cukup sekali
+  img.src = fullUrl;
 };
