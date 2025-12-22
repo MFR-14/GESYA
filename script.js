@@ -14,17 +14,22 @@ window.pilihEmosi = function (emosi) {
     soal: String(soal),
     emosi: String(emosi),
     waktu: String(waktu),
-    t: String(Date.now()) // anti cache
+    t: String(Date.now()) // anti-cache
   }).toString();
+
+  const statusEl = document.getElementById("status");
+  if (statusEl) statusEl.textContent = "Menyimpan...";
 
   const img = new Image();
   img.onload = () => {
     soal++;
     startTime = Date.now();
+    if (statusEl) statusEl.textContent = `Tersimpan: ${emosi}`;
+    // alert boleh kamu matiin kalau buat anak kecil biar gak ganggu
     alert(`Emosi "${emosi}" berhasil dicatat!`);
   };
-  img.onerror = (e) => {
-    console.error("Beacon error:", e);
+  img.onerror = () => {
+    if (statusEl) statusEl.textContent = "Gagal menyimpan data.";
     alert("Gagal menyimpan data");
   };
 
