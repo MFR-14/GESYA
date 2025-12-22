@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbxWbYaorkUtJ7LFvgJve_PGtY6UbFNLpot-HqLLLDVkfnd5RYmgPQWd2PQywlq52N-M/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxOLAIldiNatjvkl8KcPUalWy6fCSPz7DRFTrYyb2_4N7ZuzTF9mm2uCIePhLo7Dqgk/exec";
 
 let startTime = Date.now();
 const namaAnak = "A01";
@@ -14,22 +14,17 @@ window.pilihEmosi = function (emosi) {
     soal: String(soal),
     emosi: String(emosi),
     waktu: String(waktu),
-    t: String(Date.now()) // anti-cache
+    t: String(Date.now())
   }).toString();
-
-  const statusEl = document.getElementById("status");
-  if (statusEl) statusEl.textContent = "Menyimpan...";
 
   const img = new Image();
   img.onload = () => {
     soal++;
     startTime = Date.now();
-    if (statusEl) statusEl.textContent = `Tersimpan: ${emosi}`;
-    // alert boleh kamu matiin kalau buat anak kecil biar gak ganggu
     alert(`Emosi "${emosi}" berhasil dicatat!`);
   };
-  img.onerror = () => {
-    if (statusEl) statusEl.textContent = "Gagal menyimpan data.";
+  img.onerror = (e) => {
+    console.error("Beacon error:", e);
     alert("Gagal menyimpan data");
   };
 
