@@ -233,11 +233,18 @@ window.addEventListener("DOMContentLoaded", () => {
           } else {
             setTimeout(() => setQuestion(), 350);
           }
-        } else {
-          hintEl.textContent = "❌ Salah, coba lagi ya!";
-          shake(targetEl);
-          // soal tidak berubah (tapi sudah terekap)
-        }
+        }} else {
+  hintEl.textContent = "❌ Salah, lanjut soal berikutnya!";
+  shake(targetEl);
+
+  idx++;
+  if (idx >= TOTAL){
+    finishGame("Selesai! Kamu hebat 😎");
+  } else {
+    setTimeout(()=> setQuestion(), 350);
+  }
+}
+
       });
     });
   }
