@@ -115,18 +115,30 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   function finishGame(message) {
-    if (gameEnded) return;
-    gameEnded = true;
+  if (gameEnded) return;
+  gameEnded = true;
 
-    clearInterval(timerId);
+  clearInterval(timerId);
 
-    localStorage.setItem("ek_level1_skor", String(score));
-    localStorage.setItem("ek_level1_selesai", "1");
-    localStorage.setItem("ek_level1_alasan", message || "Selesai");
+  const nama = localStorage.getItem("ek_nama") || "";
+  const sesi = localStorage.getItem("ek_sesi") || "";
 
-    // pindah ke halaman congrats terpisah
-    window.location.href = "./congrats1.html";
-  }
+  // simpen juga (backup)
+  localStorage.setItem("ek_level1_skor", String(score));
+  localStorage.setItem("ek_level1_selesai", "1");
+  localStorage.setItem("ek_level1_alasan", message || "Selesai");
+
+  // ✅ KIRIM DATA VIA URL (pasti kebawa)
+  const qs = new URLSearchParams({
+    nama,
+    sesi,
+    skor: String(score),
+    alasan: message || "Selesai"
+  });
+
+  window.location.href = "./congrats1.html?" + qs.toString();
+}
+
 
   function startTimer() {
     renderTimer();
