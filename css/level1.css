@@ -1,0 +1,13 @@
+.emo-icon{
+  width:42px;
+  height:42px;
+  object-fit:contain;
+  margin-bottom:10px;
+}
+.emotion-card{
+  flex-direction:column;
+  gap:6px;
+}
+.emo-text{
+  font-weight:900;
+}
