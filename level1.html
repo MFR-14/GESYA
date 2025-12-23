@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GESYA - Level 1</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body class="level-page">
+  <!-- HUD -->
+  <div class="hud">
+    <div class="timer" id="timer">02:00</div>
+    <div class="score" id="score">Skor: 0 / 8</div>
+
+    <button class="btn-selesai" id="btnSelesai" type="button">Selesai</button>
+  </div>
+
+  <main class="lvl1-wrap">
+    <!-- KIRI: kartu emosi -->
+    <section class="cards">
+      <div class="emotion-card" draggable="true" data-emosi="BAHAGIA">BAHAGIA</div>
+      <div class="emotion-card" draggable="true" data-emosi="SEDIH">SEDIH</div>
+      <div class="emotion-card" draggable="true" data-emosi="TAKUT">TAKUT</div>
+      <div class="emotion-card" draggable="true" data-emosi="TERKEJUT">TERKEJUT</div>
+      <div class="emotion-card" draggable="true" data-emosi="BINGUNG">BINGUNG</div>
+      <div class="emotion-card" draggable="true" data-emosi="MALU">MALU</div>
+      <div class="emotion-card" draggable="true" data-emosi="MARAH">MARAH</div>
+      <div class="emotion-card" draggable="true" data-emosi="CINTA">CINTA</div>
+    </section>
+
+    <!-- KANAN: kartu soal + drop zone -->
+    <section class="question">
+      <div class="question-card">
+        <div class="question-title">Cocokkan emosi untuk gambar ini</div>
+
+        <img id="questionImg" class="question-img" src="./img/12.jpg" alt="Soal" />
+
+        <div class="dropzone" id="dropzone">
+          Tarik kartu emosi ke sini
+        </div>
+
+        <div class="hint" id="hint"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Giveaway overlay -->
+  <div class="giveaway hidden" id="giveaway">
+    <div class="giveaway-box">
+      <div class="giveaway-emoji" id="giveEmoji">🎉</div>
+      <div class="giveaway-text" id="giveText">Hebat!</div>
+      <button class="giveaway-btn" id="giveBtn">Lanjut</button>
+    </div>
+  </div>
+
+  <script src="./level1.js"></script>
+</body>
+</html>
