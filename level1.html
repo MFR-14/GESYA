@@ -4,47 +4,69 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GESYA - Level 1</title>
-<link rel="stylesheet" href="./js/style.css">
 
+  <!-- CSS kamu ada di js/style.css -->
+  <link rel="stylesheet" href="./js/style.css" />
 </head>
 
 <body class="level-page">
-  <!-- HUD -->
-  <div class="hud">
-    <div class="timer" id="timer">02:00</div>
-    <div class="score" id="score">Skor: 0 / 8</div>
 
-    <button class="btn-selesai" id="btnSelesai" type="button">Selesai</button>
+  <!-- INTRO SCREEN -->
+  <div class="intro" id="intro">
+    <div class="intro-card">
+      <div class="intro-title">Level 1</div>
+      <div class="intro-subtitle">Petualangan Wajah Emosi</div>
+
+      <div class="intro-form">
+        <label>Nama Anak</label>
+        <input id="namaAnak" type="text" placeholder="contoh: Andi" />
+
+        <label>Sesi</label>
+        <input id="sesiAnak" type="text" placeholder="contoh: S1" />
+
+        <button id="btnMulai" type="button">Mulai</button>
+      </div>
+    </div>
   </div>
 
-  <main class="lvl1-wrap">
-    <!-- KIRI: kartu emosi -->
-    <section class="cards">
-      <div class="emotion-card" draggable="true" data-emosi="BAHAGIA">BAHAGIA</div>
-      <div class="emotion-card" draggable="true" data-emosi="SEDIH">SEDIH</div>
-      <div class="emotion-card" draggable="true" data-emosi="TAKUT">TAKUT</div>
-      <div class="emotion-card" draggable="true" data-emosi="TERKEJUT">TERKEJUT</div>
-      <div class="emotion-card" draggable="true" data-emosi="BINGUNG">BINGUNG</div>
-      <div class="emotion-card" draggable="true" data-emosi="MALU">MALU</div>
-      <div class="emotion-card" draggable="true" data-emosi="MARAH">MARAH</div>
-      <div class="emotion-card" draggable="true" data-emosi="CINTA">CINTA</div>
-    </section>
+  <!-- GAME (disembunyikan dulu) -->
+  <div id="game" class="hidden">
+    <!-- HUD -->
+    <div class="hud">
+      <div class="timer" id="timer">02:00</div>
+      <div class="score" id="score">Skor: 0 / 8</div>
+      <button class="btn-selesai" id="btnSelesai" type="button">Selesai</button>
+    </div>
 
-    <!-- KANAN: kartu soal + drop zone -->
-    <section class="question">
-      <div class="question-card">
-        <div class="question-title">Cocokkan emosi untuk gambar ini</div>
+    <main class="lvl1-wrap">
+      <!-- KIRI: kartu emosi -->
+      <section class="cards">
+        <div class="emotion-card" draggable="true" data-emosi="BAHAGIA">BAHAGIA</div>
+        <div class="emotion-card" draggable="true" data-emosi="SEDIH">SEDIH</div>
+        <div class="emotion-card" draggable="true" data-emosi="TAKUT">TAKUT</div>
+        <div class="emotion-card" draggable="true" data-emosi="TERKEJUT">TERKEJUT</div>
+        <div class="emotion-card" draggable="true" data-emosi="BINGUNG">BINGUNG</div>
+        <div class="emotion-card" draggable="true" data-emosi="MALU">MALU</div>
+        <div class="emotion-card" draggable="true" data-emosi="MARAH">MARAH</div>
+        <div class="emotion-card" draggable="true" data-emosi="CINTA">CINTA</div>
+      </section>
 
-        <img id="questionImg" class="question-img" src="./img/12.jpg" alt="Soal" />
+      <!-- KANAN: kartu soal + drop zone -->
+      <section class="question">
+        <div class="question-card">
+          <div class="question-title">Cocokkan emosi untuk gambar ini</div>
 
-        <div class="dropzone" id="dropzone">
-          Tarik kartu emosi ke sini
+          <img id="questionImg" class="question-img" src="./img/12.jpg" alt="Soal" />
+
+          <div class="dropzone" id="dropzone">
+            Tarik kartu emosi ke sini
+          </div>
+
+          <div class="hint" id="hint"></div>
         </div>
-
-        <div class="hint" id="hint"></div>
-      </div>
-    </section>
-  </main>
+      </section>
+    </main>
+  </div>
 
   <!-- Giveaway overlay -->
   <div class="giveaway hidden" id="giveaway">
