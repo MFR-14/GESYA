@@ -10,14 +10,14 @@ const DURATION_SEC = 120; // 2 menit
 
 // Soal (8 item). Nanti akan diacak.
 const ROUNDS = [
-  { emosi: "BAHAGIA",  img: "./img/12.jpg" },
-  { emosi: "SEDIH",    img: "./img/12.jpg" },
-  { emosi: "TAKUT",    img: "./img/12.jpg" },
-  { emosi: "TERKEJUT", img: "./img/12.jpg" },
-  { emosi: "BINGUNG",  img: "./img/12.jpg" },
-  { emosi: "MALU",     img: "./img/12.jpg" },
-  { emosi: "MARAH",    img: "./img/12.jpg" },
-  { emosi: "CINTA",    img: "./img/12.jpg" },
+  { emosi: "BAHAGIA",  img: "./img/bahagia.jpg" },
+  { emosi: "SEDIH",    img: "./img/sedih.jpg" },
+  { emosi: "TAKUT",    img: "./img/takut.jpg" },
+  { emosi: "TERKEJUT", img: "./img/terkejut.jpg" },
+  { emosi: "BINGUNG",  img: "./img/bingung.jpg" },
+  { emosi: "MALU",     img: "./img/malu.jpg" },
+  { emosi: "MARAH",    img: "./img/marah.jpg" },
+  { emosi: "CINTA",    img: "./img/cinta.jpg" },
 ];
 
 // ====== STATE ======
