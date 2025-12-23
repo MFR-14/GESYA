@@ -4,149 +4,66 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Emotion Kids</title>
-
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#ffffff" />
-
-  <!-- Style -->
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
   <main class="container">
+    <h1>Emotion Kids</h1>
+    <p class="status">Pilih level untuk mulai.</p>
 
-    <!-- ====== HALAMAN TES ====== -->
-    <section id="screenTest">
-      <h1>Bagaimana perasaanmu?</h1>
-
-      <img src="img/12.jpg" alt="Gambar" class="gambar" />
-
-      <div class="topbar">
-        <div>
-          <div class="small">Nama Anak</div>
-          <input id="namaInput" class="input" value="A01" />
-        </div>
-
-        <div>
-          <div class="small">Sesi</div>
-          <input id="sesiInput" class="input" value="S1" />
-        </div>
+    <div class="topbar">
+      <div class="field">
+        <div class="label">Nama Anak</div>
+        <input id="namaInput" class="input" value="A01" />
       </div>
-
-      <p id="status" class="status">Klik salah satu emosi.</p>
-
-      <div class="emotions" id="emotionsGrid"></div>
-
-      <div class="nav">
-        <button id="prevBtn" type="button" onclick="prevPage()">⬅ Sebelumnya</button>
-        <button id="nextBtn" type="button" onclick="nextPage()">Berikutnya ➡</button>
+      <div class="field">
+        <div class="label">Sesi</div>
+        <input id="sesiInput" class="input" value="S1" />
       </div>
+    </div>
 
-      <div class="nav2">
-        <button class="btnDanger" type="button" onclick="selesaiSesi()">Selesai</button>
-      </div>
-    </section>
+    <div class="levelGrid">
+      <button class="btnPrimary" onclick="goLevel(1)">Level 1</button>
+      <button class="btnPrimary" onclick="goLevel(2)">Level 2</button>
+      <button class="btnPrimary" onclick="goLevel(3)">Level 3</button>
+      <button class="btnPrimary" onclick="goLevel(4)">Level 4</button>
+      <button class="btnPrimary" onclick="goLevel(5)">Level 5</button>
+      <button class="btnPrimary" onclick="goLevel(6)">Level 6</button>
+    </div>
 
-    <!-- ====== HALAMAN REKAP ====== -->
-    <section id="screenRekap" style="display:none;">
-      <h1>Rekapan Sesi</h1>
-
-      <div class="card">
-        <div class="row">
-          <div class="k">Nama Anak</div>
-          <div class="v" id="rekapNama">-</div>
-        </div>
-        <div class="row">
-          <div class="k">Sesi</div>
-          <div class="v" id="rekapSesi">-</div>
-        </div>
-        <div class="row">
-          <div class="k">Jumlah Jawaban</div>
-          <div class="v" id="rekapJumlah">0</div>
-        </div>
-        <div class="row">
-          <div class="k">Rata-rata Waktu Respon</div>
-          <div class="v" id="rekapRata2">0 dtk</div>
-        </div>
-        <div class="row">
-          <div class="k">Emosi Paling Sering</div>
-          <div class="v" id="rekapTop">-</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2 class="h2">Detail Jawaban</h2>
-        <div id="rekapList" class="list"></div>
-      </div>
-
-      <div class="nav2">
-        <button class="btnPrimary" type="button" onclick="mulaiTesBaru()">Mulai Tes Baru</button>
-        <button class="btnGhost" type="button" onclick="kembaliKeTes()">Kembali</button>
-      </div>
-    </section>
-
+    <div class="nav2">
+      <button class="btnGhost" onclick="goRekap()">Lihat Rekap</button>
+    </div>
   </main>
 
-  <script src="script.js"></script>
-
   <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js");
-    }
-  </script>
-
-  <script>
-    // 25 label emosi (silakan kamu sesuaikan urutan kalau gambar kamu beda)
-    const EMOTIONS = [
-      "Gugup","Takut","Bangga","Malu","Khawatir",
-      "Dicintai","Kesepian","Senang","Bosan","Kecewa",
-      "Marah","Lelah","Cemas","Frustrasi","Sedih",
-      "Biasa Saja","Tenang","Semangat","Kaget","Jijik",
-      "Sakit Hati","Iri","Rindu","Bersyukur","Percaya Diri"
-    ];
-
-    const PER_PAGE = 12;
-    let currentPage = 0;
-
-    function renderEmotions() {
-      const grid = document.getElementById("emotionsGrid");
-      grid.innerHTML = "";
-
-      const startIndex = currentPage * PER_PAGE;
-      const endIndex = Math.min(startIndex + PER_PAGE, EMOTIONS.length);
-
-      for (let idx = startIndex; idx < endIndex; idx++) {
-        const nomorGambar = idx + 1;
-        const label = EMOTIONS[idx];
-
-        const btn = document.createElement("button");
-        btn.className = "emotion";
-        btn.type = "button";
-        btn.setAttribute("aria-label", label);
-        btn.onclick = () => pilihEmosi(label);
-
-        const img = document.createElement("img");
-        img.src = `img/emotion_${nomorGambar}.png`;
-        img.alt = label;
-
-        const cap = document.createElement("div");
-        cap.className = "caption";
-        cap.textContent = label;
-
-        btn.appendChild(img);
-        btn.appendChild(cap);
-        grid.appendChild(btn);
-      }
-
-      document.getElementById("prevBtn").disabled = currentPage === 0;
-      document.getElementById("nextBtn").disabled = endIndex >= EMOTIONS.length;
+    function saveProfile() {
+      const nama = (document.getElementById("namaInput").value || "A01").trim();
+      const sesi = (document.getElementById("sesiInput").value || "S1").trim();
+      localStorage.setItem("ek_nama", nama);
+      localStorage.setItem("ek_sesi", sesi);
     }
 
-    function nextPage() { currentPage++; renderEmotions(); }
-    function prevPage() { currentPage--; renderEmotions(); }
+    function goLevel(level) {
+      saveProfile();
+      window.location.href = `level.html?level=${level}`;
+    }
 
-    renderEmotions();
+    function goRekap() {
+      saveProfile();
+      window.location.href = "rekap.html";
+    }
+
+    // isi otomatis dari localStorage
+    (function init(){
+      const nama = localStorage.getItem("ek_nama");
+      const sesi = localStorage.getItem("ek_sesi");
+      if (nama) document.getElementById("namaInput").value = nama;
+      if (sesi) document.getElementById("sesiInput").value = sesi;
+    })();
   </script>
 </body>
 </html>
