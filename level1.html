@@ -39,34 +39,33 @@
     </div>
 
     <main class="lvl1-wrap">
-      <!-- KIRI: kartu emosi -->
-      <section class="cards">
-        <div class="emotion-card" draggable="true" data-emosi="BAHAGIA">BAHAGIA</div>
-        <div class="emotion-card" draggable="true" data-emosi="SEDIH">SEDIH</div>
-        <div class="emotion-card" draggable="true" data-emosi="TAKUT">TAKUT</div>
-        <div class="emotion-card" draggable="true" data-emosi="TERKEJUT">TERKEJUT</div>
-        <div class="emotion-card" draggable="true" data-emosi="BINGUNG">BINGUNG</div>
-        <div class="emotion-card" draggable="true" data-emosi="MALU">MALU</div>
-        <div class="emotion-card" draggable="true" data-emosi="MARAH">MARAH</div>
-        <div class="emotion-card" draggable="true" data-emosi="CINTA">CINTA</div>
-      </section>
+      <main class="lvl1-wrap reverse">
+  <!-- KIRI: kartu emosi = DROP TARGET -->
+  <section class="cards drop-cards" id="dropCards">
+    <div class="emotion-card drop-target" data-emosi="BAHAGIA">BAHAGIA</div>
+    <div class="emotion-card drop-target" data-emosi="SEDIH">SEDIH</div>
+    <div class="emotion-card drop-target" data-emosi="TAKUT">TAKUT</div>
+    <div class="emotion-card drop-target" data-emosi="TERKEJUT">TERKEJUT</div>
+    <div class="emotion-card drop-target" data-emosi="BINGUNG">BINGUNG</div>
+    <div class="emotion-card drop-target" data-emosi="MALU">MALU</div>
+    <div class="emotion-card drop-target" data-emosi="MARAH">MARAH</div>
+    <div class="emotion-card drop-target" data-emosi="CINTA">CINTA</div>
+  </section>
 
-      <!-- KANAN: kartu soal + drop zone -->
-      <section class="question">
-        <div class="question-card">
-          <div class="question-title">Cocokkan emosi untuk gambar ini</div>
+  <!-- KANAN: gambar soal = DRAG -->
+  <section class="question">
+    <div class="question-card">
+      <div class="question-title" id="questionTitle">Tarik gambar ke emosi yang benar</div>
 
-          <img id="questionImg" class="question-img" src="./img/12.jpg" alt="Soal" />
+      <div class="drag-area">
+        <img id="questionImg" class="question-img drag-img" draggable="true" src="./img/12.jpg" alt="Soal" />
+      </div>
 
-          <div class="dropzone" id="dropzone">
-            Tarik kartu emosi ke sini
-          </div>
+      <div class="hint" id="hint"></div>
+    </div>
+  </section>
+</main>
 
-          <div class="hint" id="hint"></div>
-        </div>
-      </section>
-    </main>
-  </div>
 
   <!-- Giveaway overlay -->
   <div class="giveaway hidden" id="giveaway">
