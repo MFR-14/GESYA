@@ -1,1 +1,66 @@
+body {
+  margin: 0;
+  font-family: "Comic Sans MS", "Poppins", sans-serif;
+  background: #fdf6ec;
+  color: #2b3a55;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mascot {
+  width: 260px;
+}
+
+.right {
+  flex: 1.2;
+}
+
+h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.rules {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.rules li {
+  margin-bottom: 10px;
+}
+
+.levels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.levels button {
+  padding: 16px;
+  border-radius: 16px;
+  border: none;
+  background: #ffd27d;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.levels button:hover {
+  background: #ffb703;
+  transform: scale(1.05);
+}
 
