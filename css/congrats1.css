@@ -130,3 +130,26 @@ body.cg{
     transform: translateY(110vh) rotate(720deg);
   }
 }
+
+.cg-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  border-radius:16px;
+  padding:12px 18px;
+  font-weight:900;
+  cursor:pointer;
+  min-width:150px;
+  transition:.15s;
+  color:#1f2a44;
+}
+
+.cg-btn:hover{
+  transform: translateY(-1px);
+}
+
+.cg-btn-primary{ background:#ffb703; }
+.cg-btn-soft{ background:#ffd27d; }
+
+
