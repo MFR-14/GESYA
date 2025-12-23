@@ -233,7 +233,7 @@ window.addEventListener("DOMContentLoaded", () => {
           } else {
             setTimeout(() => setQuestion(), 350);
           }
-        }} else {
+        }else {
   hintEl.textContent = "❌ Salah, lanjut soal berikutnya!";
   shake(targetEl);
 
