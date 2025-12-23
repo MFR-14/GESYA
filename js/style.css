@@ -238,3 +238,30 @@ body.level-page .dropzone{
   align-items:center;
   justify-content:center;
   font-weight:900;
+
+  /* layout versi dibalik */
+body.level-page .lvl1-wrap.reverse{
+  align-items:center;
+}
+
+.drag-area{
+  background:#f7f2e6;
+  border-radius:22px;
+  padding:16px;
+}
+
+.drag-img{
+  cursor: grab;
+}
+
+.drop-target{
+  position: relative;
+  border: 3px solid transparent;
+}
+
+.drop-target.over{
+  border-color:#2b3a55;
+  transform: scale(1.03);
+  transition:.12s;
+}
+
