@@ -64,36 +64,11 @@ function sendRekapToGAS({ nama, sesi, soal, emosi, waktu }) {
   u.searchParams.set("emosi", emosi);
   u.searchParams.set("waktu", String(waktu));
 
-  // Trigger doGet tanpa CORS
   const beacon = new Image();
   beacon.src = u.toString();
 }
 
-// ====== GIVEAWAY ======
-function pickGiftByName() {
-  const nama = (localStorage.getItem("ek_nama") || "").trim();
-  const huruf = (nama[0] || "").toUpperCase();
-
-  let emoji = "🎉";
-  let title = `Hebat, ${nama || "Teman"}!`;
-
-  if ("ABCDE".includes(huruf)) emoji = "🦁";
-  else if ("FGHIJ".includes(huruf)) emoji = "🐼";
-  else if ("KLMNO".includes(huruf)) emoji = "🦊";
-  else if ("PQRST".includes(huruf)) emoji = "🐯";
-  else if ("UVWXYZ".includes(huruf)) emoji = "⭐";
-
-  return { emoji, title };
-}
-
-function showGiveaway(message, giveawayEl, giveEmojiEl, giveTextEl) {
-  const { emoji, title } = pickGiftByName();
-  giveEmojiEl.textContent = emoji;
-  giveTextEl.textContent = message ? `${message}\n${title}` : title;
-  giveawayEl.classList.remove("hidden");
-}
-
-// ====== MAIN (jalan setelah DOM siap) ======
+// ====== MAIN ======
 window.addEventListener("DOMContentLoaded", () => {
   // ====== ELEM ======
   const introEl    = document.getElementById("intro");
@@ -107,11 +82,6 @@ window.addEventListener("DOMContentLoaded", () => {
   const imgEl      = document.getElementById("questionImg");
   const hintEl     = document.getElementById("hint");
   const btnSelesai = document.getElementById("btnSelesai");
-
-  const giveawayEl = document.getElementById("giveaway");
-  const giveEmojiEl= document.getElementById("giveEmoji");
-  const giveTextEl = document.getElementById("giveText");
-  const giveBtn    = document.getElementById("giveBtn");
 
   // ====== SAFETY CHECK ======
   if (!introEl || !gameEl || !namaInput || !sesiInput || !btnMulai || !timerEl || !scoreEl || !imgEl || !hintEl) {
@@ -137,7 +107,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function setQuestion() {
     const q = pool[idx];
-    imgEl.src = q.img;
+    // cache buster biar gak nyangkut di github pages
+    imgEl.src = q.img + "?v=" + Date.now();
     imgEl.alt = `Soal ${idx + 1}`;
     hintEl.textContent = "Tarik gambar ke emosi yang benar";
     soalStart = Date.now();
@@ -151,12 +122,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     localStorage.setItem("ek_level1_skor", String(score));
     localStorage.setItem("ek_level1_selesai", "1");
+    localStorage.setItem("ek_level1_alasan", message || "Selesai");
 
-    showGiveaway(message, giveawayEl, giveEmojiEl, giveTextEl);
-
-    if (giveBtn) {
-      giveBtn.onclick = () => (window.location.href = "./index.html");
-    }
+    // pindah ke halaman congrats terpisah
+    window.location.href = "./congrats.html";
   }
 
   function startTimer() {
@@ -167,7 +136,7 @@ window.addEventListener("DOMContentLoaded", () => {
       if (timeLeft <= 0) {
         timeLeft = 0;
         renderTimer();
-        finishGame("Waktunya habis. Tapi kamu tetap keren!");
+        finishGame("Waktu habis!");
         return;
       }
       renderTimer();
@@ -202,17 +171,16 @@ window.addEventListener("DOMContentLoaded", () => {
         if (gameEnded) return;
         targetEl.classList.remove("over");
 
-        const pickedEmosi = targetEl.dataset.emosi;
+        const pickedEmosi  = targetEl.dataset.emosi;
         const correctEmosi = pool[idx].emosi;
 
         const waktuRespon = ((Date.now() - soalStart) / 1000).toFixed(2);
-
         const nama = localStorage.getItem("ek_nama") || "";
         const sesi = localStorage.getItem("ek_sesi") || "";
 
         const status = pickedEmosi === correctEmosi ? "BENAR" : "SALAH";
 
-        // ✅ SELALU REKAP (benar/salah tetap masuk)
+        // ✅ selalu rekap
         sendRekapToGAS({
           nama,
           sesi,
@@ -221,30 +189,24 @@ window.addEventListener("DOMContentLoaded", () => {
           waktu: waktuRespon
         });
 
+        // aturan kamu: benar nambah skor, salah tetap lanjut
         if (pickedEmosi === correctEmosi) {
           score++;
           renderScore();
           hintEl.textContent = "✅ Benar! Lanjut…";
           flashOk(targetEl);
+        } else {
+          hintEl.textContent = "❌ Salah, lanjut soal berikutnya!";
+          shake(targetEl);
+        }
 
-          idx++;
-          if (idx >= TOTAL) {
-            finishGame("Selesai! Kamu hebat 😎");
-          } else {
-            setTimeout(() => setQuestion(), 350);
-          }
-        }else {
-  hintEl.textContent = "❌ Salah, lanjut soal berikutnya!";
-  shake(targetEl);
-
-  idx++;
-  if (idx >= TOTAL){
-    finishGame("Selesai! Kamu hebat 😎");
-  } else {
-    setTimeout(()=> setQuestion(), 350);
-  }
-}
-
+        // lanjut ke soal berikutnya untuk BENAR/SALAH
+        idx++;
+        if (idx >= TOTAL) {
+          finishGame("Selesai!");
+        } else {
+          setTimeout(() => setQuestion(), 350);
+        }
       });
     });
   }
@@ -281,7 +243,7 @@ window.addEventListener("DOMContentLoaded", () => {
   btnMulai.addEventListener("click", startGame);
 
   if (btnSelesai) {
-    btnSelesai.addEventListener("click", () => finishGame("Selesai! Mantap!"));
+    btnSelesai.addEventListener("click", () => finishGame("Diselesaikan manual"));
   }
 
   // ====== INIT ======
