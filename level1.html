@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GESYA - Level 1</title>
 
-  <!-- CSS kamu ada di js/style.css -->
+  <!-- CSS ada di js/style.css -->
   <link rel="stylesheet" href="./js/style.css" />
 </head>
 
@@ -31,6 +31,7 @@
 
   <!-- GAME (disembunyikan dulu) -->
   <div id="game" class="hidden">
+
     <!-- HUD -->
     <div class="hud">
       <div class="timer" id="timer">02:00</div>
@@ -38,44 +39,53 @@
       <button class="btn-selesai" id="btnSelesai" type="button">Selesai</button>
     </div>
 
-    <main class="lvl1-wrap">
-      <main class="lvl1-wrap reverse">
-  <!-- KIRI: kartu emosi = DROP TARGET -->
-  <section class="cards drop-cards" id="dropCards">
-    <div class="emotion-card drop-target" data-emosi="BAHAGIA">BAHAGIA</div>
-    <div class="emotion-card drop-target" data-emosi="SEDIH">SEDIH</div>
-    <div class="emotion-card drop-target" data-emosi="TAKUT">TAKUT</div>
-    <div class="emotion-card drop-target" data-emosi="TERKEJUT">TERKEJUT</div>
-    <div class="emotion-card drop-target" data-emosi="BINGUNG">BINGUNG</div>
-    <div class="emotion-card drop-target" data-emosi="MALU">MALU</div>
-    <div class="emotion-card drop-target" data-emosi="MARAH">MARAH</div>
-    <div class="emotion-card drop-target" data-emosi="CINTA">CINTA</div>
-  </section>
+    <!-- KONTEN GAME -->
+    <main class="lvl1-wrap reverse">
+      <!-- KIRI: kartu emosi = DROP TARGET -->
+      <section class="cards drop-cards" id="dropCards">
+        <div class="emotion-card drop-target" data-emosi="BAHAGIA">BAHAGIA</div>
+        <div class="emotion-card drop-target" data-emosi="SEDIH">SEDIH</div>
+        <div class="emotion-card drop-target" data-emosi="TAKUT">TAKUT</div>
+        <div class="emotion-card drop-target" data-emosi="TERKEJUT">TERKEJUT</div>
+        <div class="emotion-card drop-target" data-emosi="BINGUNG">BINGUNG</div>
+        <div class="emotion-card drop-target" data-emosi="MALU">MALU</div>
+        <div class="emotion-card drop-target" data-emosi="MARAH">MARAH</div>
+        <div class="emotion-card drop-target" data-emosi="CINTA">CINTA</div>
+      </section>
 
-  <!-- KANAN: gambar soal = DRAG -->
-  <section class="question">
-    <div class="question-card">
-      <div class="question-title" id="questionTitle">Tarik gambar ke emosi yang benar</div>
+      <!-- KANAN: gambar soal = DRAG -->
+      <section class="question">
+        <div class="question-card">
+          <div class="question-title" id="questionTitle">
+            Tarik gambar ke emosi yang benar
+          </div>
 
-      <div class="drag-area">
-        <img id="questionImg" class="question-img drag-img" draggable="true" src="./img/12.jpg" alt="Soal" />
-      </div>
+          <div class="drag-area">
+            <img
+              id="questionImg"
+              class="question-img drag-img"
+              draggable="true"
+              src="./img/12.jpg"
+              alt="Soal"
+            />
+          </div>
 
-      <div class="hint" id="hint"></div>
-    </div>
-  </section>
-</main>
+          <div class="hint" id="hint"></div>
+        </div>
+      </section>
+    </main>
+  </div>
 
-
-  <!-- Giveaway overlay -->
+  <!-- Giveaway overlay (DI LUAR #game) -->
   <div class="giveaway hidden" id="giveaway">
     <div class="giveaway-box">
       <div class="giveaway-emoji" id="giveEmoji">🎉</div>
       <div class="giveaway-text" id="giveText">Hebat!</div>
-      <button class="giveaway-btn" id="giveBtn">Lanjut</button>
+      <button class="giveaway-btn" id="giveBtn" type="button">Lanjut</button>
     </div>
   </div>
 
+  <!-- JS -->
   <script src="./level1.js"></script>
 </body>
 </html>
