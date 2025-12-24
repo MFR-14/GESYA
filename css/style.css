@@ -1,160 +1,9 @@
-body {
-  margin: 0;
-  font-family: "Comic Sans MS", "Poppins", sans-serif;
-  background: #fdf6ec;
-  color: #2b3a55;
-}
+/* =========================
+   LEVEL 1 FIX (KONSEP EKY)
+   ATAS: kartu soal kiri + space kanan
+   BAWAH: kartu emosi (4 kolom x 2 baris)
+========================= */
 
-.container {
-  display: flex;
-  height: 100vh;
-  padding: 40px;
-  box-sizing: border-box;
-}
-
-.left {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.mascot {
-  width: 260px;
-}
-
-.right {
-  flex: 1.2;
-}
-
-h1 {
-  font-size: 48px;
-  margin-bottom: 20px;
-}
-
-.rules {
-  font-size: 18px;
-  line-height: 1.6;
-  margin-bottom: 30px;
-}
-
-.rules li {
-  margin-bottom: 10px;
-}
-
-.levels {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-}
-
-.levels button {
-  padding: 16px;
-  border-radius: 16px;
-  border: none;
-  background: #ffd27d;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.levels button:hover {
-  background: #ffb703;
-  transform: scale(1.05);
-}
-.lvl1-wrap.vertical{
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-  padding:16px;
-}
-
-/* kartu emosi bawah */
-.cards{
-  width:100%;
-  display:grid;
-  grid-template-columns:repeat(8,1fr);
-  gap:12px;
-}
-
-/* responsive */
-@media (max-width:900px){
-  .cards{ grid-template-columns:repeat(4,1fr); }
-}
-@media (max-width:600px){
-  .cards{ grid-template-columns:repeat(2,1fr); }
-  .emotion-card{ height:70px; font-size:14px; }
-}
-
-/* ===== FORCE: kartu harus di bawah (bukan samping) ===== */
-.lvl1-wrap.vertical{
-  display:flex !important;
-  flex-direction:column !important;
-  align-items:center;
-  gap:18px;
-  padding:16px;
-}
-
-/* area soal full */
-.lvl1-wrap.vertical .question{
-  width:100% !important;
-  display:flex;
-  justify-content:center;
-}
-
-/* kartu emosi full + grid 8 kolom */
-.lvl1-wrap.vertical .cards{
-  width:100% !important;
-  max-width:1100px;
-  display:grid !important;
-  grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
-  gap:12px;
-}
-
-/* ukuran kartu biar rapi */
-.lvl1-wrap.vertical .emotion-card{
-  height:90px;
-  border-radius:18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  text-align:center;
-}
-
-/* responsive */
-@media (max-width: 1000px){
-  .lvl1-wrap.vertical .cards{
-    grid-template-columns: repeat(4, minmax(0,1fr)) !important;
-  }
-}
-@media (max-width: 600px){
-  .lvl1-wrap.vertical .cards{
-    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
-  }
-  .lvl1-wrap.vertical .emotion-card{
-    height:70px;
-    font-size:14px;
-  }
-}
-/* =========================================================
-   FIX LAYOUT LEVEL 1 (sesuai konsep kamu)
-   Atas: Soal kiri + space kanan
-   Bawah: 8 kartu emosi (4x2) di bawah
-   NOTE: taruh ini PALING BAWAH style.css biar menang.
-========================================================= */
-
-/* reset pengaruh layout lama */
-#game .lvl1-layout,
-#game .top-area,
-#game .bottom-area,
-#game .cards,
-#game .question {
-  box-sizing: border-box;
-}
-
-/* wadah utama */
 #game .lvl1-layout{
   padding: 16px 18px 26px;
   display: flex;
@@ -162,84 +11,130 @@ h1 {
   gap: 18px;
 }
 
+/* HUD biar rapi di HP */
+.hud{
+  display:flex;
+  gap:14px;
+  align-items:center;
+  justify-content:flex-start;
+  padding:16px 18px;
+  flex-wrap:wrap;
+}
+.timer, .score{
+  background:#ffffff;
+  border-radius:16px;
+  padding:10px 14px;
+  font-weight:900;
+}
+.btn-selesai{
+  margin-left:auto;
+  background:#ffb703;
+  border:none;
+  border-radius:16px;
+  padding:10px 16px;
+  font-weight:900;
+  cursor:pointer;
+}
+
 /* ====== ATAS ====== */
 #game .top-area{
   display: grid;
-  grid-template-columns: minmax(320px, 560px) 1fr; /* kiri kartu soal, kanan space */
+  grid-template-columns: minmax(320px, 560px) 1fr;
   gap: 18px;
   align-items: start;
 }
 
-/* kartu soal kiri */
-#game .top-area .question{
-  width: 100% !important;   /* ngalahin width lama */
-  display: block !important;
+#game .question{
+  width: 100% !important;
+  display:block !important;
 }
 
-#game .top-area .question-card{
+#game .question-card{
   width: 100%;
   max-width: 560px;
-  background: #fff;
-  border-radius: 24px;
-  padding: 16px;
+  background:#fff;
+  border-radius:24px;
+  padding:16px;
+  box-sizing:border-box;
 }
 
-/* gambar soal */
-#game .top-area .drag-area{
+#game .question-title{
+  font-weight:900;
+  margin-bottom:12px;
+}
+
+#game .drag-area{
+  width:100%;
   display:flex;
-  align-items:center;
   justify-content:center;
-  margin: 10px 0;
-}
-#game .top-area .question-img{
-  width: 100%;
-  max-width: 320px;
-  height: auto;
-  object-fit: contain;
-  border-radius: 18px;
-  background:#f7f2e6;
+  align-items:center;
+  margin:10px 0;
 }
 
-/* space kanan */
+#game .question-img{
+  width:100%;
+  max-width:320px;
+  height:auto;
+  object-fit:contain;
+  border-radius:18px;
+  background:#f7f2e6;
+  display:block;
+}
+
 #game .top-space{
   min-height: 330px;
   background: transparent;
 }
 
-/* ====== BAWAH ====== */
+/* ====== BAWAH: kartu emosi 4 kolom ====== */
 #game .bottom-area{
-  display: flex;
-  justify-content: flex-start;
+  display:flex;
+  justify-content:flex-start;
 }
 
-/* ini kunci: kartu emosi SELALU di bawah, 4 kolom */
 #game .bottom-area .cards{
-  width: min(560px, 100%);                 /* sejajar lebar soal */
-  display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
-  gap: 16px;
-  margin: 0;
-  padding: 0;
+  width: min(560px, 100%);
+  display:grid !important;
+  grid-template-columns: repeat(4, minmax(0,1fr)) !important;
+  gap:16px;
+  margin:0;
+  padding:0;
 }
 
-/* kartu emosi */
 #game .bottom-area .emotion-card{
-  height: 92px;
-  border-radius: 18px;
-  background: #ffd27d;
+  background:#ffd27d;
+  border-radius:18px;
+  min-height:92px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-weight: 900;
-  letter-spacing: .5px;
-  cursor: pointer;
+  font-weight:900;
+  text-align:center;
   user-select:none;
 }
 
-/* efek hover/drag over */
+/* efek drop */
 #game .bottom-area .emotion-card.over{
-  outline: 3px dashed #2b3a55;
-  outline-offset: 2px;
+  outline:4px solid #ffb703;
+  transform:scale(1.02);
+}
+
+/* ====== NOTIF BENAR/SALAH ====== */
+#game .hint{
+  margin-top: 10px;
+  font-size: 22px;     /* gede */
+  font-weight: 900;
+  text-align:left;
+  white-space: normal;
+}
+#game .hint.good{ color:#1b7f3a; }
+#game .hint.bad{ color:#c62828; }
+
+/* efek gambar terpilih (HP tap) */
+#game .question-img.picked{
+  outline:4px solid #ffb703;
+  outline-offset:4px;
+  border-radius:18px;
 }
 
 /* ====== RESPONSIVE HP ====== */
@@ -249,25 +144,29 @@ h1 {
     gap: 12px;
   }
 
-  /* atas jadi 1 kolom */
   #game .top-area{
     grid-template-columns: 1fr;
   }
+
   #game .top-space{
     display:none;
   }
 
-  /* kartu emosi jadi 2 kolom biar enak di HP */
+  #game .question-img{
+    max-width: 240px;
+  }
+
   #game .bottom-area .cards{
-    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-columns: repeat(2, minmax(0,1fr)) !important;
     gap: 12px;
   }
+
   #game .bottom-area .emotion-card{
-    height: 78px;
+    min-height: 78px;
     font-size: 14px;
   }
 
-  #game .top-area .question-img{
-    max-width: 240px;
+  #game .hint{
+    font-size: 18px;
   }
 }
