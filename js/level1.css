@@ -131,3 +131,22 @@
     max-width: 240px;
   }
 }
+
+/* notif/hint dibesarkan */
+#hint{
+  font-size:22px;
+  font-weight:900;
+  margin-top:10px;
+  text-align:center;
+  white-space:pre-line;
+}
+
+#hint.good{ color:#1b7f3a; }
+#hint.bad{ color:#b42318; }
+
+/* efek dipilih di HP */
+#questionImg.picked{
+  outline:4px solid #ffb703;
+  border-radius:18px;
+}
+
