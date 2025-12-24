@@ -6,7 +6,8 @@ const GAS_URL =
 
 // ====== KONFIG GAME ======
 const TOTAL = 8;
-const DURATION_SEC = 120; // 2 menit
+const DURATION_SEC = 120;      // 2 menit
+const FEEDBACK_DELAY_MS = 1600; // ⬅️ waktu tampil notif benar/salah (naikin kalau mau lebih lama)
 
 // Soal (8 item). Nanti akan diacak.
 const ROUNDS = [
@@ -112,6 +113,8 @@ window.addEventListener("DOMContentLoaded", () => {
   function setPicked(on) {
     picked = on;
     imgEl.classList.toggle("picked", on);
+
+    hintEl.classList.remove("good", "bad");
     hintEl.textContent = on
       ? "Sekarang tap kartu emosi yang benar 👇"
       : "Tarik/tap gambar ke emosi yang benar";
@@ -125,7 +128,9 @@ window.addEventListener("DOMContentLoaded", () => {
     imgEl.alt = `Soal ${idx + 1}`;
 
     setPicked(false);
+    hintEl.classList.remove("good", "bad");
     hintEl.textContent = "Tarik/tap gambar ke emosi yang benar";
+
     soalStart = Date.now();
   }
 
@@ -160,7 +165,11 @@ window.addEventListener("DOMContentLoaded", () => {
       if (timeLeft <= 0) {
         timeLeft = 0;
         renderTimer();
-        finishGame("Waktu habis!");
+        // kasih delay juga biar notif kebaca
+        hintEl.classList.remove("good");
+        hintEl.classList.add("bad");
+        hintEl.textContent = "⏳ Waktu habis!";
+        setTimeout(() => finishGame("Waktu habis!"), 900);
         return;
       }
       renderTimer();
@@ -188,21 +197,31 @@ window.addEventListener("DOMContentLoaded", () => {
       waktu: waktuRespon
     });
 
+    // notif besar + warna
     if (pickedEmosi === correctEmosi) {
       score++;
       renderScore();
-      hintEl.textContent = "✅ Benar! Lanjut…";
+      hintEl.classList.remove("bad");
+      hintEl.classList.add("good");
+      hintEl.textContent = "✅ Benar! Mantap 😄";
       flashOk(targetEl);
     } else {
-      hintEl.textContent = "❌ Salah, lanjut soal berikutnya!";
+      hintEl.classList.remove("good");
+      hintEl.classList.add("bad");
+      hintEl.textContent = "❌ Salah. Gak apa-apa, lanjut ya 🙂";
       shake(targetEl);
     }
 
+    // lanjut soal berikutnya (benar/salah sama-sama lanjut)
     idx++;
+
+    // selama delay, matiin mode picked biar gak dobel input
+    setPicked(false);
+
     if (idx >= TOTAL) {
-      finishGame("Selesai!");
+      setTimeout(() => finishGame("Selesai!"), FEEDBACK_DELAY_MS);
     } else {
-      setTimeout(() => setQuestion(), 350);
+      setTimeout(() => setQuestion(), FEEDBACK_DELAY_MS);
     }
   }
 
@@ -217,7 +236,6 @@ window.addEventListener("DOMContentLoaded", () => {
     setPicked(true);
   });
 
-  // HP touch
   imgEl.addEventListener("touchstart", (e) => {
     if (gameEnded) return;
     e.preventDefault();
@@ -233,7 +251,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     targets.forEach((targetEl) => {
-      // ===== Desktop drag drop =====
+      // Desktop drag drop
       targetEl.addEventListener("dragover", (e) => {
         e.preventDefault();
         targetEl.classList.add("over");
@@ -251,12 +269,13 @@ window.addEventListener("DOMContentLoaded", () => {
         handleAnswer(pickedEmosi, targetEl);
       });
 
-      // ===== HP tap =====
+      // HP tap
       targetEl.addEventListener("click", () => {
         if (gameEnded) return;
 
-        // wajib pilih gambar dulu
         if (!picked) {
+          hintEl.classList.remove("good");
+          hintEl.classList.add("bad");
           hintEl.textContent = "Tap gambarnya dulu ya 🙂";
           shake(targetEl);
           return;
@@ -264,7 +283,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
         const pickedEmosi = targetEl.dataset.emosi;
         handleAnswer(pickedEmosi, targetEl);
-        setPicked(false);
       });
 
       targetEl.addEventListener("touchstart", (e) => {
@@ -272,6 +290,8 @@ window.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
 
         if (!picked) {
+          hintEl.classList.remove("good");
+          hintEl.classList.add("bad");
           hintEl.textContent = "Tap gambarnya dulu ya 🙂";
           shake(targetEl);
           return;
@@ -279,7 +299,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
         const pickedEmosi = targetEl.dataset.emosi;
         handleAnswer(pickedEmosi, targetEl);
-        setPicked(false);
       }, { passive: false });
     });
   }
