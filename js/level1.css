@@ -320,3 +320,26 @@ body{
     font-size: 20px;
   }
 }
+.answer-feedback{
+  margin-top:10px;
+  font-size:34px;
+  font-weight:900;
+  text-align:center;
+  padding:10px 12px;
+  border-radius:14px;
+  background:#fff;
+  border:3px solid #2b3a55;
+}
+
+.answer-feedback.good{
+  background:#dff7e6;
+  border-color:#0f6b2f;
+  color:#0f6b2f;
+}
+
+.answer-feedback.bad{
+  background:#ffe3e0;
+  border-color:#b42318;
+  color:#b42318;
+}
+
