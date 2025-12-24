@@ -112,13 +112,21 @@ function finishLevel(alasan){
   const nama = localStorage.getItem("ek_nama") || "";
   const sesi = localStorage.getItem("ek_sesi") || "";
 
+  // simpan seperti level1
   localStorage.setItem("ek_level2_skor", String(score));
+  localStorage.setItem("ek_level2_total", String(QUESTIONS.length));
   localStorage.setItem("ek_level2_selesai", "1");
   localStorage.setItem("ek_level2_alasan", alasan || "Selesai");
 
-  alert(`Level 2 selesai!\nNama: ${nama}\nSesi: ${sesi}\nSkor: ${score} / ${QUESTIONS.length}`);
-  // kalau kamu punya halaman congrats2, tinggal arahkan:
-  // window.location.href = "./congrats2.html?nama=" + encodeURIComponent(nama) + "&sesi=" + encodeURIComponent(sesi) + "&skor=" + score;
+  const qs = new URLSearchParams({
+    nama,
+    sesi,
+    skor: String(score),
+    total: String(QUESTIONS.length),
+    alasan: alasan || "Selesai"
+  });
+
+  window.location.href = "./congrats2.html?" + qs.toString();
 }
 
 function startTimer(){
