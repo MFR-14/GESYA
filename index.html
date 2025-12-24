@@ -2,44 +2,120 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GESYA - Cara Bermain</title>
-  <link rel="stylesheet" href="css/menu.css">
+  <link rel="stylesheet" href="./css/menu.css?v=2">
 </head>
+
 <body class="home">
 
-  <div class="container">
-    <!-- KIRI -->
-    <div class="left">
-  <img src="./img/12.jpg" class="mascot" alt="Maskot GESYA">
-    </div>
+  <main class="wrap">
 
-    <!-- KANAN -->
-    <div class="right">
-      <h1>Cara Bermain</h1>
+    <!-- GAMBAR ATAS -->
+    <section class="hero">
+      <img src="./img/12.jpg" class="mascot" alt="Maskot GESYA">
+      <div class="hero-title">
+        <h1>Cara Bermain</h1>
+        <p>Yuk main sambil belajar mengenali emosi 😊</p>
+      </div>
+    </section>
 
+    <!-- PERATURAN -->
+    <section class="card rules-card">
+      <h2>Aturannya Gampang!</h2>
       <ul class="rules">
-        <li>Anak mencocokkan berbagai emosi sesuai dengan level yang tersedia</li>
-        <li>Klik atau geser jawaban sesuai dengan pertanyaan</li>
-        <li>Bermainlah sesuai dengan waktu yang disediakan</li>
-        <li>Setiap level memiliki nilai lo</li>
-        <li>Tuntaskan semua permainan ini ya, agar kalian mendapat lencana <b>Ahli Emosi GESYA</b></li>
+        <li>✅ Cocokkan emosi sesuai level yang tersedia</li>
+        <li>✅ Klik atau geser jawaban sesuai pertanyaan</li>
+        <li>✅ Main sesuai waktu yang disediakan</li>
+        <li>✅ Setiap level ada nilai bintang ⭐</li>
+        <li>✅ Selesaikan semua level untuk dapat lencana <b>Ahli Emosi GESYA</b></li>
       </ul>
+    </section>
+
+    <!-- LEVEL -->
+    <section class="card level-card">
+      <h2>Pilih Level</h2>
 
       <div class="levels">
-        <button onclick="goLevel(1)">Level 1</button>
-        <button onclick="goLevel(2)">Level 2</button>
-        <button onclick="goLevel(3)">Level 3</button>
-        <button onclick="goLevel(4)">Level 4</button>
-        <button onclick="goLevel(5)">Level 5</button>
-        <button onclick="goLevel(6)">Level 6</button>
+        <button class="lvl" onclick="goLevel(1)">
+          <span class="no">1</span>
+          <span class="txt">Level 1<br><small>Kenali Emosi</small></span>
+          <span class="emo">🎯</span>
+        </button>
+
+        <button class="lvl" onclick="goLevel(2)">
+          <span class="no">2</span>
+          <span class="txt">Level 2<br><small>Pasangkan</small></span>
+          <span class="emo">🧩</span>
+        </button>
+
+        <button class="lvl" onclick="goLevel(3)">
+          <span class="no">3</span>
+          <span class="txt">Level 3<br><small>Tempel Wajah</small></span>
+          <span class="emo">🙂</span>
+        </button>
+
+        <button class="lvl lock" onclick="goLevel(4)">
+          <span class="no">4</span>
+          <span class="txt">Level 4<br><small>Segera</small></span>
+          <span class="emo">🔒</span>
+        </button>
+
+        <button class="lvl lock" onclick="goLevel(5)">
+          <span class="no">5</span>
+          <span class="txt">Level 5<br><small>Segera</small></span>
+          <span class="emo">🔒</span>
+        </button>
+
+        <button class="lvl lock" onclick="goLevel(6)">
+          <span class="no">6</span>
+          <span class="txt">Level 6<br><small>Segera</small></span>
+          <span class="emo">🔒</span>
+        </button>
       </div>
-    </div>
-  </div>
+
+      <div class="bottom-note" id="progressNote">Tips: isi nama di Level 1 dulu ya ✨</div>
+
+      <button class="reset" id="btnReset" type="button">Reset Nama & Skor</button>
+    </section>
+
+  </main>
 
   <script>
     function goLevel(lvl){
+      // kunci level 4-6 dulu biar anak gak bingung
+      if (lvl >= 4) {
+        alert("Level ini masih dikunci ya 😄");
+        return;
+      }
       window.location.href = `level${lvl}.html`;
     }
+
+    // info kecil progres (opsional)
+    const s1 = parseInt(localStorage.getItem("ek_level1_skor") || "0", 10);
+    const s3 = parseInt(localStorage.getItem("ek_level3_skor") || "0", 10);
+    const total = s1 + s3;
+    const nama = localStorage.getItem("ek_nama") || "";
+    const sesi = localStorage.getItem("ek_sesi") || "";
+
+    const note = document.getElementById("progressNote");
+    if (nama || sesi || total) {
+      note.textContent = `Halo ${nama ? nama.toUpperCase() : "Teman"}! Sesi ${sesi || "-"} • Skor sementara ${total} ⭐`;
+    }
+
+    // reset
+    document.getElementById("btnReset").addEventListener("click", ()=>{
+      if (!confirm("Reset nama, sesi, dan skor?")) return;
+      localStorage.removeItem("ek_nama");
+      localStorage.removeItem("ek_sesi");
+      localStorage.removeItem("ek_level1_skor");
+      localStorage.removeItem("ek_level3_skor");
+      localStorage.removeItem("ek_level1_selesai");
+      localStorage.removeItem("ek_level3_selesai");
+      localStorage.removeItem("ek_level1_alasan");
+      localStorage.removeItem("ek_level3_alasan");
+      location.reload();
+    });
   </script>
 
 </body>
