@@ -115,36 +115,6 @@ const QUESTIONS = [
     options: ["a) Kesal", "b) Senang", "c) Takut", "d) Malas"],
     emosiMap: ["KESAL", "SENANG", "TAKUT", "MALAS"],
     correctIndex: 0
-  },
-  {
-    text: "Jika sepatumu basah terkena genangan air, kamu merasa…",
-    options: ["a) Tidak nyaman", "b) Senang", "c) Malu", "d) Terkejut"],
-    emosiMap: ["TIDAK NYAMAN", "SENANG", "MALU", "TERKEJUT"],
-    correctIndex: 0
-  },
-  {
-    text: "Saat guru memuji temanmu tetapi tidak memuji kamu, kamu merasa…",
-    options: ["a) Kecewa", "b) Senang", "c) Jijik", "d) Takut"],
-    emosiMap: ["KECEWA", "SENANG", "JIJIK", "TAKUT"],
-    correctIndex: 0
-  },
-  {
-    text: "Ketika kamu sedang berbicara dan teman tidak mendengarkanmu, kamu merasa…",
-    options: ["a) Kesal", "b) Senang", "c) Malu", "d) Bingung"],
-    emosiMap: ["KESAL", "SENANG", "MALU", "BINGUNG"],
-    correctIndex: 0
-  },
-  {
-    text: "Jika kamu dimarahi karena lupa mengerjakan PR, kamu merasa…",
-    options: ["a) Takut", "b) Senang", "c) Jijik", "d) Tenang"],
-    emosiMap: ["TAKUT", "SENANG", "JIJIK", "TENANG"],
-    correctIndex: 0
-  },
-  {
-    text: "Jika kamu mendapatkan tugas yang sulit, kamu merasa…",
-    options: ["a) Senang", "b) Cemas", "c) Marah", "d) Jijik"],
-    emosiMap: ["SENANG", "CEMAS", "MARAH", "JIJIK"],
-    correctIndex: 1
   }
 ];
 
