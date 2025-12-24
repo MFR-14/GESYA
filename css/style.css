@@ -63,3 +63,26 @@ h1 {
   background: #ffb703;
   transform: scale(1.05);
 }
+.lvl1-wrap.vertical{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  padding:16px;
+}
+
+/* kartu emosi bawah */
+.cards{
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(8,1fr);
+  gap:12px;
+}
+
+/* responsive */
+@media (max-width:900px){
+  .cards{ grid-template-columns:repeat(4,1fr); }
+}
+@media (max-width:600px){
+  .cards{ grid-template-columns:repeat(2,1fr); }
+  .emotion-card{ height:70px; font-size:14px; }
+}
