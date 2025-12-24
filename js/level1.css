@@ -182,15 +182,43 @@ body{
 /* =========================
    HINT / NOTIF (gede)
 ========================= */
+/* =========================
+   NOTIF BENAR / SALAH (SUPER GEDE)
+========================= */
 .hint{
-  margin-top:10px;
-  font-size:22px;
+  margin-top:12px;
+  padding:14px 16px;
+  border-radius:16px;
+  font-size:34px;          /* ✅ gede buat anak */
   font-weight:900;
   text-align:center;
   white-space:pre-line;
+  line-height:1.15;
+  background:#fdf6ec;
 }
-.hint.good{ color:#1b7f3a; }
-.hint.bad{ color:#b42318; }
+
+/* hijau kalau benar */
+.hint.good{
+  color:#0f6b2f;
+  background:#dff7e6;
+  border:3px solid #0f6b2f;
+}
+
+/* merah kalau salah */
+.hint.bad{
+  color:#b42318;
+  background:#ffe3e0;
+  border:3px solid #b42318;
+}
+
+/* HP: tetep gede tapi pas */
+@media (max-width:900px){
+  .hint{
+    font-size:26px;
+    padding:12px 14px;
+  }
+}
+
 
 /* =========================
    ANIMASI
