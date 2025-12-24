@@ -1,6 +1,20 @@
+/* =========================
+   LEVEL 1 — KARTU EMOSI (DENGAN ICON)
+   Catatan:
+   - Jangan pakai width:55% kalau kartu harus di bawah
+   - Kita bikin cards full width, grid 4 kolom (desktop)
+========================= */
+
+/* wadah bawah */
+.bottom-area{
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+}
+
 /* ===== KARTU EMOSI (DENGAN ICON) ===== */
 .cards{
-  width:55%;
+  width: min(620px, 100%);
   display:grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap:14px;
