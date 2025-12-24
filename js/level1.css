@@ -95,9 +95,7 @@ body{
 }
 
 /* =========================
-   LAYOUT KONSEP KAMU
-   ATAS: Soal kiri + space kanan
-   BAWAH: Kartu 4x2 di bawah
+   LAYOUT
 ========================= */
 .lvl1-layout{
   padding: 8px 16px 20px;
@@ -180,45 +178,66 @@ body{
 }
 
 /* =========================
-   HINT / NOTIF (gede)
-========================= */
-/* =========================
-   NOTIF BENAR / SALAH (SUPER GEDE)
+   HINT (NOTIF KECIL)
 ========================= */
 .hint{
   margin-top:12px;
   padding:14px 16px;
   border-radius:16px;
-  font-size:34px;          /* ✅ gede buat anak */
+  font-size:26px;
   font-weight:900;
   text-align:center;
   white-space:pre-line;
   line-height:1.15;
   background:#fdf6ec;
+  border:3px solid #e7e0d2;
 }
-
-/* hijau kalau benar */
 .hint.good{
   color:#0f6b2f;
   background:#dff7e6;
-  border:3px solid #0f6b2f;
+  border-color:#0f6b2f;
 }
-
-/* merah kalau salah */
 .hint.bad{
   color:#b42318;
   background:#ffe3e0;
-  border:3px solid #b42318;
+  border-color:#b42318;
 }
 
-/* HP: tetep gede tapi pas */
-@media (max-width:900px){
-  .hint{
-    font-size:26px;
-    padding:12px 14px;
-  }
-}
+/* =========================
+   NOTIF BESAR BENAR/SALAH (FIX UTAMA)
+   - HILANGKAN opacity:0 yang bikin "hantu"
+========================= */
+.answer-feedback{
+  display:block;
+  margin:12px 0 0;
+  min-height:64px;         /* biar gak kosong */
+  padding:14px 16px;
+  border-radius:16px;
+  text-align:center;
 
+  font-size:34px;
+  font-weight:900;
+  line-height:1.15;
+
+  opacity:1;               /* ✅ FIX: paksa terlihat */
+  visibility:visible;      /* ✅ FIX */
+  transform:none;          /* ✅ FIX */
+  transition:none;
+
+  color:#2b3a55;
+  background:#ffffff;
+  border:3px solid #2b3a55;
+}
+.answer-feedback.good{
+  background:#dff7e6;
+  border-color:#0f6b2f;
+  color:#0f6b2f;
+}
+.answer-feedback.bad{
+  background:#ffe3e0;
+  border-color:#b42318;
+  color:#b42318;
+}
 
 /* =========================
    ANIMASI
@@ -238,7 +257,7 @@ body{
 .ok{ animation:okflash .45s ease; }
 
 /* =========================
-   RESPONSIVE HP
+   RESPONSIVE
 ========================= */
 @media (max-width:900px){
   .top-area{ grid-template-columns:1fr; }
@@ -255,120 +274,6 @@ body{
   }
 
   .question-img{ max-width:240px; }
-  .hint{ font-size:18px; }
+  .hint{ font-size:20px; }
+  .answer-feedback{ font-size:26px; }
 }
-/* ===============================
-   TEKS BENAR / SALAH (ANAK-STYLE)
-=============================== */
-.answer-feedback{
-  margin-top:10px;
-  font-size:38px;        /* GEDE */
-  font-weight:900;
-  text-align:center;
-  line-height:1.2;
-  opacity:0;
-  transform:scale(0.8);
-  transition:all .25s ease;
-}
-
-/* muncul */
-.answer-feedback.show{
-  opacity:1;
-  transform:scale(1);
-}
-
-/* BENAR */
-.answer-feedback.good{
-  color:#0f6b2f;
-}
-
-/* SALAH */
-.answer-feedback.bad{
-  color:#b42318;
-}
-
-/* HP */
-@media (max-width:900px){
-  .answer-feedback{
-    font-size:28px;
-  }
-}
-.answer-feedback{
-  margin-top: 10px;
-  padding: 12px 14px;
-  border-radius: 16px;
-  font-weight: 900;
-  font-size: 22px;          /* gede buat anak */
-  text-align: center;
-  line-height: 1.2;
-  background: #fff;
-  border: 3px solid #2b3a55;
-}
-
-.answer-feedback.good{
-  background: #eaffea;
-  border-color: #2f9e44;
-}
-
-.answer-feedback.bad{
-  background: #ffecec;
-  border-color: #e03131;
-}
-
-@media (max-width: 600px){
-  .answer-feedback{
-    font-size: 20px;
-  }
-}
-.answer-feedback{
-  margin-top:10px;
-  font-size:34px;
-  font-weight:900;
-  text-align:center;
-  padding:10px 12px;
-  border-radius:14px;
-  background:#fff;
-  border:3px solid #2b3a55;
-}
-
-.answer-feedback.good{
-  background:#dff7e6;
-  border-color:#0f6b2f;
-  color:#0f6b2f;
-}
-
-.answer-feedback.bad{
-  background:#ffe3e0;
-  border-color:#b42318;
-  color:#b42318;
-}
-/* NOTIF BESAR BENAR/SALAH (PAKSA KELIATAN) */
-.answer-feedback{
-  display:block;
-  margin:12px 0 0;
-  min-height:60px;              /* biar gak kelihatan kosong */
-  padding:12px 14px;
-  border-radius:16px;
-  text-align:center;
-
-  font-size:34px;
-  font-weight:900;
-  line-height:1.15;
-
-  color:#2b3a55 !important;     /* paksa warna teks */
-  background:#ffffff;
-  border:3px solid #2b3a55;
-}
-
-.answer-feedback.good{
-  background:#dff7e6;
-  border-color:#0f6b2f;
-  color:#0f6b2f !important;     /* paksa */
-}
-
-.answer-feedback.bad{
-  background:#ffe3e0;
-  border-color:#b42318;
-  color:#b42318 !important;     /* paksa */
-}
-
