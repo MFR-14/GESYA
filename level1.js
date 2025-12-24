@@ -189,70 +189,62 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==== LOGIKA JAWABAN ====
-  function handleAnswer(pickedEmosi, targetEl) {
-    if (gameEnded || lockInput) return;
+function handleAnswer(pickedEmosi, targetEl) {
+  if (gameEnded || lockInput) return;
+  lockInput = true;
 
-    lockInput = true;
+  const correctEmosi = pool[idx].emosi;
+  const waktuRespon = ((Date.now() - soalStart) / 1000).toFixed(2);
 
-    const correctEmosi = pool[idx].emosi;
-    const waktuRespon = ((Date.now() - soalStart) / 1000).toFixed(2);
+  const nama = localStorage.getItem("ek_nama") || "";
+  const sesi = localStorage.getItem("ek_sesi") || "";
 
-    const nama = localStorage.getItem("ek_nama") || "";
-    const sesi = localStorage.getItem("ek_sesi") || "";
+  const status = pickedEmosi === correctEmosi ? "BENAR" : "SALAH";
 
-    const status = pickedEmosi === correctEmosi ? "BENAR" : "SALAH";
+  sendRekapToGAS({
+    nama,
+    sesi,
+    soal: idx + 1,
+    emosi: `${pickedEmosi} (${status})`,
+    waktu: waktuRespon
+  });
 
-    sendRekapToGAS({
-      nama,
-      sesi,
-      soal: idx + 1,
-      emosi: `${pickedEmosi} (${status})`,
-      waktu: waktuRespon
-    });
+  const isBenar = pickedEmosi === correctEmosi;
 
-    if (pickedEmosi === correctEmosi) {
-  score++;
-  renderScore();
+  // ===== NOTIF KECIL (hint) =====
+  hintEl.classList.remove("good", "bad");
+  hintEl.classList.add(isBenar ? "good" : "bad");
+  hintEl.textContent = isBenar ? "✅ Benar!" : "❌ Salah";
 
-  hintEl.classList.remove("bad");
-  hintEl.classList.add("good");
-  hintEl.textContent = "✅ Benar!";
-
-  // ✅ NOTIF BESAR
+  // ===== NOTIF BESAR (answerFeedback) =====
   if (feedbackEl) {
-    feedbackEl.classList.remove("bad");
-    feedbackEl.classList.add("good");
-    feedbackEl.textContent = "YEEEAAAY! KAMU BENAR!!! 🎉🎉";
+    feedbackEl.style.display = "block";            // paksa tampil
+    feedbackEl.classList.remove("good", "bad");    // bersihin total dulu
+    feedbackEl.classList.add(isBenar ? "good" : "bad");
+    feedbackEl.textContent = isBenar
+      ? "YEEEAAAY! KAMU BENAR!!! 🎉🎉"
+      : "YAAAHH… SALAAAHHH!!! 😭";
   }
 
-  flashOk(targetEl);
-
-} else {
-  hintEl.classList.remove("good");
-  hintEl.classList.add("bad");
-  hintEl.textContent = "❌ Salah";
-
-  // ✅ NOTIF BESAR
-  if (feedbackEl) {
-    feedbackEl.classList.remove("good");
-    feedbackEl.classList.add("bad");
-    feedbackEl.textContent = "YAAAHH… SALAAAHHH!!! 😭";
+  // efek kartu
+  if (isBenar) {
+    score++;
+    renderScore();
+    flashOk(targetEl);
+  } else {
+    shake(targetEl);
   }
 
-  shake(targetEl);
+  // lanjut soal
+  idx++;
+  setPicked(false);
+
+  if (idx >= TOTAL) {
+    setTimeout(() => finishGame("Selesai!"), FEEDBACK_DELAY_MS);
+  } else {
+    setTimeout(() => setQuestion(), FEEDBACK_DELAY_MS);
+  }
 }
-
-
-
-    idx++;
-    setPicked(false);
-
-    if (idx >= TOTAL) {
-      setTimeout(() => finishGame("Selesai!"), FEEDBACK_DELAY_MS);
-    } else {
-      setTimeout(() => setQuestion(), FEEDBACK_DELAY_MS);
-    }
-  }
 
   // ==== DESKTOP DRAG ====
   imgEl.addEventListener("dragstart", (e) => {
