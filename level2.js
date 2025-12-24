@@ -1,36 +1,41 @@
 // =====================
 // KONFIG LEVEL 2
 // =====================
-const DURATION_SEC = 3 * 60 + 38; // 03:38 (sesuai gambar)
-const FEEDBACK_DELAY_MS = 800;
+const DURATION_SEC = 3 * 60 + 38; // 03:38
+const FEEDBACK_DELAY_MS = 700;
 
-// Soal contoh (silakan kamu ganti/lanjutkan)
+// Soal (ubah di sini)
 const QUESTIONS = [
   {
     text: "Ketika aku sakit, aku merasa ...",
     options: ["a) Bahagia", "b) Sedih", "c) Takut", "d) Malu"],
-    correctIndex: 1 // b) Sedih
+    correctIndex: 1
   },
   {
     text: "Ketika aku sendirian di rumah, aku merasa ...",
     options: ["a) Bahagia", "b) Sedih", "c) Takut", "d) Malu"],
-    correctIndex: 2 // c) Takut
-  },
-  // tambah soal lagi bebas:
-  // { text:"...", options:["a)...","b)...","c)...","d)..."], correctIndex: 0 }
+    correctIndex: 2
+  }
 ];
 
+// ====== STATE ======
 let idx = 0;
 let score = 0;
 let timeLeft = DURATION_SEC;
 let timerId = null;
 let locked = false;
+let ended = false;
 
 function pad(n){ return String(n).padStart(2, "0"); }
+
 function renderTimer(){
   const m = Math.floor(timeLeft / 60);
   const s = timeLeft % 60;
   document.getElementById("timer").textContent = `${pad(m)}:${pad(s)}`;
+}
+
+function renderScore(){
+  document.getElementById("score").textContent = `Skor: ${score} / ${QUESTIONS.length}`;
 }
 
 function setFeedback(text, type){
@@ -38,6 +43,10 @@ function setFeedback(text, type){
   el.classList.remove("good", "bad");
   if (type) el.classList.add(type);
   el.textContent = text || "";
+}
+
+function clearSelected(){
+  document.querySelectorAll(".option").forEach(b => b.classList.remove("selected"));
 }
 
 function setQuestion(){
@@ -56,7 +65,6 @@ function setQuestion(){
     btn.type = "button";
     btn.className = "option";
     btn.textContent = label;
-
     btn.addEventListener("click", () => chooseAnswer(i, btn));
     wrap.appendChild(btn);
   });
@@ -64,12 +72,8 @@ function setQuestion(){
   document.getElementById("btnNext").classList.add("hidden");
 }
 
-function clearSelected(){
-  document.querySelectorAll(".option").forEach(b => b.classList.remove("selected"));
-}
-
 function chooseAnswer(pickIndex, btnEl){
-  if (locked) return;
+  if (ended || locked) return;
   locked = true;
 
   clearSelected();
@@ -80,58 +84,107 @@ function chooseAnswer(pickIndex, btnEl){
 
   if (benar){
     score++;
+    renderScore();
     setFeedback("✅ Benar!", "good");
   } else {
     setFeedback("❌ Salah!", "bad");
   }
 
-  // tampil tombol lanjut
-  const nextBtn = document.getElementById("btnNext");
-  nextBtn.classList.remove("hidden");
-
-  // auto lanjut optional (kalau mau)
-  // setTimeout(() => nextStep(), FEEDBACK_DELAY_MS);
+  // tombol lanjut tampil
+  document.getElementById("btnNext").classList.remove("hidden");
 }
 
 function nextStep(){
+  if (ended) return;
   idx++;
   if (idx >= QUESTIONS.length){
-    finishLevel();
+    finishLevel("Selesai!");
   } else {
     setQuestion();
   }
 }
 
-function finishLevel(){
+function finishLevel(alasan){
+  if (ended) return;
+  ended = true;
   clearInterval(timerId);
-  // simpan hasil (mirip level1 style)
+
+  const nama = localStorage.getItem("ek_nama") || "";
+  const sesi = localStorage.getItem("ek_sesi") || "";
+
   localStorage.setItem("ek_level2_skor", String(score));
   localStorage.setItem("ek_level2_selesai", "1");
+  localStorage.setItem("ek_level2_alasan", alasan || "Selesai");
 
-  // arahkan ke halaman selamat (kalau kamu punya)
-  // kalau belum punya, ya tampil alert dulu biar aman
-  alert(`Level 2 selesai!\nSkor: ${score} / ${QUESTIONS.length}`);
-  // window.location.href = "./congrats2.html?skor=" + score;
+  alert(`Level 2 selesai!\nNama: ${nama}\nSesi: ${sesi}\nSkor: ${score} / ${QUESTIONS.length}`);
+  // kalau kamu punya halaman congrats2, tinggal arahkan:
+  // window.location.href = "./congrats2.html?nama=" + encodeURIComponent(nama) + "&sesi=" + encodeURIComponent(sesi) + "&skor=" + score;
 }
 
 function startTimer(){
   renderTimer();
   timerId = setInterval(() => {
+    if (ended) return;
     timeLeft--;
+
     if (timeLeft <= 0){
       timeLeft = 0;
       renderTimer();
       setFeedback("⏳ Waktu habis!", "bad");
       locked = true;
-      setTimeout(() => finishLevel(), 700);
+      setTimeout(() => finishLevel("Waktu habis!"), 700);
       return;
     }
     renderTimer();
   }, 1000);
 }
 
+// ====== START GAME (dari intro) ======
 window.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("btnNext").addEventListener("click", nextStep);
-  setQuestion();
-  startTimer();
+  const introEl = document.getElementById("intro");
+  const gameEl  = document.getElementById("game");
+
+  const namaInput = document.getElementById("namaAnak");
+  const sesiInput = document.getElementById("sesiAnak");
+  const btnMulai  = document.getElementById("btnMulai");
+  const btnNext   = document.getElementById("btnNext");
+  const btnSelesai= document.getElementById("btnSelesai");
+
+  // auto isi dari localStorage (biar sekali input untuk semua level)
+  const namaLS = (localStorage.getItem("ek_nama") || "").trim();
+  const sesiLS = (localStorage.getItem("ek_sesi") || "").trim();
+  if (namaLS) namaInput.value = namaLS;
+  if (sesiLS) sesiInput.value = sesiLS;
+
+  function startGame(){
+    const nama = (namaInput.value || "").trim();
+    const sesi = (sesiInput.value || "").trim();
+
+    if (!nama || !sesi){
+      alert("Nama dan sesi wajib diisi ya 🙂");
+      return;
+    }
+
+    localStorage.setItem("ek_nama", nama);
+    localStorage.setItem("ek_sesi", sesi);
+
+    introEl.classList.add("hidden");
+    gameEl.classList.remove("hidden");
+
+    // reset state
+    idx = 0;
+    score = 0;
+    timeLeft = DURATION_SEC;
+    locked = false;
+    ended = false;
+
+    renderScore();
+    setQuestion();
+    startTimer();
+  }
+
+  btnMulai.addEventListener("click", startGame);
+  btnNext.addEventListener("click", nextStep);
+
+  btnSelesai.addEventListener("click", () => finishLevel("Diselesaikan manual"));
 });
