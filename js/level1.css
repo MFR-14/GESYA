@@ -342,4 +342,33 @@ body{
   border-color:#b42318;
   color:#b42318;
 }
+/* NOTIF BESAR BENAR/SALAH (PAKSA KELIATAN) */
+.answer-feedback{
+  display:block;
+  margin:12px 0 0;
+  min-height:60px;              /* biar gak kelihatan kosong */
+  padding:12px 14px;
+  border-radius:16px;
+  text-align:center;
+
+  font-size:34px;
+  font-weight:900;
+  line-height:1.15;
+
+  color:#2b3a55 !important;     /* paksa warna teks */
+  background:#ffffff;
+  border:3px solid #2b3a55;
+}
+
+.answer-feedback.good{
+  background:#dff7e6;
+  border-color:#0f6b2f;
+  color:#0f6b2f !important;     /* paksa */
+}
+
+.answer-feedback.bad{
+  background:#ffe3e0;
+  border-color:#b42318;
+  color:#b42318 !important;     /* paksa */
+}
 
