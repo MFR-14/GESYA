@@ -1,6 +1,28 @@
 // =====================
 // KONFIG LEVEL 2
 // =====================
+// =====================
+// GAS WebApp URL (/exec) - SAMAIN DENGAN LEVEL 1
+// =====================
+const GAS_URL =
+  "https://script.google.com/macros/s/AKfycbwlKHW60fkzcickncJz6xHOSSxYaNVOUMPR2X-tnz12ia6UtOfp7Tbh6aYxLk2oSBVo/exec";
+
+// kirim rekap ke GAS (anti CORS, pakai Image beacon)
+function sendRekapToGAS({ nama, sesi, soal, emosi, waktu }) {
+  if (!GAS_URL) return;
+
+  const u = new URL(GAS_URL);
+  u.searchParams.set("nama", nama);
+  u.searchParams.set("sesi", sesi);
+  u.searchParams.set("soal", String(soal));
+  u.searchParams.set("emosi", emosi);
+  u.searchParams.set("waktu", String(waktu));
+
+  const beacon = new Image();
+  beacon.src = u.toString();
+}
+
+
 const DURATION_SEC = 3 * 60 + 38; // 03:38
 const FEEDBACK_DELAY_MS = 700;
 
