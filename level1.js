@@ -7,9 +7,8 @@ const GAS_URL =
 // ====== KONFIG GAME ======
 const TOTAL = 8;
 const DURATION_SEC = 120;        // 2 menit
-const FEEDBACK_DELAY_MS = 2200;  // ⬅️ lama tampil notif benar/salah (buat anak baca)
+const FEEDBACK_DELAY_MS = 2200;  // lama tampil notif benar/salah
 
-// Soal (8 item). Nanti akan diacak.
 const ROUNDS = [
   { emosi: "BAHAGIA",  img: "./img/bahagia.jpg" },
   { emosi: "SEDIH",    img: "./img/sedih.jpg" },
@@ -30,7 +29,6 @@ let timerId = null;
 let gameEnded = false;
 let soalStart = 0;
 
-// mode HP: gambar “dipilih” dulu, lalu tap kartu emosi
 let picked = false;
 let lockInput = false;
 
@@ -88,8 +86,8 @@ window.addEventListener("DOMContentLoaded", () => {
   const feedbackEl = document.getElementById("answerFeedback");
   const btnSelesai = document.getElementById("btnSelesai");
 
-  if (!introEl || !gameEl || !namaInput || !sesiInput || !btnMulai || !timerEl || !scoreEl || !imgEl || !hintEl) {
-    alert("Ada elemen HTML yang tidak ketemu. Cek id: intro, game, namaAnak, sesiAnak, btnMulai, timer, score, questionImg, hint.");
+  if (!introEl || !gameEl || !namaInput || !sesiInput || !btnMulai || !timerEl || !scoreEl || !imgEl || !hintEl || !feedbackEl) {
+    alert("Ada elemen HTML yang tidak ketemu. Cek id: intro, game, namaAnak, sesiAnak, btnMulai, timer, score, questionImg, hint, answerFeedback.");
     return;
   }
 
@@ -112,35 +110,37 @@ window.addEventListener("DOMContentLoaded", () => {
   function setPicked(on) {
     picked = on;
     imgEl.classList.toggle("picked", on);
+
     hintEl.classList.remove("good", "bad");
     hintEl.textContent = on
       ? "Sekarang tap kartu emosi yang benar 👇"
       : "Tarik / tap gambar ke emosi yang benar";
   }
 
- function setQuestion() {
-  const q = pool[idx];
-  imgEl.src = q.img + "?v=" + Date.now(); // cache buster github pages
-  imgEl.alt = `Soal ${idx + 1}`;
-
-  // buka input lagi untuk soal baru
-  lockInput = false;
-
-  // reset mode pilih gambar (HP)
-  setPicked(false);
-
-  // reset instruksi kecil
-  hintEl.classList.remove("good", "bad");
-  hintEl.textContent = "Tarik / tap gambar ke emosi yang benar";
-
-  // ✅ reset tulisan besar BENAR/SALAH (biar gak kebawa)
-  if (feedbackEl) {
-    feedbackEl.className = "answer-feedback"; // balik ke default
+  function resetFeedback() {
+    feedbackEl.className = "answer-feedback";
     feedbackEl.textContent = "";
+    // paksa visible (jaga-jaga ada CSS lain yang nyempil)
+    feedbackEl.style.display = "block";
+    feedbackEl.style.opacity = "1";
+    feedbackEl.style.visibility = "visible";
+    feedbackEl.style.transform = "none";
   }
 
-  soalStart = Date.now();
-}
+  function setQuestion() {
+    const q = pool[idx];
+    imgEl.src = q.img + "?v=" + Date.now();
+    imgEl.alt = `Soal ${idx + 1}`;
+
+    lockInput = false;
+    setPicked(false);
+
+    hintEl.classList.remove("good", "bad");
+    hintEl.textContent = "Tarik / tap gambar ke emosi yang benar";
+
+    resetFeedback();
+    soalStart = Date.now();
+  }
 
   function finishGame(message) {
     if (gameEnded) return;
@@ -183,68 +183,63 @@ window.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => finishGame("Waktu habis!"), 900);
         return;
       }
-
       renderTimer();
     }, 1000);
   }
 
   // ==== LOGIKA JAWABAN ====
-function handleAnswer(pickedEmosi, targetEl) {
-  if (gameEnded || lockInput) return;
-  lockInput = true;
+  function handleAnswer(pickedEmosi, targetEl) {
+    if (gameEnded || lockInput) return;
+    lockInput = true;
 
-  const correctEmosi = pool[idx].emosi;
-  const waktuRespon = ((Date.now() - soalStart) / 1000).toFixed(2);
+    const correctEmosi = pool[idx].emosi;
+    const waktuRespon = ((Date.now() - soalStart) / 1000).toFixed(2);
 
-  const nama = localStorage.getItem("ek_nama") || "";
-  const sesi = localStorage.getItem("ek_sesi") || "";
+    const nama = localStorage.getItem("ek_nama") || "";
+    const sesi = localStorage.getItem("ek_sesi") || "";
 
-  const status = pickedEmosi === correctEmosi ? "BENAR" : "SALAH";
+    const status = pickedEmosi === correctEmosi ? "BENAR" : "SALAH";
 
-  sendRekapToGAS({
-    nama,
-    sesi,
-    soal: idx + 1,
-    emosi: `${pickedEmosi} (${status})`,
-    waktu: waktuRespon
-  });
+    sendRekapToGAS({
+      nama,
+      sesi,
+      soal: idx + 1,
+      emosi: `${pickedEmosi} (${status})`,
+      waktu: waktuRespon
+    });
 
-  const isBenar = pickedEmosi === correctEmosi;
+    const isBenar = pickedEmosi === correctEmosi;
 
-  // ===== NOTIF KECIL (hint) =====
-  hintEl.classList.remove("good", "bad");
-  hintEl.classList.add(isBenar ? "good" : "bad");
-  hintEl.textContent = isBenar ? "✅ Benar!" : "❌ Salah";
+    // notif kecil
+    hintEl.classList.remove("good", "bad");
+    hintEl.classList.add(isBenar ? "good" : "bad");
+    hintEl.textContent = isBenar ? "✅ Benar!" : "❌ Salah";
 
-  // ===== NOTIF BESAR (answerFeedback) =====
-  if (feedbackEl) {
-    feedbackEl.style.display = "block";            // paksa tampil
-    feedbackEl.classList.remove("good", "bad");    // bersihin total dulu
+    // notif besar (paksa tampil)
+    resetFeedback();
     feedbackEl.classList.add(isBenar ? "good" : "bad");
     feedbackEl.textContent = isBenar
       ? "YEEEAAAY! KAMU BENAR!!! 🎉🎉"
       : "YAAAHH… SALAAAHHH!!! 😭";
-  }
 
-  // efek kartu
-  if (isBenar) {
-    score++;
-    renderScore();
-    flashOk(targetEl);
-  } else {
-    shake(targetEl);
-  }
+    // efek kartu
+    if (isBenar) {
+      score++;
+      renderScore();
+      flashOk(targetEl);
+    } else {
+      shake(targetEl);
+    }
 
-  // lanjut soal
-  idx++;
-  setPicked(false);
+    idx++;
+    setPicked(false);
 
-  if (idx >= TOTAL) {
-    setTimeout(() => finishGame("Selesai!"), FEEDBACK_DELAY_MS);
-  } else {
-    setTimeout(() => setQuestion(), FEEDBACK_DELAY_MS);
+    if (idx >= TOTAL) {
+      setTimeout(() => finishGame("Selesai!"), FEEDBACK_DELAY_MS);
+    } else {
+      setTimeout(() => setQuestion(), FEEDBACK_DELAY_MS);
+    }
   }
-}
 
   // ==== DESKTOP DRAG ====
   imgEl.addEventListener("dragstart", (e) => {
@@ -272,7 +267,6 @@ function handleAnswer(pickedEmosi, targetEl) {
     }
 
     targets.forEach((targetEl) => {
-      // Desktop drop
       targetEl.addEventListener("dragover", (e) => {
         e.preventDefault();
         targetEl.classList.add("over");
@@ -285,8 +279,8 @@ function handleAnswer(pickedEmosi, targetEl) {
       targetEl.addEventListener("drop", (e) => {
         e.preventDefault();
         targetEl.classList.remove("over");
-
         if (gameEnded || lockInput) return;
+
         const pickedEmosi = targetEl.dataset.emosi;
         handleAnswer(pickedEmosi, targetEl);
       });
@@ -302,9 +296,7 @@ function handleAnswer(pickedEmosi, targetEl) {
           shake(targetEl);
           return;
         }
-
-        const pickedEmosi = targetEl.dataset.emosi;
-        handleAnswer(pickedEmosi, targetEl);
+        handleAnswer(targetEl.dataset.emosi, targetEl);
       });
 
       targetEl.addEventListener("touchstart", (e) => {
@@ -318,14 +310,11 @@ function handleAnswer(pickedEmosi, targetEl) {
           shake(targetEl);
           return;
         }
-
-        const pickedEmosi = targetEl.dataset.emosi;
-        handleAnswer(pickedEmosi, targetEl);
+        handleAnswer(targetEl.dataset.emosi, targetEl);
       }, { passive: false });
     });
   }
 
-  // ==== START GAME ====
   function startGame() {
     const nama = (namaInput.value || "").trim();
     const sesi = (sesiInput.value || "").trim();
@@ -362,4 +351,5 @@ function handleAnswer(pickedEmosi, targetEl) {
   renderTimer();
   renderScore();
   setupDropTargets();
+  resetFeedback();
 });
