@@ -1,13 +1,85 @@
-.emo-icon{
-  width:42px;
-  height:42px;
-  object-fit:contain;
-  margin-bottom:10px;
+/* ===== KARTU EMOSI (DENGAN ICON) ===== */
+.cards{
+  width:55%;
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap:14px;
 }
+
 .emotion-card{
+  background:#ffd27d;
+  border-radius:22px;
+  min-height:110px;
+
+  /* WAJIB biar flex-direction jalan */
+  display:flex;
   flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
   gap:6px;
+  padding:10px;
+
+  font-weight:900;
+  letter-spacing:.5px;
+  text-align:center;
+  user-select:none;
 }
+
+.emo-icon{
+  width:44px;
+  height:44px;
+  object-fit:contain;
+  display:block;
+}
+
 .emo-text{
   font-weight:900;
+  font-size:16px;
+  line-height:1.1;
+}
+
+/* efek hover/over untuk drop */
+.drop-target.over{
+  outline:4px solid #ffb703;
+  transform:scale(1.02);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px){
+  .cards{
+    width:100%;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap:12px;
+  }
+  .emotion-card{
+    min-height:96px;
+    border-radius:18px;
+  }
+  .emo-icon{
+    width:40px;
+    height:40px;
+  }
+  .emo-text{
+    font-size:14px;
+  }
+}
+
+@media (max-width: 600px){
+  .cards{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap:10px;
+  }
+  .emotion-card{
+    min-height:86px;
+    border-radius:16px;
+    padding:8px;
+  }
+  .emo-icon{
+    width:34px;
+    height:34px;
+  }
+  .emo-text{
+    font-size:13px;
+  }
 }
