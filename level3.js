@@ -8,15 +8,18 @@ const GAS_URL =
 const TOTAL = 8;
 const DURATION_SEC = 180;        // 3 menit
 const FEEDBACK_DELAY_MS = 2200;  // lama tampil notif benar/salah
+const IMG_BASE = "./img/level3";
 
-// "ROUNDS" versi level 3:
-// tiap item = 1 pasang kepala + muka yang harus cocok
-// key WAJIB konsisten dengan data-face & data-need
+// 8 pasang sesuai folder kamu
 const ROUNDS = [
-  { key: "bahagia", head: "./img/bahagia-L3.jpg", face: "./img/muka-bahagia.jpg" },
-  // { key: "sedih", head: "./img/sedih-L3.jpg", face: "./img/muka-sedih.jpg" },
-  // { key: "takut", head: "./img/takut-L3.jpg", face: "./img/muka-takut.jpg" },
-  // dst sampai 8
+  { key: "bahagia",  head: `${IMG_BASE}/bahagia-L3.jpg`,  face: `${IMG_BASE}/muka-bahagia.jpg` },
+  { key: "bingung",  head: `${IMG_BASE}/bingung-L3.jpg`,  face: `${IMG_BASE}/muka-bingung.jpg` },
+  { key: "cinta",    head: `${IMG_BASE}/cinta-L3.jpg`,    face: `${IMG_BASE}/muka-cinta.jpg` },
+  { key: "malu",     head: `${IMG_BASE}/malu-L3.jpg`,     face: `${IMG_BASE}/muka-malu.jpg` },
+  { key: "marah",    head: `${IMG_BASE}/marah-L3.jpg`,    face: `${IMG_BASE}/muka-marah.jpg` },
+  { key: "sedih",    head: `${IMG_BASE}/sedih-L3.jpg`,    face: `${IMG_BASE}/muka-sedih.jpg` },
+  { key: "takut",    head: `${IMG_BASE}/takut-L3.jpg`,    face: `${IMG_BASE}/muka-takut.jpg` },
+  { key: "terkejut", head: `${IMG_BASE}/terkejut-L3.jpg`, face: `${IMG_BASE}/muka-terkejut.jpg` },
 ];
 
 // ====== STATE ======
@@ -28,7 +31,7 @@ let timerId = null;
 let gameEnded = false;
 let soalStart = 0;
 
-let picked = null;     // elemen face-item yg dipilih (untuk HP tap)
+let picked = null;     // face item untuk mode tap HP
 let lockInput = false;
 
 // ====== UTIL ======
@@ -82,13 +85,14 @@ window.addEventListener("DOMContentLoaded", () => {
   const scoreEl    = document.getElementById("score");
   const hintEl     = document.getElementById("hint");
   const feedbackEl = document.getElementById("answerFeedback");
+  const roundEl    = document.getElementById("roundTitle");
   const btnSelesai = document.getElementById("btnSelesai");
 
   const faceBank   = document.getElementById("faceBank");
   const headBoard  = document.getElementById("headBoard");
 
-  if (!introEl || !gameEl || !namaInput || !sesiInput || !btnMulai || !timerEl || !scoreEl || !hintEl || !feedbackEl || !faceBank || !headBoard) {
-    alert("Ada elemen HTML yang tidak ketemu. Cek id: intro, game, namaAnak, sesiAnak, btnMulai, timer, score, hint, answerFeedback, faceBank, headBoard.");
+  if (!introEl || !gameEl || !namaInput || !sesiInput || !btnMulai || !timerEl || !scoreEl || !hintEl || !feedbackEl || !roundEl || !faceBank || !headBoard) {
+    alert("Ada elemen HTML yang tidak ketemu. Cek id: intro, game, namaAnak, sesiAnak, btnMulai, timer, score, hint, answerFeedback, roundTitle, faceBank, headBoard.");
     return;
   }
 
@@ -97,15 +101,6 @@ window.addEventListener("DOMContentLoaded", () => {
   const sesiLS = (localStorage.getItem("ek_sesi") || "").trim();
   if (namaLS) namaInput.value = namaLS;
   if (sesiLS) sesiInput.value = sesiLS;
-
-  // ambil elemen face & head (di HTML kamu)
-  let faces = [];
-  let heads = [];
-
-  function refreshElements() {
-    faces = Array.from(document.querySelectorAll(".face-item"));
-    heads = Array.from(document.querySelectorAll(".drop-head"));
-  }
 
   function renderTimer() {
     const m = Math.floor(timeLeft / 60);
@@ -126,35 +121,34 @@ window.addEventListener("DOMContentLoaded", () => {
     feedbackEl.style.transform = "none";
   }
 
-  function setPickedFace(faceEl) {
-    picked = faceEl;
-    hintEl.classList.remove("good", "bad");
-    hintEl.textContent = "Sekarang tap kepala yang cocok 👇";
+  function setHint(type, text) {
+    hintEl.classList.remove("good","bad");
+    if (type) hintEl.classList.add(type);
+    hintEl.textContent = text;
   }
 
-  // set tampilan 1 ronde:
-  // - bank muka: tampil 1 muka (atau beberapa, terserah kamu)
-  // - head board: tampil 1 kepala target (atau beberapa)
-  // versi simple: 1 muka + 1 kepala per ronde
+  function setRoundTitle() {
+    roundEl.textContent = `Soal ${idx + 1} / ${TOTAL}`;
+  }
+
   function setQuestion() {
     const q = pool[idx];
 
-    // reset pilihan & lock
     lockInput = false;
     picked = null;
     resetFeedback();
+    setRoundTitle();
 
-    hintEl.classList.remove("good", "bad");
-    hintEl.textContent = "Tarik muka ke kepala yang cocok";
+    setHint(null, "Tarik muka ke kepala yang cocok");
 
-    // render face bank
+    // Render 1 muka
     faceBank.innerHTML = `
       <div class="face-item" draggable="true" data-face="${q.key}">
         <img src="${q.face}?v=${Date.now()}" alt="Muka ${q.key}">
       </div>
     `;
 
-    // render head board
+    // Render 1 kepala
     headBoard.innerHTML = `
       <div class="head-slot drop-head" data-need="${q.key}">
         <img class="head-base" src="${q.head}?v=${Date.now()}" alt="Kepala ${q.key}">
@@ -162,8 +156,11 @@ window.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-    refreshElements();
-    setupInteractions();
+    // bind events
+    const faceEl = faceBank.querySelector(".face-item");
+    const headEl = headBoard.querySelector(".drop-head");
+
+    setupInteractions(faceEl, headEl);
 
     soalStart = Date.now();
   }
@@ -190,20 +187,15 @@ window.addEventListener("DOMContentLoaded", () => {
     const nama = localStorage.getItem("ek_nama") || "";
     const sesi = localStorage.getItem("ek_sesi") || "";
 
-    // simpan khusus level3 (biar gak numpuk level1)
+    // simpan khusus level3
     localStorage.setItem("ek_level3_skor", String(score));
     localStorage.setItem("ek_level3_selesai", "1");
     localStorage.setItem("ek_level3_alasan", message || "Selesai");
 
-    const qs = new URLSearchParams({
-      nama,
-      sesi,
-      skor: String(score),
-      alasan: message || "Selesai"
-    });
-
-    // ganti ke congrats3.html kalau kamu punya
-    window.location.href = "./congrats1.html?" + qs.toString();
+    // sementara: belum ada congrats3, jadi cukup alert + balik index
+    // Kalau kamu nanti buat congrats3.html, tinggal ganti redirect di sini.
+    alert(`Level 3 selesai! Skor: ${score}/${TOTAL}`);
+    window.location.href = "./index.html";
   }
 
   function startTimer() {
@@ -216,9 +208,7 @@ window.addEventListener("DOMContentLoaded", () => {
         timeLeft = 0;
         renderTimer();
 
-        hintEl.classList.remove("good");
-        hintEl.classList.add("bad");
-        hintEl.textContent = "⏳ Waktu habis!";
+        setHint("bad", "⏳ Waktu habis!");
         lockInput = true;
 
         setTimeout(() => finishGame("Waktu habis!"), 900);
@@ -228,12 +218,13 @@ window.addEventListener("DOMContentLoaded", () => {
     }, 1000);
   }
 
-  // ==== LOGIKA JAWABAN (versi tempel muka) ====
   function handleAnswer(faceEl, headEl) {
     if (gameEnded || lockInput) return;
     lockInput = true;
 
-    const correctKey = pool[idx].key;
+    const q = pool[idx];
+    const correctKey = q.key;
+
     const pickedKey = faceEl?.dataset?.face || "";
     const needKey   = headEl?.dataset?.need || "";
 
@@ -245,7 +236,6 @@ window.addEventListener("DOMContentLoaded", () => {
     const isBenar = (pickedKey === correctKey) && (needKey === correctKey);
     const status = isBenar ? "BENAR" : "SALAH";
 
-    // log ke GAS: aku pakai format "muka->kepala"
     sendRekapToGAS({
       nama,
       sesi,
@@ -254,26 +244,23 @@ window.addEventListener("DOMContentLoaded", () => {
       waktu: waktuRespon
     });
 
-    // notif kecil
-    hintEl.classList.remove("good", "bad");
-    hintEl.classList.add(isBenar ? "good" : "bad");
-    hintEl.textContent = isBenar ? "✅ Benar!" : "❌ Salah";
-
-    // notif besar
-    resetFeedback();
-    feedbackEl.classList.add(isBenar ? "good" : "bad");
-    feedbackEl.textContent = isBenar
-      ? "YEEEAAAY! NEMPEL PAS BANGET!!! 🎉🎉"
-      : "YAAAHH… BELUM COCOK 😭";
-
-    // efek + aksi
     if (isBenar) {
       score++;
       renderScore();
       attachFaceToHead(faceEl, headEl);
       flashOk(headEl);
+
+      setHint("good", "✅ Benar!");
+      resetFeedback();
+      feedbackEl.classList.add("good");
+      feedbackEl.textContent = "YEEEAAAY! NEMPEL PAS BANGET!!! 🎉🎉";
     } else {
       shake(headEl);
+
+      setHint("bad", "❌ Salah");
+      resetFeedback();
+      feedbackEl.classList.add("bad");
+      feedbackEl.textContent = "YAAAHH… BELUM COCOK 😭";
     }
 
     idx++;
@@ -285,13 +272,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // ==== INTERACTIONS (drag & tap) ====
-  function setupInteractions() {
-    if (!faces.length || !heads.length) return;
-
-    const faceEl = faces[0];  // versi 1 muka per ronde
-    const headEl = heads[0];  // versi 1 kepala per ronde
-
+  function setupInteractions(faceEl, headEl) {
     // drag desktop
     faceEl.addEventListener("dragstart", (e) => {
       if (gameEnded || lockInput) return;
@@ -317,22 +298,22 @@ window.addEventListener("DOMContentLoaded", () => {
     // HP tap muka
     faceEl.addEventListener("click", () => {
       if (gameEnded || lockInput) return;
-      setPickedFace(faceEl);
+      picked = faceEl;
+      setHint(null, "Sekarang tap kepala yang cocok 👇");
     });
 
     faceEl.addEventListener("touchstart", (e) => {
       if (gameEnded || lockInput) return;
       e.preventDefault();
-      setPickedFace(faceEl);
+      picked = faceEl;
+      setHint(null, "Sekarang tap kepala yang cocok 👇");
     }, { passive: false });
 
     // HP tap kepala
     headEl.addEventListener("click", () => {
       if (gameEnded || lockInput) return;
       if (!picked) {
-        hintEl.classList.remove("good");
-        hintEl.classList.add("bad");
-        hintEl.textContent = "Tap mukanya dulu ya 🙂";
+        setHint("bad", "Tap mukanya dulu ya 🙂");
         shake(headEl);
         return;
       }
@@ -343,9 +324,7 @@ window.addEventListener("DOMContentLoaded", () => {
       if (gameEnded || lockInput) return;
       e.preventDefault();
       if (!picked) {
-        hintEl.classList.remove("good");
-        hintEl.classList.add("bad");
-        hintEl.textContent = "Tap mukanya dulu ya 🙂";
+        setHint("bad", "Tap mukanya dulu ya 🙂");
         shake(headEl);
         return;
       }
