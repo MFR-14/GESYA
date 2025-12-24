@@ -6,19 +6,127 @@ const FEEDBACK_DELAY_MS = 700;
 
 const QUESTIONS = [
   {
-    text: "Ketika aku sakit, aku merasa ...",
-    options: ["a) Bahagia", "b) Sedih", "c) Takut", "d) Malu"],
-    // emosi untuk rekap (sesuai pilihan a/b/c/d)
-    emosiMap: ["BAHAGIA", "SEDIH", "TAKUT", "MALU"],
-    correctIndex: 1
+    text: "Ketika teman mengambil pensilmu tanpa izin, kamu merasa…",
+    options: ["a) Marah", "b) Bahagia", "c) Terkejut", "d) Biasa saja"],
+    emosiMap: ["MARAH", "BAHAGIA", "TERKEJUT", "BIASA SAJA"],
+    correctIndex: 0
   },
   {
-    text: "Ketika aku sendirian di rumah, aku merasa ...",
-    options: ["a) Bahagia", "b) Sedih", "c) Takut", "d) Malu"],
-    emosiMap: ["BAHAGIA", "SEDIH", "TAKUT", "MALU"],
-    correctIndex: 2
+    text: "Saat kamu bermain di luar, tiba-tiba turun hujan, kamu merasa…",
+    options: ["a) Terkejut", "b) Senang", "c) Marah", "d) Kecewa"],
+    emosiMap: ["TERKEJUT", "SENANG", "MARAH", "KECEWA"],
+    correctIndex: 0
+  },
+  {
+    text: "Saat temanmu tidak mau bermain denganmu, kamu merasa…",
+    options: ["a) Sedih", "b) Bahagia", "c) Terkejut", "d) Berani"],
+    emosiMap: ["SEDIH", "BAHAGIA", "TERKEJUT", "BERANI"],
+    correctIndex: 0
+  },
+  {
+    text: "Saat kamu kalah dalam lomba, kamu merasa…",
+    options: ["a) Kecewa", "b) Takut", "c) Marah", "d) Tidak peduli"],
+    emosiMap: ["KECEWA", "TAKUT", "MARAH", "TIDAK PEDULI"],
+    correctIndex: 0
+  },
+  {
+    text: "Ketika kamu kehilangan barang kesayanganmu, kamu merasa…",
+    options: ["a) Sedih", "b) Bahagia", "c) Marah", "d) Tenang"],
+    emosiMap: ["SEDIH", "BAHAGIA", "MARAH", "TENANG"],
+    correctIndex: 0
+  },
+  {
+    text: "Saat teman mengejekmu di depan kelas, kamu merasa…",
+    options: ["a) Marah", "b) Bahagia", "c) Terkejut", "d) Tenang"],
+    emosiMap: ["MARAH", "BAHAGIA", "TERKEJUT", "TENANG"],
+    correctIndex: 0
+  },
+  {
+    text: "Saat seseorang mengambil makananmu tanpa izin, kamu merasa…",
+    options: ["a) Marah", "b) Senang", "c) Terkejut", "d) Bingung"],
+    emosiMap: ["MARAH", "SENANG", "TERKEJUT", "BINGUNG"],
+    correctIndex: 0
+  },
+  {
+    text: "Saat kamu tidak bisa mengerjakan soal ulangan, kamu merasa…",
+    options: ["a) Cemas", "b) Senang", "c) Malu", "d) Jijik"],
+    emosiMap: ["CEMAS", "SENANG", "MALU", "JIJIK"],
+    correctIndex: 0
+  },
+  {
+    text: "Jika temanmu merusak barangmu, kamu merasa…",
+    options: ["a) Marah", "b) Bahagia", "c) Takut", "d) Terkejut"],
+    emosiMap: ["MARAH", "BAHAGIA", "TAKUT", "TERKEJUT"],
+    correctIndex: 0
+  },
+  {
+    text: "Saat kamu bertengkar dengan sahabatmu, kamu merasa…",
+    options: ["a) Sedih", "b) Senang", "c) Tenang", "d) Terkejut"],
+    emosiMap: ["SEDIH", "SENANG", "TENANG", "TERKEJUT"],
+    correctIndex: 0
+  },
+  {
+    text: "Ketika kamu datang ke sekolah dan tidak ada teman yang menyapamu, kamu merasa…",
+    options: ["a) Sedih", "b) Senang", "c) Marah", "d) Tenang"],
+    emosiMap: ["SEDIH", "SENANG", "MARAH", "TENANG"],
+    correctIndex: 0
+  },
+  {
+    text: "Saat guru mengatakan besok ada ulangan mendadak, kamu merasa…",
+    options: ["a) Cemas", "b) Senang", "c) Terkejut", "d) Jijik"],
+    emosiMap: ["CEMAS", "SENANG", "TERKEJUT", "JIJIK"],
+    correctIndex: 0
+  },
+  {
+    text: "Saat kamu harus menunggu lama di antrean kantin, kamu merasa…",
+    options: ["a) Tidak sabar", "b) Senang", "c) Takut", "d) Bingung"],
+    emosiMap: ["TIDAK SABAR", "SENANG", "TAKUT", "BINGUNG"],
+    correctIndex: 0
+  },
+  {
+    text: "Jika kamu diminta mengulang pekerjaan karena salah, kamu merasa…",
+    options: ["a) Kecewa", "b) Bahagia", "c) Terkejut", "d) Tenang"],
+    emosiMap: ["KECEWA", "BAHAGIA", "TERKEJUT", "TENANG"],
+    correctIndex: 0
+  },
+  {
+    text: "Saat hujan deras membuatmu terlambat pulang sekolah, kamu merasa…",
+    options: ["a) Kesal", "b) Senang", "c) Takut", "d) Malas"],
+    emosiMap: ["KESAL", "SENANG", "TAKUT", "MALAS"],
+    correctIndex: 0
+  },
+  {
+    text: "Jika sepatumu basah terkena genangan air, kamu merasa…",
+    options: ["a) Tidak nyaman", "b) Senang", "c) Malu", "d) Terkejut"],
+    emosiMap: ["TIDAK NYAMAN", "SENANG", "MALU", "TERKEJUT"],
+    correctIndex: 0
+  },
+  {
+    text: "Saat guru memuji temanmu tetapi tidak memuji kamu, kamu merasa…",
+    options: ["a) Kecewa", "b) Senang", "c) Jijik", "d) Takut"],
+    emosiMap: ["KECEWA", "SENANG", "JIJIK", "TAKUT"],
+    correctIndex: 0
+  },
+  {
+    text: "Ketika kamu sedang berbicara dan teman tidak mendengarkanmu, kamu merasa…",
+    options: ["a) Kesal", "b) Senang", "c) Malu", "d) Bingung"],
+    emosiMap: ["KESAL", "SENANG", "MALU", "BINGUNG"],
+    correctIndex: 0
+  },
+  {
+    text: "Jika kamu dimarahi karena lupa mengerjakan PR, kamu merasa…",
+    options: ["a) Takut", "b) Senang", "c) Jijik", "d) Tenang"],
+    emosiMap: ["TAKUT", "SENANG", "JIJIK", "TENANG"],
+    correctIndex: 0
+  },
+  {
+    text: "Jika kamu mendapatkan tugas yang sulit, kamu merasa…",
+    options: ["a) Senang", "b) Cemas", "c) Marah", "d) Jijik"],
+    emosiMap: ["SENANG", "CEMAS", "MARAH", "JIJIK"],
+    correctIndex: 1
   }
 ];
+
 
 // ====== STATE ======
 let idx = 0;
