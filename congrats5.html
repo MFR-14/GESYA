@@ -3,36 +3,57 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>GESYA - Level 5 Selesai</title>
+  <title>GESYA - Selamat!</title>
 
-  <!-- pakai template yg sama persis -->
-  <link rel="stylesheet" href="/GESYA/js/level1.css?v=11" />
-  <link rel="stylesheet" href="/GESYA/css/congrats1.css?v=99" />
+  <!-- cache buster biar gak nyangkut versi lama -->
+  <link rel="stylesheet" href="./css/congrats1.css?v=99">
+
+  <style>
+    /* tombol link biar kayak tombol (kalau kamu pakai <a>) */
+    .cg-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      border-radius:16px;
+      padding:12px 18px;
+      font-weight:900;
+      cursor:pointer;
+      min-width:150px;
+      transition:.15s;
+      color:#1f2a44;
+    }
+    .cg-btn:hover{ transform: translateY(-1px); }
+    .cg-btn-primary{ background:#ffb703; }
+    .cg-btn-soft{ background:#ffd27d; }
+  </style>
 </head>
 
 <body class="cg">
 
   <div class="cg-wrap">
     <div class="cg-card">
-      <div class="cg-title">Hebat! 🎉</div>
+      <div class="cg-title">Ahli Emosi “GESYA”</div>
 
       <div class="cg-badge">
-        <div class="cg-avatar" id="cgAvatar">⭐</div>
+        <div class="cg-avatar" id="cgAvatar">🙂</div>
         <div class="cg-name" id="cgName">NAMA</div>
-        <div class="cg-mini" id="cgMeta">Sesi - Skor</div>
+        <div class="cg-mini" id="cgMeta">Level - Skor</div>
       </div>
 
       <div class="cg-msg" id="cgMsg">Kamu hebat!</div>
 
       <div class="cg-btns">
-        <a class="cg-btn cg-btn-primary" href="/GESYA/level5.html">Main Lagi</a>
-        <a class="cg-btn cg-btn-soft" href="/GESYA/index.html">Ke Menu</a>
+        <a class="cg-btn cg-btn-primary" id="btnUlang" href="./level5.html">Main Lagi</a>
+        <a class="cg-btn cg-btn-soft" id="btnHome" href="./index.html">Ke Menu</a>
       </div>
     </div>
   </div>
 
+  <!-- confetti -->
   <div class="confetti" id="confetti"></div>
 
-  <script src="/GESYA/congrats5.js?v=1"></script>
+  <!-- ✅ pakai file JS -->
+  <script src="./congrats1.js?v=99"></script>
 </body>
 </html>
