@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GESYA - Level 2</title>
 
-  <link rel="stylesheet" href="./js/level2.css?v=2" />
+  <link rel="stylesheet" href="./js/level2.css?v=3" />
 </head>
 
 <body class="level-page">
@@ -17,11 +17,14 @@
       <div class="intro-subtitle">Petualangan Wajah Emosi</div>
 
       <div class="intro-form">
-        <label>Nama Anak</label>
+        <label for="namaAnak">Nama Anak</label>
         <input id="namaAnak" type="text" placeholder="contoh: Andi" />
 
-        <label>Sesi</label>
-        <input id="sesiAnak" type="text" placeholder="contoh: S1" />
+        <label for="umurAnak">Umur</label>
+        <input id="umurAnak" type="number" inputmode="numeric" min="1" max="18" placeholder="contoh: 7" />
+
+        <label for="namaSekolah">Nama Sekolah</label>
+        <input id="namaSekolah" type="text" placeholder="contoh: SDN Sukabumi 1" />
 
         <button id="btnMulai" type="button">Mulai</button>
       </div>
@@ -63,7 +66,7 @@
       <button class="btn-next hidden" id="btnNext" type="button">Lanjut</button>
     </main>
   </div>
-<script src="./level2.js?v=15soal"></script>
 
+  <script src="./level2.js?v=20251225"></script>
 </body>
 </html>
