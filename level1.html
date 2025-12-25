@@ -18,11 +18,14 @@
       <div class="intro-subtitle">Petualangan Wajah Emosi</div>
 
       <div class="intro-form">
-        <label>Nama Anak</label>
-        <input id="namaAnak" type="text" placeholder="contoh: Andi" />
+        <label for="namaAnak">Nama Anak</label>
+        <input id="namaAnak" name="namaAnak" type="text" placeholder="contoh: Andi" autocomplete="name" />
 
-        <label>Sesi</label>
-        <input id="Nama Sekolah" type="text" placeholder="contoh: SDN SUKABUMI 1" />
+        <label for="umurAnak">Umur</label>
+        <input id="umurAnak" name="umurAnak" type="number" inputmode="numeric" min="1" max="18" placeholder="contoh: 7" />
+
+        <label for="namaSekolah">Nama Sekolah</label>
+        <input id="namaSekolah" name="namaSekolah" type="text" placeholder="contoh: SDN Sukabumi 1" />
 
         <button id="btnMulai" type="button">Mulai</button>
       </div>
