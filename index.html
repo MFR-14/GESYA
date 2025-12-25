@@ -55,7 +55,7 @@
           <span class="emo">🙂</span>
         </button>
 
-        <button class="lvl lock" onclick="goLevel(4)">
+        <button class="lvl" onclick="goLevel(4)">
           <span class="no">4</span>
           <span class="txt">Level 4<br><small>Segera</small></span>
           <span class="emo">🔒</span>
@@ -83,8 +83,8 @@
 
   <script>
     function goLevel(lvl){
-      // kunci level 4-6 dulu biar anak gak bingung
-      if (lvl >= 4) {
+      // kunci level 5-6 dulu biar anak gak bingung
+      if (lvl >= 5) {
         alert("Level ini masih dikunci ya 😄");
         return;
       }
