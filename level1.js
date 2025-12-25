@@ -57,10 +57,11 @@ function flashOk(el) {
 }
 
 // ====== REKAP KE GAS (anti CORS) ======
-function sendRekapToGAS({ nama, umur, sekolah, soal, emosi, waktu }) {
+function sendRekapToGAS({ level, nama, umur, sekolah, soal, emosi, waktu }) {
   if (!GAS_URL) return;
 
   const u = new URL(GAS_URL);
+  u.searchParams.set("level", String(level));
   u.searchParams.set("nama", nama);
   u.searchParams.set("umur", String(umur));
   u.searchParams.set("sekolah", sekolah);
@@ -224,13 +225,14 @@ window.addEventListener("DOMContentLoaded", () => {
     const status = pickedEmosi === correctEmosi ? "BENAR" : "SALAH";
 
     sendRekapToGAS({
-      nama,
-      umur,
-      sekolah,
-      soal: idx + 1,
-      emosi: `${pickedEmosi} (${status})`,
-      waktu: waktuRespon
-    });
+  level: 1,
+  nama,
+  umur,
+  sekolah,
+  soal: idx + 1,
+  emosi: `${pickedEmosi} (${status})`,
+  waktu: waktuRespon
+});
 
     const isBenar = pickedEmosi === correctEmosi;
 
