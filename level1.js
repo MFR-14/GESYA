@@ -17,7 +17,7 @@ const ROUNDS = [
   { emosi: "TERKEJUT", img: "./img/terkejut.jpg" },
   { emosi: "BINGUNG",  img: "./img/bingung.jpg" },
   { emosi: "MALU",     img: "./img/malu.jpg" },
-  { emosi: "MARAH",    img: "./img/marah.png" },
+  { emosi: "MARAH",    img: "./img/marah.jpg" },
   { emosi: "CINTA",    img: "./img/cinta.jpg" },
 ];
 
