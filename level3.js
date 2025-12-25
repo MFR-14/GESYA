@@ -5,12 +5,12 @@ const GAS_URL =
   "https://script.google.com/macros/s/AKfycbwlKHW60fkzcickncJz6xHOSSxYaNVOUMPR2X-tnz12ia6UtOfp7Tbh6aYxLk2oSBVo/exec";
 
 // ====== KONFIG GAME ======
+const LEVEL = 3;
 const TOTAL = 8;
 const DURATION_SEC = 180;        // 3 menit
-const FEEDBACK_DELAY_MS = 2200;  // lama tampil notif benar/salah
+const FEEDBACK_DELAY_MS = 2200;
 const IMG_BASE = "./img/level3";
 
-// 8 pasang sesuai folder kamu
 const ROUNDS = [
   { key: "bahagia",  head: `${IMG_BASE}/bahagia-L3.jpg`,  face: `${IMG_BASE}/muka-bahagia.jpg` },
   { key: "bingung",  head: `${IMG_BASE}/bingung-L3.jpg`,  face: `${IMG_BASE}/muka-bingung.jpg` },
@@ -31,7 +31,7 @@ let timerId = null;
 let gameEnded = false;
 let soalStart = 0;
 
-let picked = null;     // face item untuk mode tap HP
+let picked = null;
 let lockInput = false;
 
 // ====== UTIL ======
@@ -59,12 +59,14 @@ function flashOk(el) {
 }
 
 // ====== REKAP KE GAS (anti CORS) ======
-function sendRekapToGAS({ nama, sesi, soal, emosi, waktu }) {
+function sendRekapToGAS({ level, nama, umur, sekolah, soal, emosi, waktu }) {
   if (!GAS_URL) return;
 
   const u = new URL(GAS_URL);
+  u.searchParams.set("level", String(level));
   u.searchParams.set("nama", nama);
-  u.searchParams.set("sesi", sesi);
+  u.searchParams.set("umur", String(umur));
+  u.searchParams.set("sekolah", sekolah);
   u.searchParams.set("soal", String(soal));
   u.searchParams.set("emosi", emosi);
   u.searchParams.set("waktu", String(waktu));
@@ -73,12 +75,14 @@ function sendRekapToGAS({ nama, sesi, soal, emosi, waktu }) {
   beacon.src = u.toString();
 }
 
-// ====== MAIN ======
 window.addEventListener("DOMContentLoaded", () => {
   const introEl    = document.getElementById("intro");
   const gameEl     = document.getElementById("game");
-  const namaInput  = document.getElementById("namaAnak");
-  const sesiInput  = document.getElementById("sesiAnak");
+
+  const namaInput    = document.getElementById("namaAnak");
+  const umurInput    = document.getElementById("umurAnak");
+  const sekolahInput = document.getElementById("namaSekolah");
+
   const btnMulai   = document.getElementById("btnMulai");
 
   const timerEl    = document.getElementById("timer");
@@ -91,16 +95,19 @@ window.addEventListener("DOMContentLoaded", () => {
   const faceBank   = document.getElementById("faceBank");
   const headBoard  = document.getElementById("headBoard");
 
-  if (!introEl || !gameEl || !namaInput || !sesiInput || !btnMulai || !timerEl || !scoreEl || !hintEl || !feedbackEl || !roundEl || !faceBank || !headBoard) {
-    alert("Ada elemen HTML yang tidak ketemu. Cek id: intro, game, namaAnak, sesiAnak, btnMulai, timer, score, hint, answerFeedback, roundTitle, faceBank, headBoard.");
+  if (!introEl || !gameEl || !namaInput || !umurInput || !sekolahInput || !btnMulai || !timerEl || !scoreEl || !hintEl || !feedbackEl || !roundEl || !faceBank || !headBoard) {
+    alert("Ada elemen HTML yang tidak ketemu. Cek id: intro, game, namaAnak, umurAnak, namaSekolah, btnMulai, timer, score, hint, answerFeedback, roundTitle, faceBank, headBoard.");
     return;
   }
 
   // isi otomatis dari localStorage
-  const namaLS = (localStorage.getItem("ek_nama") || "").trim();
-  const sesiLS = (localStorage.getItem("ek_sesi") || "").trim();
+  const namaLS    = (localStorage.getItem("ek_nama") || "").trim();
+  const umurLS    = (localStorage.getItem("ek_umur") || "").trim();
+  const sekolahLS = (localStorage.getItem("ek_sekolah") || "").trim();
+
   if (namaLS) namaInput.value = namaLS;
-  if (sesiLS) sesiInput.value = sesiLS;
+  if (umurLS) umurInput.value = umurLS;
+  if (sekolahLS) sekolahInput.value = sekolahLS;
 
   function renderTimer() {
     const m = Math.floor(timeLeft / 60);
@@ -131,14 +138,27 @@ window.addEventListener("DOMContentLoaded", () => {
     roundEl.textContent = `Soal ${idx + 1} / ${TOTAL}`;
   }
 
+  function attachFaceToHead(faceEl, headEl) {
+    const holder = headEl.querySelector(".face-holder");
+    const img = faceEl.querySelector("img");
+    if (!holder || !img) return;
+
+    holder.innerHTML = "";
+    holder.appendChild(img.cloneNode(true));
+
+    headEl.dataset.done = "1";
+    faceEl.classList.add("used");
+    faceEl.setAttribute("draggable", "false");
+  }
+
   function setQuestion() {
     const q = pool[idx];
 
     lockInput = false;
     picked = null;
+
     resetFeedback();
     setRoundTitle();
-
     setHint(null, "Tarik muka ke kepala yang cocok");
 
     // Render 1 muka
@@ -156,7 +176,6 @@ window.addEventListener("DOMContentLoaded", () => {
       </div>
     `;
 
-    // bind events
     const faceEl = faceBank.querySelector(".face-item");
     const headEl = headBoard.querySelector(".drop-head");
 
@@ -165,36 +184,34 @@ window.addEventListener("DOMContentLoaded", () => {
     soalStart = Date.now();
   }
 
-  function attachFaceToHead(faceEl, headEl) {
-    const holder = headEl.querySelector(".face-holder");
-    const img = faceEl.querySelector("img");
-    if (!holder || !img) return;
-
-    holder.innerHTML = "";
-    holder.appendChild(img.cloneNode(true));
-
-    headEl.dataset.done = "1";
-    faceEl.classList.add("used");
-    faceEl.setAttribute("draggable", "false");
-  }
-
   function finishGame(message) {
-  if (gameEnded) return;
-  gameEnded = true;
+    if (gameEnded) return;
+    gameEnded = true;
 
-  clearInterval(timerId);
+    clearInterval(timerId);
 
-  const nama = localStorage.getItem("ek_nama") || "";
-  const sesi = localStorage.getItem("ek_sesi") || "";
+    const nama    = localStorage.getItem("ek_nama") || "";
+    const umur    = localStorage.getItem("ek_umur") || "";
+    const sekolah = localStorage.getItem("ek_sekolah") || "";
 
-  localStorage.setItem("ek_level3_skor", String(score));
-  localStorage.setItem("ek_level3_selesai", "1");
-  localStorage.setItem("ek_level3_alasan", message || "Selesai");
+    localStorage.setItem("ek_level3_skor", String(score));
+    localStorage.setItem("ek_level3_selesai", "1");
+    localStorage.setItem("ek_level3_alasan", message || "Selesai");
 
-  // redirect ke congrats3
-  window.location.href = "/GESYA/congrats3.html";
-}
+    localStorage.setItem("ek_last_level", String(LEVEL));
+    localStorage.setItem("ek_last_level_time", new Date().toISOString());
 
+    const qs = new URLSearchParams({
+      level: String(LEVEL),
+      nama,
+      umur,
+      sekolah,
+      skor: String(score),
+      alasan: message || "Selesai"
+    });
+
+    window.location.href = "./congrats3.html?" + qs.toString();
+  }
 
   function startTimer() {
     renderTimer();
@@ -228,15 +245,18 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const waktuRespon = ((Date.now() - soalStart) / 1000).toFixed(2);
 
-    const nama = localStorage.getItem("ek_nama") || "";
-    const sesi = localStorage.getItem("ek_sesi") || "";
+    const nama    = localStorage.getItem("ek_nama") || "";
+    const umur    = localStorage.getItem("ek_umur") || "";
+    const sekolah = localStorage.getItem("ek_sekolah") || "";
 
     const isBenar = (pickedKey === correctKey) && (needKey === correctKey);
     const status = isBenar ? "BENAR" : "SALAH";
 
     sendRekapToGAS({
+      level: LEVEL,
       nama,
-      sesi,
+      umur,
+      sekolah,
       soal: idx + 1,
       emosi: `${pickedKey}→${needKey} (${status})`,
       waktu: waktuRespon
@@ -332,15 +352,26 @@ window.addEventListener("DOMContentLoaded", () => {
 
   function startGame() {
     const nama = (namaInput.value || "").trim();
-    const sesi = (sesiInput.value || "").trim();
+    const umurRaw = (umurInput.value || "").trim();
+    const sekolah = (sekolahInput.value || "").trim();
+    const umur = Number(umurRaw);
 
-    if (!nama || !sesi) {
-      alert("Nama dan sesi wajib diisi ya 🙂");
+    if (!nama) {
+      alert("Nama anak wajib diisi ya 🙂");
+      return;
+    }
+    if (!umurRaw || Number.isNaN(umur) || umur < 1 || umur > 18) {
+      alert("Umur wajib diisi dan harus angka 1–18 ya 🙂");
+      return;
+    }
+    if (!sekolah) {
+      alert("Nama sekolah wajib diisi ya 🙂");
       return;
     }
 
     localStorage.setItem("ek_nama", nama);
-    localStorage.setItem("ek_sesi", sesi);
+    localStorage.setItem("ek_umur", String(umur));
+    localStorage.setItem("ek_sekolah", sekolah);
 
     introEl.classList.add("hidden");
     gameEl.classList.remove("hidden");
