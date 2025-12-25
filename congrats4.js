@@ -37,14 +37,12 @@ function getValue(paramName, lsKey, fallback){
 window.addEventListener("DOMContentLoaded", () => {
   // ambil dari URL dulu (kalau kamu redirect pakai querystring), fallback localStorage
   const nama    = getValue("nama", "ek_nama", "Teman");
-  const umur    = getValue("umur", "ek_umur", "-");
-  const sekolah = getValue("sekolah", "ek_sekolah", "-");
-
+   const sesi   = localStorage.getItem("ek_sesi") || "-";
   const skor    = getValue("skor", "ek_level4_skor", "0");
   const alasan  = getValue("alasan", "ek_level4_alasan", "Level 4 selesai!");
 
   document.getElementById("cgName").textContent = nama.toUpperCase();
-  document.getElementById("cgMeta").textContent = `Umur ${umur} • ${sekolah} • Skor ${skor}`;
+document.getElementById("cgMeta").textContent = `Sesi ${sesi} • Skor ${skor}/8`;
   document.getElementById("cgAvatar").textContent = pickAvatarByName(nama);
 
   document.getElementById("cgMsg").innerHTML =
