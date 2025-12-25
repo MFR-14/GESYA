@@ -9,6 +9,86 @@
 
 <body class="home">
 
+  <!-- =========================
+       PIN / PASSWORD OVERLAY
+       ========================= -->
+  <div id="pinOverlay" style="
+    position:fixed;
+    inset:0;
+    background:rgba(15,23,42,.92);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+  ">
+    <div style="
+      background:#ffffff;
+      padding:24px;
+      border-radius:18px;
+      max-width:360px;
+      width:92%;
+      text-align:center;
+      box-shadow:0 20px 45px rgba(0,0,0,.35);
+    ">
+      <h2 style="margin:0 0 6px;">🔐 Akses GESYA</h2>
+      <p style="margin:0 0 14px;font-size:14px;color:#475569;">
+        Masukkan PIN dari guru / admin
+      </p>
+
+      <input
+        id="pinInput"
+        type="password"
+        inputmode="numeric"
+        placeholder="••••"
+        autocomplete="off"
+        style="
+          width:100%;
+          padding:12px 14px;
+          font-size:18px;
+          text-align:center;
+          letter-spacing:7px;
+          border-radius:12px;
+          border:2px solid #e2e8f0;
+          outline:none;
+          box-sizing:border-box;
+        "
+      />
+
+      <button
+        id="btnPin"
+        type="button"
+        style="
+          width:100%;
+          margin-top:12px;
+          padding:12px 14px;
+          font-size:16px;
+          font-weight:900;
+          border-radius:14px;
+          border:none;
+          background:#ffb703;
+          color:#1f2a44;
+          cursor:pointer;
+        "
+      >
+        Masuk
+      </button>
+
+      <p id="pinError" style="
+        display:none;
+        margin:10px 0 0;
+        color:#dc2626;
+        font-size:13px;
+        font-weight:700;
+      ">
+        PIN salah. Coba lagi ya 🙂
+      </p>
+
+      <div style="margin-top:14px;font-size:12px;color:#94a3b8;">
+        Tips: kalau sudah masuk, PIN tidak diminta lagi di perangkat ini.
+      </div>
+    </div>
+  </div>
+
   <main class="wrap">
 
     <!-- GAMBAR ATAS -->
@@ -82,6 +162,49 @@
   </main>
 
   <script>
+    // =====================
+    // KONFIG PIN
+    // =====================
+    const PIN_BENAR = "2025"; // ⬅️ GANTI PIN DI SINI
+    const KEY_UNLOCK = "gesya_unlocked";
+
+    const overlay = document.getElementById("pinOverlay");
+    const input   = document.getElementById("pinInput");
+    const btn     = document.getElementById("btnPin");
+    const err     = document.getElementById("pinError");
+
+    function openAccess(){
+      localStorage.setItem(KEY_UNLOCK, "1");
+      overlay.style.display = "none";
+    }
+
+    function cekPin(){
+      const val = (input.value || "").trim();
+      if (val === PIN_BENAR) {
+        err.style.display = "none";
+        openAccess();
+      } else {
+        err.style.display = "block";
+        input.value = "";
+        input.focus();
+      }
+    }
+
+    // kalau sudah pernah lolos, langsung masuk
+    if (localStorage.getItem(KEY_UNLOCK) === "1") {
+      overlay.style.display = "none";
+    } else {
+      setTimeout(()=> input && input.focus(), 200);
+    }
+
+    btn.addEventListener("click", cekPin);
+    input.addEventListener("keydown", (e)=>{
+      if (e.key === "Enter") cekPin();
+    });
+
+    // =====================
+    // MENU GAME
+    // =====================
     function goLevel(lvl){
       // kunci level 7 dulu biar anak gak bingung
       if (lvl >= 7) {
@@ -120,13 +243,16 @@
       localStorage.removeItem("ek_umur");
       localStorage.removeItem("ek_sekolah");
 
-      // skor & status level (aman walau belum ada)
+      // skor & status level
       const keys = [
         "ek_level1_skor","ek_level2_skor","ek_level3_skor","ek_level4_skor","ek_level5_skor","ek_level6_skor",
         "ek_level1_selesai","ek_level2_selesai","ek_level3_selesai","ek_level4_selesai","ek_level5_selesai","ek_level6_selesai",
         "ek_level1_alasan","ek_level2_alasan","ek_level3_alasan","ek_level4_alasan","ek_level5_alasan","ek_level6_alasan"
       ];
       keys.forEach(k => localStorage.removeItem(k));
+
+      // reset PIN biar kalau perangkat dipakai orang lain, minta PIN lagi
+      localStorage.removeItem(KEY_UNLOCK);
 
       location.reload();
     });
