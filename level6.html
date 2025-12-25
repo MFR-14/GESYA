@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GESYA - Level 6</title>
+
+  <link rel="stylesheet" href="./js/level1.css?v=1" />
+  <link rel="stylesheet" href="./js/level6.css?v=1" />
+</head>
+
+<body class="level-page">
+
+  <!-- INTRO -->
+  <div class="intro" id="intro">
+    <div class="intro-card">
+      <div class="intro-title">Level 6</div>
+      <div class="intro-subtitle">Ubah Jadi Positif!</div>
+
+      <div class="intro-form">
+        <label>Nama Anak</label>
+        <input id="namaAnak" type="text" placeholder="contoh: Andi" />
+
+        <label>Umur</label>
+        <input id="umurAnak" type="number" inputmode="numeric" placeholder="contoh: 7" />
+
+        <label>Nama Sekolah</label>
+        <input id="namaSekolah" type="text" placeholder="contoh: SDN Sukabumi 1" />
+
+        <button id="btnMulai" type="button">Mulai</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME -->
+  <div id="game" class="hidden">
+
+    <!-- HUD -->
+    <div class="hud">
+      <div class="timer" id="timer">10:00</div>
+      <div class="score" id="score">Skor: 0</div>
+      <button class="btn-selesai" id="btnSelesai" type="button">Selesai</button>
+    </div>
+
+    <main class="lvl6-layout">
+      <section class="lvl6-wrap">
+
+        <div class="lvl6-round" id="roundTitle">Soal 1 / 10</div>
+
+        <!-- KARTU SITUASI -->
+        <div class="lvl6-card">
+          <div class="q-emoji" id="qEmoji">🤔</div>
+          <div class="q-title" id="qTitle">Situasi…</div>
+
+          <div class="q-box">
+            <div class="q-label">Pikiran pertama yang sering muncul:</div>
+            <div class="q-neg" id="qNeg">“Dia pasti sengaja.”</div>
+          </div>
+
+          <div class="q-mini" id="qMini">Pilih penjelasan yang lebih positif dan masuk akal.</div>
+        </div>
+
+        <!-- PILIHAN -->
+        <div class="lvl6-options" id="options"></div>
+
+        <!-- notif -->
+        <div class="hint" id="hint">Pilih satu jawaban ya 👇</div>
+        <div class="answer-feedback" id="answerFeedback"></div>
+
+        <!-- tujuan level -->
+        <div class="lvl6-goal">
+          Tujuan: kamu belajar memilih pikiran yang membuat hati lebih tenang,
+          lalu bisa jadi “rencana pribadi” kalau kejadian itu terulang 🌿
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <script src="./level6.js?v=1"></script>
+</body>
+</html>
