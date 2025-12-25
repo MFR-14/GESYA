@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GESYA - Cara Bermain</title>
-  <link rel="stylesheet" href="./css/menu.css?v=2">
+  <link rel="stylesheet" href="./css/menu.css?v=3">
 </head>
 
 <body class="home">
@@ -74,9 +74,9 @@
         </button>
       </div>
 
-      <div class="bottom-note" id="progressNote">Tips: isi nama di Level 1 dulu ya ✨</div>
+      <div class="bottom-note" id="progressNote">Tips: isi nama, umur, dan sekolah di Level 1 dulu ya ✨</div>
 
-      <button class="reset" id="btnReset" type="button">Reset Nama & Skor</button>
+      <button class="reset" id="btnReset" type="button">Reset Data</button>
     </section>
 
   </main>
@@ -91,29 +91,43 @@
       window.location.href = `level${lvl}.html`;
     }
 
-    // info kecil progres (opsional)
+    // ======= PROGRES / IDENTITAS =======
     const s1 = parseInt(localStorage.getItem("ek_level1_skor") || "0", 10);
+    const s2 = parseInt(localStorage.getItem("ek_level2_skor") || "0", 10);
     const s3 = parseInt(localStorage.getItem("ek_level3_skor") || "0", 10);
-    const total = s1 + s3;
-    const nama = localStorage.getItem("ek_nama") || "";
-    const sesi = localStorage.getItem("ek_sesi") || "";
+    const total = s1 + s2 + s3;
+
+    const nama = (localStorage.getItem("ek_nama") || "").trim();
+    const umur = (localStorage.getItem("ek_umur") || "").trim();
+    const sekolah = (localStorage.getItem("ek_sekolah") || "").trim();
 
     const note = document.getElementById("progressNote");
-    if (nama || sesi || total) {
-      note.textContent = `Halo ${nama ? nama.toUpperCase() : "Teman"}! Sesi ${sesi || "-"} • Skor sementara ${total} ⭐`;
+
+    // tampilkan note kalau sudah pernah isi data atau sudah ada skor
+    if (nama || umur || sekolah || total) {
+      const namaTampil = nama ? nama.toUpperCase() : "TEMAN";
+      const umurTampil = umur ? `${umur} tahun` : "-";
+      const sekolahTampil = sekolah || "-";
+      note.textContent = `Halo ${namaTampil}! Umur ${umurTampil} • Sekolah ${sekolahTampil} • Skor sementara ${total} ⭐`;
     }
 
-    // reset
+    // ======= RESET =======
     document.getElementById("btnReset").addEventListener("click", ()=>{
-      if (!confirm("Reset nama, sesi, dan skor?")) return;
+      if (!confirm("Reset nama, umur, sekolah, dan semua skor?")) return;
+
+      // identitas
       localStorage.removeItem("ek_nama");
-      localStorage.removeItem("ek_sesi");
-      localStorage.removeItem("ek_level1_skor");
-      localStorage.removeItem("ek_level3_skor");
-      localStorage.removeItem("ek_level1_selesai");
-      localStorage.removeItem("ek_level3_selesai");
-      localStorage.removeItem("ek_level1_alasan");
-      localStorage.removeItem("ek_level3_alasan");
+      localStorage.removeItem("ek_umur");
+      localStorage.removeItem("ek_sekolah");
+
+      // skor & status level (aman walau belum ada)
+      const keys = [
+        "ek_level1_skor","ek_level2_skor","ek_level3_skor","ek_level4_skor","ek_level5_skor","ek_level6_skor",
+        "ek_level1_selesai","ek_level2_selesai","ek_level3_selesai","ek_level4_selesai","ek_level5_selesai","ek_level6_selesai",
+        "ek_level1_alasan","ek_level2_alasan","ek_level3_alasan","ek_level4_alasan","ek_level5_alasan","ek_level6_alasan"
+      ];
+      keys.forEach(k => localStorage.removeItem(k));
+
       location.reload();
     });
   </script>
