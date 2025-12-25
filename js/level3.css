@@ -34,7 +34,7 @@
   align-items: center;
 
   gap: 19px;          /* ⬅️ ini kunci jaraknya */
-  row-gap: 17px;     /* kalau sampai turun baris */
+  row-gap: 17px;      /* kalau sampai turun baris */
   flex-wrap: wrap;
 
   margin-bottom: 8px;
@@ -135,8 +135,11 @@
 
 /* =========================
    RESPONSIVE: HP kecil
+   (ini yang bikin notif ga ketutup)
    ========================= */
 @media (max-width: 420px){
+
+  /* kecilkan item muka dikit */
   .face-item{
     width: 108px;
     height: 108px;
@@ -145,6 +148,33 @@
   .face-item img{
     width: 92px;
     height: 92px;
+  }
+
+  /* ✅ inti solusi: kecilkan "kepala" */
+  .head-slot{
+    width: min(280px, 88vw); /* lebih kecil biar notif keliatan */
+  }
+
+  /* muka tempel ikut menyesuaikan */
+  .face-holder img{
+    width: 52%;
+    transform: translateY(4%);
+  }
+
+  /* opsional: rapetin jarak biar makin hemat tinggi */
+  .lvl3-wrap{
+    gap: 12px;
+  }
+}
+
+/* HP super kecil */
+@media (max-width: 360px){
+  .head-slot{
+    width: min(260px, 86vw);
+  }
+  .face-holder img{
+    width: 48%;
+    transform: translateY(3%);
   }
 }
 
