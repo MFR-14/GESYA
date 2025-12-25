@@ -33,7 +33,7 @@
   justify-content: center;
   align-items: center;
 
-  gap: 20px;          /* ⬅️ ini kunci jaraknya */
+  gap: 32px;          /* ⬅️ ini kunci jaraknya */
   row-gap: 18px;     /* kalau sampai turun baris */
   flex-wrap: wrap;
 
