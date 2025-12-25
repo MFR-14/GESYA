@@ -124,3 +124,64 @@
 @media (max-width:420px){
   .opt-btn .txt{ font-size:13px; }
 }
+/* =========================
+   FIX OVERRIDE dari level1.css
+   ========================= */
+
+/* pastikan opsi selalu turun ke bawah (1 kolom) */
+#game .lvl6-options{
+  width: min(560px, 96vw);
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 12px !important;
+}
+
+/* pastikan button opsi gak ketiban style tombol global */
+#game .opt-btn{
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  text-align: left !important;
+
+  border: none !important;
+  background: #fff !important;
+  border-radius: 18px !important;
+  padding: 14px 12px !important;
+  box-shadow: 0 10px 22px rgba(0,0,0,.06) !important;
+  cursor: pointer;
+}
+
+/* HILANGKAN kotak kosong gede: biasanya answer-feedback kena style lama */
+#game .answer-feedback{
+  width: min(560px, 96vw);
+  margin: 0 !important;
+  padding: 0 !important;
+
+  background: transparent !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+/* hint biar jadi chip kecil, bukan kotak aneh */
+#game .hint{
+  width: min(560px, 96vw);
+  margin-top: 2px;
+  padding: 10px 12px;
+
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.06);
+
+  text-align: center;
+  font-weight: 900;
+}
+
+/* kalau kamu memang pakai state tampil/sembunyi */
+#game .answer-feedback:empty{
+  display: none !important;
+}
