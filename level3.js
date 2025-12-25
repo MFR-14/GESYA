@@ -11,6 +11,7 @@ const DURATION_SEC = 180;        // 3 menit
 const FEEDBACK_DELAY_MS = 2200;
 const IMG_BASE = "./img/level3";
 
+// 8 pasang sesuai folder kamu
 const ROUNDS = [
   { key: "bahagia",  head: `${IMG_BASE}/bahagia-L3.jpg`,  face: `${IMG_BASE}/muka-bahagia.jpg` },
   { key: "bingung",  head: `${IMG_BASE}/bingung-L3.jpg`,  face: `${IMG_BASE}/muka-bingung.jpg` },
@@ -31,7 +32,7 @@ let timerId = null;
 let gameEnded = false;
 let soalStart = 0;
 
-let picked = null;
+let picked = null;     // face item untuk mode tap HP
 let lockInput = false;
 
 // ====== UTIL ======
@@ -58,6 +59,16 @@ function flashOk(el) {
   el.classList.add("ok");
 }
 
+// ambil 2 key pengecoh yang beda dari jawaban benar
+function sampleTwoOtherKeys(correctKey) {
+  const others = ROUNDS.filter(r => r.key !== correctKey);
+  return shuffle(others).slice(0, 2).map(r => r.key);
+}
+
+function getRoundByKey(key) {
+  return ROUNDS.find(r => r.key === key);
+}
+
 // ====== REKAP KE GAS (anti CORS) ======
 function sendRekapToGAS({ level, nama, umur, sekolah, soal, emosi, waktu }) {
   if (!GAS_URL) return;
@@ -75,6 +86,7 @@ function sendRekapToGAS({ level, nama, umur, sekolah, soal, emosi, waktu }) {
   beacon.src = u.toString();
 }
 
+// ====== MAIN ======
 window.addEventListener("DOMContentLoaded", () => {
   const introEl    = document.getElementById("intro");
   const gameEl     = document.getElementById("game");
@@ -82,8 +94,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const namaInput    = document.getElementById("namaAnak");
   const umurInput    = document.getElementById("umurAnak");
   const sekolahInput = document.getElementById("namaSekolah");
-
-  const btnMulai   = document.getElementById("btnMulai");
+  const btnMulai     = document.getElementById("btnMulai");
 
   const timerEl    = document.getElementById("timer");
   const scoreEl    = document.getElementById("score");
@@ -95,7 +106,8 @@ window.addEventListener("DOMContentLoaded", () => {
   const faceBank   = document.getElementById("faceBank");
   const headBoard  = document.getElementById("headBoard");
 
-  if (!introEl || !gameEl || !namaInput || !umurInput || !sekolahInput || !btnMulai || !timerEl || !scoreEl || !hintEl || !feedbackEl || !roundEl || !faceBank || !headBoard) {
+  if (!introEl || !gameEl || !namaInput || !umurInput || !sekolahInput || !btnMulai ||
+      !timerEl || !scoreEl || !hintEl || !feedbackEl || !roundEl || !faceBank || !headBoard) {
     alert("Ada elemen HTML yang tidak ketemu. Cek id: intro, game, namaAnak, umurAnak, namaSekolah, btnMulai, timer, score, hint, answerFeedback, roundTitle, faceBank, headBoard.");
     return;
   }
@@ -147,39 +159,43 @@ window.addEventListener("DOMContentLoaded", () => {
     holder.appendChild(img.cloneNode(true));
 
     headEl.dataset.done = "1";
-    faceEl.classList.add("used");
-    faceEl.setAttribute("draggable", "false");
   }
 
   function setQuestion() {
     const q = pool[idx];
+    const correctKey = q.key;
 
     lockInput = false;
     picked = null;
 
     resetFeedback();
     setRoundTitle();
-    setHint(null, "Tarik muka ke kepala yang cocok");
+    setHint(null, "Pilih salah satu muka, lalu tempel ke kepala yang cocok");
 
-    // Render 1 muka
-    faceBank.innerHTML = `
-      <div class="face-item" draggable="true" data-face="${q.key}">
-        <img src="${q.face}?v=${Date.now()}" alt="Muka ${q.key}">
-      </div>
-    `;
+    // 3 pilihan muka: 1 benar + 2 pengecoh
+    const decoyKeys = sampleTwoOtherKeys(correctKey);
+    const faceKeys = shuffle([correctKey, ...decoyKeys]);
 
-    // Render 1 kepala
+    faceBank.innerHTML = faceKeys.map((k) => {
+      const r = getRoundByKey(k);
+      return `
+        <div class="face-item" draggable="true" data-face="${k}">
+          <img src="${r.face}?v=${Date.now()}" alt="Muka ${k}">
+        </div>
+      `;
+    }).join("");
+
     headBoard.innerHTML = `
-      <div class="head-slot drop-head" data-need="${q.key}">
-        <img class="head-base" src="${q.head}?v=${Date.now()}" alt="Kepala ${q.key}">
+      <div class="head-slot drop-head" data-need="${correctKey}">
+        <img class="head-base" src="${q.head}?v=${Date.now()}" alt="Kepala ${correctKey}">
         <div class="face-holder"></div>
       </div>
     `;
 
-    const faceEl = faceBank.querySelector(".face-item");
+    const faces = Array.from(faceBank.querySelectorAll(".face-item"));
     const headEl = headBoard.querySelector(".drop-head");
 
-    setupInteractions(faceEl, headEl);
+    setupInteractions(faces, headEl);
 
     soalStart = Date.now();
   }
@@ -265,8 +281,15 @@ window.addEventListener("DOMContentLoaded", () => {
     if (isBenar) {
       score++;
       renderScore();
+
       attachFaceToHead(faceEl, headEl);
       flashOk(headEl);
+
+      // disable semua muka biar gak spam
+      faceBank.querySelectorAll(".face-item").forEach(f => {
+        f.setAttribute("draggable", "false");
+        f.classList.add("used");
+      });
 
       setHint("good", "✅ Benar!");
       resetFeedback();
@@ -290,13 +313,34 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function setupInteractions(faceEl, headEl) {
-    // drag desktop
-    faceEl.addEventListener("dragstart", (e) => {
-      if (gameEnded || lockInput) return;
-      e.dataTransfer.setData("text/plain", "FACE");
+  function setupInteractions(faceEls, headEl) {
+    // drag desktop untuk semua muka
+    faceEls.forEach(faceEl => {
+      faceEl.addEventListener("dragstart", (e) => {
+        if (gameEnded || lockInput) return;
+        e.dataTransfer.setData("text/plain", faceEl.dataset.face || "");
+      });
+
+      // HP tap muka
+      faceEl.addEventListener("click", () => {
+        if (gameEnded || lockInput) return;
+        picked = faceEl;
+        setHint(null, "Sekarang tap kepala yang cocok 👇");
+        faceEls.forEach(f => f.classList.remove("selected"));
+        faceEl.classList.add("selected");
+      });
+
+      faceEl.addEventListener("touchstart", (e) => {
+        if (gameEnded || lockInput) return;
+        e.preventDefault();
+        picked = faceEl;
+        setHint(null, "Sekarang tap kepala yang cocok 👇");
+        faceEls.forEach(f => f.classList.remove("selected"));
+        faceEl.classList.add("selected");
+      }, { passive: false });
     });
 
+    // drop target kepala (desktop)
     headEl.addEventListener("dragover", (e) => {
       e.preventDefault();
       headEl.classList.add("over");
@@ -310,28 +354,18 @@ window.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       headEl.classList.remove("over");
       if (gameEnded || lockInput) return;
+
+      const key = (e.dataTransfer.getData("text/plain") || "").trim();
+      const faceEl = faceEls.find(f => (f.dataset.face || "") === key) || faceEls[0];
+
       handleAnswer(faceEl, headEl);
     });
 
-    // HP tap muka
-    faceEl.addEventListener("click", () => {
-      if (gameEnded || lockInput) return;
-      picked = faceEl;
-      setHint(null, "Sekarang tap kepala yang cocok 👇");
-    });
-
-    faceEl.addEventListener("touchstart", (e) => {
-      if (gameEnded || lockInput) return;
-      e.preventDefault();
-      picked = faceEl;
-      setHint(null, "Sekarang tap kepala yang cocok 👇");
-    }, { passive: false });
-
-    // HP tap kepala
+    // tap kepala (HP)
     headEl.addEventListener("click", () => {
       if (gameEnded || lockInput) return;
       if (!picked) {
-        setHint("bad", "Tap mukanya dulu ya 🙂");
+        setHint("bad", "Tap salah satu mukanya dulu ya 🙂");
         shake(headEl);
         return;
       }
@@ -342,7 +376,7 @@ window.addEventListener("DOMContentLoaded", () => {
       if (gameEnded || lockInput) return;
       e.preventDefault();
       if (!picked) {
-        setHint("bad", "Tap mukanya dulu ya 🙂");
+        setHint("bad", "Tap salah satu mukanya dulu ya 🙂");
         shake(headEl);
         return;
       }
