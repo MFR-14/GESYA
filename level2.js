@@ -89,7 +89,7 @@ const QUESTIONS = [
     correctIndex: 1
   },
   {
-    text: "Ketika kamu datang ke sekolah dan tidak ada teman yang menyapumu, kamu merasa…",
+    text: "Ketika kamu datang ke sekolah dan tidak ada teman yang menyapamu, kamu merasa…",
     options: ["a) Sedih", "b) Senang", "c) Marah", "d) Tenang"],
     emosiMap: ["SEDIH", "SENANG", "MARAH", "TENANG"],
     correctIndex: 0
