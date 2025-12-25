@@ -1,4 +1,4 @@
-/* ============ BASE ============ */
+/* ================= BASE ================= */
 *{ box-sizing:border-box; }
 html,body{ height:100%; }
 body{
@@ -9,9 +9,7 @@ body{
 }
 .hidden{ display:none !important; }
 
-/* =========================
-   INTRO (copy vibe Level 1)
-========================= */
+/* ================= INTRO ================= */
 .intro{
   min-height:100vh;
   display:flex;
@@ -27,11 +25,7 @@ body{
   box-shadow:0 10px 30px rgba(0,0,0,.08);
   text-align:center;
 }
-.intro-title{
-  font-size:56px;
-  font-weight:900;
-  margin:0 0 12px;
-}
+.intro-title{ font-size:48px; font-weight:900; }
 .intro-subtitle{
   display:inline-block;
   background:#ffd27d;
@@ -53,20 +47,18 @@ body{
   border:2px solid #e7e0d2;
   background:#eef5ff;
   font-size:16px;
-  outline:none;
 }
 .intro-form button{
   margin-top:10px;
   width:100%;
-  padding:14px 16px;
+  padding:14px;
   border:none;
   border-radius:16px;
   background:#ffb703;
   font-weight:900;
-  cursor:pointer;
 }
 
-/* ============ HUD ============ */
+/* ================= HUD ================= */
 .hud{
   position:fixed;
   top:12px;
@@ -74,243 +66,117 @@ body{
   right:12px;
   display:flex;
   justify-content:space-between;
-  align-items:center;
   z-index:10;
-  gap:10px;
 }
-
-.timer-pill,
-.score-pill{
-  display:flex;
-  align-items:center;
-  gap:10px;
+.timer-pill,.score-pill{
   background:#fff;
-  border-radius:16px;
-  padding:10px 14px;
+  padding:8px 12px;
+  border-radius:14px;
   font-weight:900;
-  box-shadow:0 8px 18px rgba(0,0,0,.08);
 }
-
 .timer-pill{ background:#bfe9f7; }
 
-.timer-icon{
-  width:26px;
-  height:26px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:8px;
-  background:#ffffffb0;
-}
-
-.hud-right{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.btn-selesai{
-  border:none;
-  border-radius:16px;
-  padding:10px 14px;
-  background:#ffb703;
-  font-weight:900;
-  cursor:pointer;
-  box-shadow:0 8px 18px rgba(0,0,0,.08);
-}
-
-/* ============ LAYOUT GAME ============ */
+/* ================= PAGE ================= */
 .page{
   min-height:100vh;
-  padding:92px 18px 30px;
+  padding:90px 16px 24px;
   display:flex;
   flex-direction:column;
   align-items:center;
 }
 .title{
-  margin:0 0 18px;
-  font-size:54px;
+  font-size:36px;
   font-weight:900;
-  letter-spacing:1px;
-  color:#24324a;
+  margin-bottom:14px;
 }
 
-/* ============ BOX SOAL (gaya Level 2) ============ */
+/* ================= QUESTION BOX ================= */
 .question-wrap{
-  width:min(980px, 96vw);
+  width:100%;
   display:flex;
   justify-content:center;
 }
-
 .question-box{
   width:100%;
+  max-width:900px;
   background:#f0b67a;
   border-radius:18px;
-  padding:24px 18px 20px;
-  position:relative;
-  box-shadow:0 14px 30px rgba(0,0,0,.08);
-  outline:10px solid #ffea00;
-  outline-offset:10px;
+  padding:20px 14px;
+  outline:8px solid #ffea00;
+  outline-offset:8px;
 }
 
-/* emoji & mini (dipakai level5.html) */
 .q-emoji{
   text-align:center;
-  margin-bottom:8px;
-  font-size:56px;
+  font-size:44px;
+  margin-bottom:6px;
+}
+.question-text{
+  text-align:center;
+  font-size:22px;
+  font-weight:900;
+  color:#fff;
+  line-height:1.25;
 }
 .q-mini{
   text-align:center;
-  margin:10px 0 14px;
+  font-size:13px;
   font-weight:900;
   color:#fff;
-  opacity:.92;
-  text-shadow:0 2px 0 rgba(0,0,0,.18);
-  font-size:22px;
-  line-height:1.2;
+  margin:8px 0 12px;
 }
 
-.question-text{
-  text-align:center;
-  font-size:40px;
-  font-weight:900;
-  color:#fff;
-  text-shadow:0 2px 0 rgba(0,0,0,.18);
-  margin-bottom:12px;
-  line-height:1.2;
-}
-
-/* ============ OPTIONS GRID ============ */
+/* ================= OPTIONS (INI KUNCI) ================= */
 .options{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-  padding:0 6px;
+  grid-template-columns:1fr;
+  gap:12px;
 }
 
-/* tombol opsi dari JS kamu: class="opt-btn" */
+/* RESET TOTAL BUTTON */
 .opt-btn{
-  border:none;
-  cursor:pointer;
-  font-family:inherit;
-  font-weight:900;
-  font-size:18px;
-  padding:14px 12px;
-  border-radius:14px;
-  background:#7d7288;
-  color:#fff;
-  box-shadow:0 10px 0 rgba(0,0,0,.18);
-  transition:transform .06s ease, filter .15s ease;
-  text-align:left;
-
+  all:unset;                /* ⬅️ INI KUNCI */
   display:flex;
   align-items:center;
   gap:10px;
+
+  background:#7d7288;
+  color:#fff;
+  padding:14px 12px;
+  border-radius:14px;
+  font-weight:900;
+  font-size:14px;
+  cursor:pointer;
+
+  box-shadow:0 8px 0 rgba(0,0,0,.18);
 }
 
-.opt-btn:active{ transform:translateY(3px); filter:brightness(.98); }
+.opt-btn:active{
+  transform:translateY(3px);
+  box-shadow:0 5px 0 rgba(0,0,0,.18);
+}
 
 .opt-btn .emo{
-  width:38px;
-  height:38px;
-  border-radius:12px;
+  width:32px;
+  height:32px;
+  border-radius:10px;
   display:flex;
   align-items:center;
   justify-content:center;
   background:rgba(255,255,255,.25);
-  font-size:20px;
-  flex:0 0 38px;
-}
-.opt-btn .txt{
-  font-size:14px;
-  line-height:1.2;
+  font-size:18px;
+  flex-shrink:0;
 }
 
-/* highlight dari JS */
-.opt-btn.good{
-  outline:4px solid rgba(27,127,58,.35);
-}
-.opt-btn.bad{
-  outline:4px solid rgba(249,65,68,.28);
-}
+.opt-btn.good{ outline:3px solid #2ecc71; }
+.opt-btn.bad{ outline:3px solid #e74c3c; }
 
-/* TRIK ANTI-KETUMPUK:
-   kalau jumlah opsi ganjil (misal 3), tombol terakhir jadi full width */
-.options .opt-btn:last-child:nth-child(odd){
-  grid-column:1 / -1;
-}
-
-/* ============ FEEDBACK / HINT ============ */
+/* ================= FEEDBACK ================= */
 .feedback{
-  margin-top:14px;
-  font-size:20px;
+  margin-top:12px;
+  font-size:13px;
   font-weight:900;
-  min-height:28px;
   text-align:center;
 }
 .feedback.good{ color:#0f6b2f; }
 .feedback.bad{ color:#b42318; }
-
-/* ============ RESPONSIVE ============ */
-@media (max-width: 720px){
-  .intro-title{ font-size:44px; }
-  .title{ font-size:42px; }
-
-  .question-text{ font-size:28px; }
-  .q-mini{ font-size:16px; }
-
-  .question-box{
-    outline-width:8px;
-    outline-offset:8px;
-    padding:18px 14px 16px;
-  }
-
-  .opt-btn .txt{ font-size:13px; }
-}
-
-/* HP super kecil */
-@media (max-width: 420px){
-  .title{ font-size:36px; margin-bottom:14px; }
-
-  .q-emoji{ font-size:44px; margin-bottom:6px; }
-  .question-text{ font-size:22px; margin-bottom:10px; }
-  .q-mini{ font-size:12px; margin:8px 0 10px; }
-
-  .question-box{
-    outline-width:6px;
-    outline-offset:6px;
-    padding:16px 12px 14px;
-  }
-
-  .options{
-    grid-template-columns:1fr; /* biar aman di HP: 1 kolom, gak ketumpuk */
-    gap:10px;
-  }
-
-  .opt-btn{
-    padding:12px 10px;
-    border-radius:14px;
-  }
-  .opt-btn .emo{
-    width:34px;
-    height:34px;
-    border-radius:10px;
-    font-size:18px;
-    flex:0 0 34px;
-  }
-  .opt-btn .txt{ font-size:12.5px; }
-
-  .timer-pill, .score-pill{
-    padding:8px 10px;
-    font-size:12px;
-  }
-  .btn-selesai{
-    padding:8px 10px;
-    font-size:12px;
-  }
-
-  #hint, #answerFeedback{
-    font-size:12px;
-    margin-top:10px;
-  }
-}
