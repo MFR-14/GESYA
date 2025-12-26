@@ -6,7 +6,7 @@
   <title>GESYA - Sertifikat</title>
 
   <link rel="stylesheet" href="./css/menu.css?v=3">
-  <link rel="stylesheet" href="./css/reward.css?v=2">
+  <link rel="stylesheet" href="./css/reward.css?v=1">
 </head>
 
 <body class="home">
@@ -33,7 +33,6 @@
           <div class="badge">🏅 AHLI EMOSI</div>
         </div>
 
-        <!-- LULUS GEDE -->
         <div class="lulusRow">
           <div class="checkBadge" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none">
@@ -99,23 +98,14 @@
         </div>
 
         <div class="actions">
-          <button class="btn btn-yellow" id="btnSavePDF" type="button" onclick="openSavePDF()">
-            Simpan PDF / Cetak
-          </button>
-          <button class="btn btn-dark" type="button" onclick="window.location.href='index.html'">
-            Kembali
-          </button>
-        </div>
-
-        <div class="tipPrint">
-          Tips: Biar aman, pilih tujuan <b>Save as PDF</b> atau <b>Microsoft Print to PDF</b>.
+          <button class="btn btn-yellow" type="button" onclick="window.print()">Cetak / Simpan</button>
+          <button class="btn btn-dark" type="button" onclick="window.location.href='index.html'">Kembali</button>
         </div>
 
       </div>
     </div>
   </main>
 
-  <!-- penting: pastikan folder js ada -->
-  <script src="./js/reward.js?v=2"></script>
+  <script src="./js/reward.js?v=1"></script>
 </body>
 </html>
