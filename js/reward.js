@@ -1,15 +1,9 @@
 (() => {
   "use strict";
 
-  // =========================
-  // KONFIG
-  // =========================
   const KEY_UNLOCK = "gesya_unlocked";
   const MAX_LEVEL = 6;
 
-  // =========================
-  // HELPER
-  // =========================
   function goHome(){
     window.location.href = "index.html";
   }
@@ -27,7 +21,6 @@
     return Number.isFinite(v) ? v : 0;
   }
 
-  // Konversi skor -> 5 bintang (mapping aman)
   function toStars(score){
     let n = 0;
     if (score <= 0) n = 0;
@@ -42,101 +35,72 @@
     return `<span class="on">${on}</span><span class="off">${off}</span>`;
   }
 
-  function setText(id, text){
-    const el = document.getElementById(id);
-    if (el) el.textContent = text;
-  }
+  // ===== Proteksi =====
+  if (localStorage.getItem(KEY_UNLOCK) !== "1") { goHome(); return; }
+  if (!isAllLevelDone()) { goHome(); return; }
 
-  function setHTML(id, html){
-    const el = document.getElementById(id);
-    if (el) el.innerHTML = html;
-  }
-
-  // =========================
-  // GUARD / PROTEKSI
-  // =========================
-  if (localStorage.getItem(KEY_UNLOCK) !== "1") {
-    goHome();
-    return;
-  }
-
-  if (!isAllLevelDone()){
-    goHome();
-    return;
-  }
-
-  // =========================
-  // RENDER IDENTITAS
-  // =========================
+  // ===== Identitas =====
   const nama = (localStorage.getItem("ek_nama") || "").trim();
   const umur = (localStorage.getItem("ek_umur") || "").trim();
   const sekolah = (localStorage.getItem("ek_sekolah") || "").trim();
 
-  setText("cNama", nama ? nama.toUpperCase() : "TEMAN");
-  setText("cUmur", umur ? `${umur} tahun` : "-");
-  setText("cSekolah", sekolah ? sekolah.toUpperCase() : "-");
+  const elNama = document.getElementById("cNama");
+  const elUmur = document.getElementById("cUmur");
+  const elSekolah = document.getElementById("cSekolah");
 
-  // =========================
-  // RENDER BINTANG PER LEVEL
-  // =========================
-  const s1 = getInt("ek_level1_skor");
-  const s2 = getInt("ek_level2_skor");
-  const s3 = getInt("ek_level3_skor");
-  const s4 = getInt("ek_level4_skor");
-  const s5 = getInt("ek_level5_skor");
-  const s6 = getInt("ek_level6_skor");
+  if (elNama) elNama.textContent = nama ? nama.toUpperCase() : "TEMAN";
+  if (elUmur) elUmur.textContent = umur ? `${umur} tahun` : "-";
+  if (elSekolah) elSekolah.textContent = sekolah ? sekolah.toUpperCase() : "-";
 
-  setHTML("star1", toStars(s1));
-  setHTML("star2", toStars(s2));
-  setHTML("star3", toStars(s3));
-  setHTML("star4", toStars(s4));
-  setHTML("star5", toStars(s5));
-  setHTML("star6", toStars(s6));
+  // ===== Bintang per level =====
+  const scores = [
+    getInt("ek_level1_skor"),
+    getInt("ek_level2_skor"),
+    getInt("ek_level3_skor"),
+    getInt("ek_level4_skor"),
+    getInt("ek_level5_skor"),
+    getInt("ek_level6_skor"),
+  ];
 
-  // =========================
-  // TANGGAL
-  // =========================
+  for (let i = 1; i <= 6; i++){
+    const el = document.getElementById(`star${i}`);
+    if (el) el.innerHTML = toStars(scores[i-1]);
+  }
+
+  // ===== Tanggal =====
+  const elDate = document.getElementById("cDate");
   const now = new Date();
   const tgl = now.toLocaleDateString("id-ID", { day:"2-digit", month:"long", year:"numeric" });
-  setText("cDate", `📅 Tanggal: ${tgl}`);
+  if (elDate) elDate.textContent = `📅 Tanggal: ${tgl}`;
 
-  // =========================
-  // CONFETTI
-  // =========================
-  function spawnConfetti(){
-    const confetti = document.getElementById("confetti");
-    if (!confetti) return;
-
-    const colors = ["#ffb703","#3b82f6","#10b981","#ef4444","#a855f7","#f59e0b"];
-    const count = 40;
-
-    // bersihin dulu kalau ada (biar gak numpuk kalau reload)
+  // ===== Confetti =====
+  const confetti = document.getElementById("confetti");
+  if (confetti){
     confetti.innerHTML = "";
-
-    for (let i = 0; i < count; i++){
+    const colors = ["#ffb703","#3b82f6","#10b981","#ef4444","#a855f7","#f59e0b"];
+    for (let i=0; i<40; i++){
       const p = document.createElement("i");
-
-      p.style.left = (Math.random() * 100) + "vw";
-      p.style.animationDuration = (4 + Math.random() * 4.5) + "s";
-      p.style.animationDelay = (Math.random() * 2.2) + "s";
-      p.style.width  = (7 + Math.random() * 7) + "px";
-      p.style.height = (10 + Math.random() * 12) + "px";
-      p.style.background = colors[Math.floor(Math.random() * colors.length)];
-      p.style.opacity = (0.65 + Math.random() * 0.35).toFixed(2);
-
+      p.style.left = (Math.random()*100) + "vw";
+      p.style.animationDuration = (4 + Math.random()*4.5) + "s";
+      p.style.animationDelay = (Math.random()*2.2) + "s";
+      p.style.width  = (7 + Math.random()*7) + "px";
+      p.style.height = (10 + Math.random()*12) + "px";
+      p.style.background = colors[Math.floor(Math.random()*colors.length)];
+      p.style.opacity = (0.65 + Math.random()*0.35).toFixed(2);
       confetti.appendChild(p);
     }
   }
 
-  spawnConfetti();
-
-  // =========================
-  // TOMBOL SIMPAN PDF / CETAK
-  // =========================
-  // NOTE: Browser tidak mengizinkan "auto download PDF" native tanpa dialog print.
-  // Solusi paling aman: buka dialog, user pilih "Save as PDF / Microsoft Print to PDF".
+  // ===== Tombol simpan pdf / cetak =====
   window.openSavePDF = function(){
+    // Browser gak boleh auto-download PDF native tanpa library.
+    // Ini aman: user pilih "Save as PDF / Microsoft Print to PDF".
     window.print();
   };
 
+  // fallback kalau onclick gak kebaca
+  const btn = document.getElementById("btnSavePDF");
+  if (btn){
+    btn.addEventListener("click", () => window.openSavePDF());
+  }
 })();
