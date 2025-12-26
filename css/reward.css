@@ -465,3 +465,32 @@ body.home{ overflow-x:hidden; }
     color:#fff !important;
   }
 }
+/* PRINT: full color + tanpa animasi (cuma saat print) */
+@media print{
+  *{
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .fx-bg,.confetti,.hero,.actions{ display:none !important; }
+  body{ background:#fff !important; }
+
+  .cert{
+    box-shadow:none !important;
+    border-radius:0 !important;
+    padding:18px !important;
+    transform:none !important;
+    opacity:1 !important;
+  }
+
+  /* FIX UTAMA: LULUS jangan pakai gradient saat print */
+  .lulusWord{
+    background:none !important;
+    color:#16a34a !important;
+    -webkit-text-fill-color:#16a34a !important;
+    text-shadow:none !important;
+  }
+}
+
