@@ -1,14 +1,11 @@
 :root{
   --dark:#0f172a;
   --gold:#ffb703;
-  --line:#e2e8f0;
-  --soft:#f8fafc;
   --ok:#10b981;
   --ok2:#22c55e;
   --blue:#3b82f6;
 }
 
-/* Background */
 body.home{ overflow-x:hidden; }
 
 .fx-bg{
@@ -20,10 +17,7 @@ body.home{ overflow-x:hidden; }
 }
 
 /* confetti */
-.confetti{
-  pointer-events:none;
-  position:fixed; inset:0; z-index:2; overflow:hidden;
-}
+.confetti{ pointer-events:none; position:fixed; inset:0; z-index:2; overflow:hidden; }
 .confetti i{
   position:absolute; top:-12vh;
   width:10px; height:16px; border-radius:3px;
@@ -36,7 +30,7 @@ body.home{ overflow-x:hidden; }
   100%{ transform:translateY(120vh) rotate(360deg); }
 }
 
-/* hero kecil */
+/* hero */
 .hero{ position:relative; z-index:3; }
 .hero .mascot{
   width:120px; height:auto;
@@ -50,7 +44,6 @@ body.home{ overflow-x:hidden; }
   50%{ transform:translateY(-10px); }
 }
 
-/* container */
 .cert-wrap{
   max-width:900px;
   margin:10px auto 40px;
@@ -108,7 +101,6 @@ body.home{ overflow-x:hidden; }
 }
 .cert > *{ position:relative; z-index:1; }
 
-/* header brand */
 .topRow{
   display:flex;
   align-items:flex-start;
@@ -117,11 +109,7 @@ body.home{ overflow-x:hidden; }
   margin-bottom:8px;
 }
 
-.brand{
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-}
+.brand{ display:flex; flex-direction:column; gap:2px; }
 .brand .t1{ font-weight:1000; letter-spacing:.3px; }
 .brand .t2{ font-size:12px; color:#64748b; font-weight:800; }
 
@@ -143,7 +131,7 @@ body.home{ overflow-x:hidden; }
   70%{ transform:rotate(3deg) scale(1.02); }
 }
 
-/* LULUS besar & menarik */
+/* ===== LULUS GEDE ===== */
 .lulusRow{
   display:flex;
   align-items:center;
@@ -152,12 +140,9 @@ body.home{ overflow-x:hidden; }
 }
 
 .checkBadge{
-  width:64px;
-  height:64px;
+  width:64px; height:64px;
   border-radius:20px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display:flex; align-items:center; justify-content:center;
   background: linear-gradient(135deg, rgba(16,185,129,.20), rgba(34,197,94,.08));
   border:2px solid rgba(16,185,129,.30);
   box-shadow:0 18px 40px rgba(16,185,129,.16);
@@ -177,70 +162,21 @@ body.home{ overflow-x:hidden; }
   0%,100%{ transform:translateX(-10px) translateY(0); }
   50%{ transform:translateX(16px) translateY(-10px); }
 }
-.checkBadge svg{
-  width:40px; height:40px;
-  filter: drop-shadow(0 10px 18px rgba(16,185,129,.20));
+.checkBadge svg{ width:40px; height:40px; filter: drop-shadow(0 10px 18px rgba(16,185,129,.20)); }
+@keyframes pulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.04); } }
+
+.lulusText{ display:flex; flex-direction:column; gap:4px; min-width:0; }
+.lulusWord{
+  font-size:62px;     /* GEDE BANGET */
+  line-height:1;
+  font-weight:900;    /* BOLD BENERAN */
+  letter-spacing:1px;
+  background: linear-gradient(90deg, #16a34a, #10b981, #22c55e);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow: 0 18px 34px rgba(16,185,129,.18);
 }
-@keyframes pulse{
-  0%,100%{ transform:scale(1); }
-  50%{ transform:scale(1.04); }
-}
-
-.lulusText{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-  min-width:0;
-}
-/* PRINT: 1 lembar + full color kayak layar */
-@page { size: A4 portrait; margin: 8mm; }
-
-@media print{
-  /* jangan matiin background/gradient biar tetap full color */
-  body{
-    background: #fff !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  /* confetti mending dimatiin biar rapi */
-  .confetti{ display:none !important; }
-
-  /* hero boleh dimatiin biar fokus sertifikat dan gak kepotong */
-  .hero{ display:none !important; }
-
-  /* tombol disembunyikan (biar sertifikat clean) */
-  .actions{ display:none !important; }
-
-  /* biar gak pecah halaman */
-  .cert-wrap, .cert{
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-
-  /* PENTING: gradient text sering hilang saat print → kasih fallback solid */
-  .lulusWord{
-    background: none !important;
-    -webkit-background-clip: initial !important;
-    background-clip: initial !important;
-    color: #16a34a !important;       /* solid hijau */
-    text-shadow: none !important;
-    font-weight: 900 !important;
-  }
-
-  /* biar border glow & warna tetep muncul */
-  .cert{
-    box-shadow: 0 26px 65px rgba(0,0,0,.14) !important;
-  }
-  .cert::before{
-    filter: blur(10px) !important;
-    opacity:.55 !important;
-  }
-  .cert::after{
-    display:block !important;
-  }
-}
-
 .lulusSub{
   margin:0;
   font-weight:1000;
@@ -262,7 +198,7 @@ body.home{ overflow-x:hidden; }
 .info .k{ font-weight:1000; color:#0f172a; }
 .info .v{ font-weight:1000; color:#0f172a; letter-spacing:.2px; }
 
-/* level box */
+/* level */
 .levelsBox{
   margin-top:14px;
   padding:14px;
@@ -279,44 +215,20 @@ body.home{ overflow-x:hidden; }
   align-items:center;
   gap:8px;
 }
-
-.grid{
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0,1fr));
-  gap:10px;
-}
+.grid{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; }
 
 .lvlRow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+  display:flex; align-items:center; justify-content:space-between;
   gap:10px;
   padding:10px 12px;
   border-radius:16px;
   background:rgba(248,250,252,.88);
   border:2px solid rgba(226,232,240,.85);
-  animation: pop .55s ease-out both;
 }
-.lvlRow:nth-child(1){ animation-delay:.06s; }
-.lvlRow:nth-child(2){ animation-delay:.12s; }
-.lvlRow:nth-child(3){ animation-delay:.18s; }
-.lvlRow:nth-child(4){ animation-delay:.24s; }
-.lvlRow:nth-child(5){ animation-delay:.30s; }
-.lvlRow:nth-child(6){ animation-delay:.36s; }
-@keyframes pop{
-  from{ transform:translateY(10px) scale(.985); opacity:0; }
-  to{ transform:translateY(0) scale(1); opacity:1; }
-}
-
 .lvlRow .left{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:1000;
-  color:#0f172a;
-  min-width:0;
+  display:flex; align-items:center; gap:10px;
+  font-weight:1000; color:#0f172a; min-width:0;
 }
-
 .pill{
   font-size:12px;
   font-weight:1000;
@@ -327,94 +239,4 @@ body.home{ overflow-x:hidden; }
   color:#1d4ed8;
   white-space:nowrap;
 }
-
 .stars{
-  letter-spacing:2px;
-  font-weight:1100;
-  font-size:14px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  white-space:nowrap;
-}
-.stars .on{ color:#f59e0b; text-shadow:0 10px 18px rgba(245,158,11,.16); }
-.stars .off{ color:#cbd5e1; }
-
-/* footer */
-.footerChips{
-  margin-top:14px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-}
-.chip{
-  background:#f1f5f9;
-  border:2px solid #e2e8f0;
-  padding:10px 12px;
-  border-radius:16px;
-  font-weight:1000;
-  color:#0f172a;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-/* buttons */
-.actions{
-  display:flex;
-  gap:10px;
-  margin-top:16px;
-}
-.btn{
-  flex:1;
-  border:none;
-  border-radius:16px;
-  padding:12px 14px;
-  font-size:15px;
-  font-weight:1100;
-  cursor:pointer;
-  transition: transform .15s ease, filter .15s ease;
-}
-.btn:hover{ filter:brightness(1.02); transform:translateY(-2px); }
-.btn:active{ transform:scale(.98); }
-
-.btn-yellow{
-  background:var(--gold);
-  color:#1f2a44;
-  box-shadow:0 16px 28px rgba(255,183,3,.22);
-  font-weight:1100;
-}
-.btn-dark{
-  background:var(--dark);
-  color:#fff;
-  box-shadow:0 16px 28px rgba(15,23,42,.22);
-  font-weight:1100;
-}
-
-/* responsive */
-@media (max-width:640px){
-  .grid{ grid-template-columns:1fr; }
-  .info{ grid-template-columns: 120px 1fr; }
-  .lulusWord{ font-size:48px; }
-}
-
-/* PRINT: 1 lembar */
-@page { size: A4 portrait; margin: 10mm; }
-
-@media print{
-  .fx-bg,.confetti,.hero,.actions{ display:none !important; }
-  body{ background:#fff !important; }
-  .cert-wrap{
-    margin:0 !important;
-    padding:0 !important;
-    max-width:none !important;
-    page-break-inside: avoid;
-  }
-  .cert{
-    box-shadow:none !important;
-    border-radius:0 !important;
-    padding:18px !important;
-    page-break-inside: avoid;
-  }
-  .cert::before{ filter:none !important; opacity:.25 !important; }
-}
