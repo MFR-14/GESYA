@@ -10,18 +10,12 @@ const TOTAL = 10;
 const DURATION_SEC = 600;        // 10 menit
 const FEEDBACK_DELAY_MS = 2200;
 
-// Level 6: Reframing (ubah keadaan tidak enak jadi positif)
-// Format:
-// - situasi
-// - pikiran negatif spontan
-// - 3 pilihan penjelasan (1 paling sehat/positif, 1 netral, 1 buruk)
-// Skor: sehat = 1, netral = 0, buruk = 0
-
+// ====== DATA ======
 const QUESTIONS = [
   {
     emoji:"👋",
     title:"Kamu melambaikan tangan ke temanmu, tapi temanmu tidak membalas.",
-    neg:"“Dia nggak suka aku.”",
+    neg:"Dia nggak suka aku.",
     options:[
       {emoji:"👀", text:"Mungkin dia nggak lihat karena sedang tidak memperhatikan.", score:1},
       {emoji:"😐", text:"Ya sudah, mungkin dia lagi sibuk.", score:0},
@@ -31,7 +25,7 @@ const QUESTIONS = [
   {
     emoji:"🚲",
     title:"Kamu ngajak teman sepedaan, tapi dia menolak.",
-    neg:"“Dia gak suka main sama aku.”",
+    neg:"Dia gak suka main sama aku.",
     options:[
       {emoji:"😴", text:"Mungkin dia capek karena baru pulang sekolah.", score:1},
       {emoji:"📅", text:"Mungkin dia ada kegiatan lain hari ini.", score:1},
@@ -41,7 +35,7 @@ const QUESTIONS = [
   {
     emoji:"🏃",
     title:"Temanmu melewatimu tanpa menyapa.",
-    neg:"“Dia sombong.”",
+    neg:"Dia sombong.",
     options:[
       {emoji:"💭", text:"Mungkin dia lagi kepikiran sesuatu jadi tidak sadar.", score:1},
       {emoji:"🔊", text:"Mungkin dia nggak dengar karena ramai.", score:1},
@@ -51,7 +45,7 @@ const QUESTIONS = [
   {
     emoji:"📱",
     title:"Teleponmu tidak diangkat temanmu.",
-    neg:"“Dia gak mau angkat telponku.”",
+    neg:"Dia gak mau angkat telponku.",
     options:[
       {emoji:"🏫", text:"Mungkin dia sedang aktivitas yang nggak bisa angkat telepon.", score:1},
       {emoji:"🔋", text:"Mungkin HP-nya mati atau habis baterai.", score:1},
@@ -61,7 +55,7 @@ const QUESTIONS = [
   {
     emoji:"💬",
     title:"Pesanmu lama dibalas.",
-    neg:"“Aku nggak penting.”",
+    neg:"Aku nggak penting.",
     options:[
       {emoji:"🧩", text:"Mungkin dia lagi belajar / bantu orang tua dulu.", score:1},
       {emoji:"📴", text:"Mungkin dia lagi nggak pegang HP.", score:1},
@@ -71,7 +65,7 @@ const QUESTIONS = [
   {
     emoji:"😶",
     title:"Temanmu tidak memilih kamu dalam kelompok.",
-    neg:"“Aku nggak bisa apa-apa.”",
+    neg:"Aku nggak bisa apa-apa.",
     options:[
       {emoji:"🤝", text:"Mungkin kelompoknya sudah penuh duluan.", score:1},
       {emoji:"🧠", text:"Aku bisa bilang: “Aku bisa bantu bagian ini ya.”", score:1},
@@ -81,7 +75,7 @@ const QUESTIONS = [
   {
     emoji:"🎮",
     title:"Temanmu tidak mengajakmu main game yang mereka mainkan.",
-    neg:"“Aku nggak dianggap.”",
+    neg:"Aku nggak dianggap.",
     options:[
       {emoji:"🙋", text:"Aku bisa tanya baik-baik: “Boleh aku ikut?”", score:1},
       {emoji:"🕹️", text:"Mungkin mereka pikir aku lagi sibuk.", score:1},
@@ -91,7 +85,7 @@ const QUESTIONS = [
   {
     emoji:"🧑‍🏫",
     title:"Gurumu terlihat serius saat kamu maju ke depan.",
-    neg:"“Aku pasti bakal dimarahi.”",
+    neg:"Aku pasti bakal dimarahi.",
     options:[
       {emoji:"🙂", text:"Mungkin itu wajah fokus guru, bukan marah.", score:1},
       {emoji:"✅", text:"Aku bisa jawab pelan-pelan, kalau salah ya belajar.", score:1},
@@ -101,7 +95,7 @@ const QUESTIONS = [
   {
     emoji:"🍱",
     title:"Temanmu tidak mau mencicipi bekalmu.",
-    neg:"“Bekalku tidak enak.”",
+    neg:"Bekalku tidak enak.",
     options:[
       {emoji:"🥗", text:"Mungkin dia sudah kenyang atau ada pantangan makanan.", score:1},
       {emoji:"😷", text:"Mungkin dia lagi kurang enak badan.", score:1},
@@ -111,7 +105,7 @@ const QUESTIONS = [
   {
     emoji:"⚽",
     title:"Kamu nggak dapat umpan saat main bola.",
-    neg:"“Mereka sengaja nggak mau kasih aku.”",
+    neg:"Mereka sengaja nggak mau kasih aku.",
     options:[
       {emoji:"👀", text:"Mungkin mereka belum lihat posisiku bebas.", score:1},
       {emoji:"📣", text:"Aku bisa teriak sopan: “Aku di sini!”", score:1},
@@ -131,6 +125,13 @@ let soalStart = 0;
 
 // ====== UTIL ======
 function pad(n){ return String(n).padStart(2,"0"); }
+
+function pulse(el){
+  if (!el) return;
+  el.classList.remove("pulse");
+  void el.offsetWidth;
+  el.classList.add("pulse");
+}
 
 // ====== REKAP KE GAS (anti CORS) ======
 function sendRekapToGAS({ level, nama, umur, sekolah, soal, emosi, waktu }) {
@@ -170,6 +171,13 @@ window.addEventListener("DOMContentLoaded", () => {
   const qNegEl   = document.getElementById("qNeg");
   const optWrap  = document.getElementById("options");
 
+  if (!introEl || !gameEl || !namaInput || !umurInput || !sekolahInput || !btnMulai ||
+      !timerEl || !scoreEl || !roundEl || !hintEl || !feedbackEl ||
+      !qEmojiEl || !qTitleEl || !qNegEl || !optWrap) {
+    alert("Ada elemen HTML yang tidak ketemu. Cek id level6.html kamu.");
+    return;
+  }
+
   // autofill
   const namaLS    = (localStorage.getItem("ek_nama") || "").trim();
   const umurLS    = (localStorage.getItem("ek_umur") || "").trim();
@@ -191,13 +199,13 @@ window.addEventListener("DOMContentLoaded", () => {
   function resetFeedback(){
     feedbackEl.className = "answer-feedback";
     feedbackEl.textContent = "";
-    feedbackEl.style.display = "block";
   }
 
   function setHint(type, text){
     hintEl.classList.remove("good","bad");
     if (type) hintEl.classList.add(type);
     hintEl.textContent = text;
+    pulse(hintEl);
   }
 
   function setRoundTitle(){
@@ -279,7 +287,6 @@ window.addEventListener("DOMContentLoaded", () => {
     qTitleEl.textContent = q.title;
     qNegEl.textContent   = `“${q.neg}”`;
 
-    // render opsi
     optWrap.innerHTML = "";
     q.options.forEach((opt, i) => {
       const btn = document.createElement("button");
@@ -319,11 +326,13 @@ window.addEventListener("DOMContentLoaded", () => {
       btn.classList.add("good");
       feedbackEl.classList.add("good");
       feedbackEl.textContent = "✅ Nah gitu! Pikiran yang bikin hati adem 😄";
+      pulse(feedbackEl);
       setHint("good", "Mantap! lanjut ya 👇");
     } else {
       btn.classList.add("bad");
       feedbackEl.classList.add("bad");
-      feedbackEl.textContent = "🙂 Itu boleh kepikiran… tapi ayo coba cari yang lebih positif ya.";
+      feedbackEl.textContent = "🙂 Itu boleh kepikiran… tapi ayo coba versi yang lebih positif ya.";
+      pulse(feedbackEl);
       setHint("bad", "Lanjut soal berikutnya ya 👇");
     }
 
