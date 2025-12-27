@@ -8,7 +8,7 @@ const GAS_URL =
 const LEVEL = 5;
 const TOTAL = 10;
 const DURATION_SEC = 600;        // 10 menit
-const FEEDBACK_DELAY_MS = 900;
+const FEEDBACK_DELAY_MS = 2200;
 
 // Level 5: “Aku pilih apa saat begini?”
 // opsi: 3 pilihan, kita nilai: good (1 poin), neutral (0), bad (0)
