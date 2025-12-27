@@ -272,6 +272,86 @@ body{
     height:78px;
     font-size:14px;
   }
+/* =========================================================
+   MOBILE 1 LAYAR (LEVEL 1) — FIX KEPOTONG
+   Tempel paling bawah CSS
+   ========================================================= */
+@media (max-width: 480px){
+
+  /* tinggi layar HP yang aman (address bar dinamis) */
+  body{
+    min-height: 100svh;
+  }
+
+  /* HUD lebih tipis */
+  .hud{
+    gap: 10px;
+    padding: 10px 12px;
+  }
+  .timer, .score{
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .btn-selesai{
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  /* Layout rapetin biar muat 1 layar */
+  .lvl1-layout{
+    padding: 6px 12px 12px;
+    gap: 12px;
+  }
+
+  /* Card soal rapetin */
+  .question-card{
+    border-radius: 20px;
+    padding: 12px;
+  }
+  .question-title{
+    margin-bottom: 8px;
+    font-size: 15px;
+  }
+
+  /* Gambar: ini kunci utama biar tombol emosi ga kepotong */
+  .question-img{
+    max-width: 220px;
+    max-height: 170px;   /* 🔥 batasi tinggi */
+    width: 100%;
+    height: auto;
+  }
+
+  /* area drag rapetin */
+  .drag-area{
+    margin: 8px 0;
+  }
+
+  /* Cards emosi: 2 kolom udah ada, tinggal kecilin tinggi & gap */
+  .cards{
+    gap: 10px;
+  }
+  .emotion-card{
+    height: 64px;        /* 🔥 lebih pendek */
+    font-size: 13px;
+    border-radius: 16px;
+    padding: 8px;
+  }
+
+  /* Hint & feedback: gede banget sebelumnya, ini bikin turun */
+  .hint{
+    margin-top: 10px;
+    padding: 10px 12px;
+    font-size: 16px;     /* turun dari 20/26 */
+    border-radius: 14px;
+  }
+  .answer-feedback{
+    margin: 10px 0 0;
+    min-height: 52px;
+    padding: 10px 12px;
+    font-size: 18px;     /* turun dari 26 */
+    border-radius: 14px;
+  }
+}
 
   .question-img{ max-width:240px; }
   .hint{ font-size:20px; }
