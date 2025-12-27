@@ -53,17 +53,23 @@
         text-align: center;
         padding: 22px 18px;
         border-radius: 24px;
-        background: rgba(255,255,255,.78);
+        background: rgba(255,255,255,.82);
         border: 2px solid rgba(255,255,255,.92);
         box-shadow: 0 18px 60px rgba(0,0,0,.12);
         backdrop-filter: blur(8px);
         transform: translateY(14px) scale(.98);
-        animation: ekCardIn .85s cubic-bezier(.2,.9,.2,1) forwards;
+        animation:
+          ekCardIn .85s cubic-bezier(.2,.9,.2,1) forwards,
+          ekPulse .9s ease-in-out infinite alternate;
       }
       @keyframes ekCardIn{
         0%{opacity:0; transform: translateY(20px) scale(.95);}
         70%{opacity:1; transform: translateY(-6px) scale(1.02);}
         100%{opacity:1; transform: translateY(0) scale(1);}
+      }
+      @keyframes ekPulse{
+        from{ transform: translateY(0) scale(1); }
+        to{ transform: translateY(0) scale(1.04); }
       }
 
       .ekOpeningTitle{
@@ -138,6 +144,32 @@
         100%{ transform: translateY(-145vh) translateX(var(--dx)) scale(1.25); opacity:0; }
       }
 
+      /* BALON JATUH (loop) */
+      .ekBalloon{
+        position:absolute;
+        top:-10vh;
+        font-size: 32px;
+        animation: ekBalloonFall 2.4s ease-in-out infinite;
+      }
+      @keyframes ekBalloonFall{
+        0%{ transform: translateY(-10vh) rotate(0deg); opacity:0 }
+        20%{ opacity:1 }
+        70%{ transform: translateY(80vh) rotate(10deg) }
+        85%{ transform: translateY(72vh) rotate(-6deg) }
+        100%{ transform: translateY(85vh) rotate(0deg); opacity:0 }
+      }
+
+      /* BINTANG MUTER */
+      .ekStar{
+        position:absolute;
+        font-size: 20px;
+        animation: ekStarSpin 1.4s linear infinite;
+      }
+      @keyframes ekStarSpin{
+        from{ transform: rotate(0deg) scale(1) }
+        to{ transform: rotate(360deg) scale(1.2) }
+      }
+
       /* safety: jangan ikut print */
       @media print{
         .ekOpening{ display:none !important; }
@@ -187,26 +219,33 @@
     overlay.appendChild(card);
 
     document.body.appendChild(overlay);
-// BALON EMOJI
-const balloons = ["🎈","🎉","🎊"];
-for(let i=0;i<6;i++){
-  const b = document.createElement("div");
-  b.className = "ekBalloon";
-  b.textContent = balloons[Math.floor(Math.random()*balloons.length)];
-  b.style.left = (Math.random()*90)+"vw";
-  b.style.animationDelay = (Math.random()*1.2)+"s";
-  overlay.appendChild(b);
-}
 
-// BINTANG MUTER DI SEKITAR CARD
-for(let i=0;i<8;i++){
-  const s = document.createElement("div");
-  s.className = "ekStar";
-  s.textContent = "⭐";
-  s.style.left = (45 + Math.cos(i)*18)+"vw";
-  s.style.top  = (45 + Math.sin(i)*18)+"vh";
-  overlay.appendChild(s);
-}
+    // BALON EMOJI
+    const balloons = ["🎈", "🎉", "🎊"];
+    for (let i = 0; i < 6; i++) {
+      const b = document.createElement("div");
+      b.className = "ekBalloon";
+      b.textContent = balloons[Math.floor(Math.random() * balloons.length)];
+      b.style.left = Math.round(Math.random() * 90) + "vw";
+      b.style.animationDelay = (Math.random() * 1.2).toFixed(2) + "s";
+      overlay.appendChild(b);
+    }
+
+    // BINTANG MUTER DI SEKITAR CARD (lingkaran rapi)
+    for (let i = 0; i < 10; i++) {
+      const s = document.createElement("div");
+      s.className = "ekStar";
+      s.textContent = "⭐";
+      const angle = (Math.PI * 2) * (i / 10);
+      const rx = 180; // radius X px
+      const ry = 90;  // radius Y px
+      // posisi base di tengah viewport
+      s.style.left = "50%";
+      s.style.top = "50%";
+      s.style.transform = `translate(calc(-50% + ${Math.cos(angle) * rx}px), calc(-50% + ${Math.sin(angle) * ry}px))`;
+      s.style.animationDelay = (Math.random() * 0.6).toFixed(2) + "s";
+      overlay.appendChild(s);
+    }
 
     const colors = [
       "#ff5d8f", "#ffd166", "#06d6a0", "#4dabf7",
@@ -214,45 +253,46 @@ for(let i=0;i<8;i++){
     ];
 
     // confetti hujan
-    const totalConfetti = 85;
+    const totalConfetti = 90;
     for (let i = 0; i < totalConfetti; i++) {
       const c = document.createElement("i");
-      c.style.left = (Math.random() * 100) + "vw";
+      c.style.left = (Math.random() * 100).toFixed(2) + "vw";
       c.style.background = colors[Math.floor(Math.random() * colors.length)];
-      c.style.width = (7 + Math.random() * 8) + "px";
-      c.style.height = (10 + Math.random() * 16) + "px";
+      c.style.width = (7 + Math.random() * 8).toFixed(1) + "px";
+      c.style.height = (10 + Math.random() * 16).toFixed(1) + "px";
       c.style.opacity = (0.6 + Math.random() * 0.4).toFixed(2);
 
-      const dur = (2.8 + Math.random() * 2.8).toFixed(2);
+      const durFall = (2.4 + Math.random() * 2.4).toFixed(2);
+      const durSpin = (1.6 + Math.random() * 1.6).toFixed(2);
       const delay = (Math.random() * 0.9).toFixed(2);
 
-      c.style.animationDuration = `${dur}s, ${(1.8 + Math.random() * 1.8).toFixed(2)}s`;
+      c.style.animationDuration = `${durFall}s, ${durSpin}s`;
       c.style.animationDelay = `${delay}s, ${delay}s`;
 
       rain.appendChild(c);
     }
 
-    // bubbles/balon
+    // bubbles/balon naik
     const totalBubbles = 16;
     for (let i = 0; i < totalBubbles; i++) {
       const b = document.createElement("div");
       b.className = "ekBubble";
-      b.style.left = (Math.random() * 100) + "vw";
-      b.style.width = (18 + Math.random() * 26) + "px";
-      b.style.height = b.style.width;
+      b.style.left = (Math.random() * 100).toFixed(2) + "vw";
+      const size = (18 + Math.random() * 26).toFixed(1) + "px";
+      b.style.width = size;
+      b.style.height = size;
 
-      // warna bubble pastel
       const col = colors[Math.floor(Math.random() * colors.length)];
-      b.style.background = `radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), ${col})`;
+      b.style.background = `radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), ${col})`;
 
-      b.style.setProperty("--dx", ((Math.random() * 120) - 60) + "px");
+      b.style.setProperty("--dx", ((Math.random() * 120) - 60).toFixed(1) + "px");
       b.style.animationDuration = (5.8 + Math.random() * 4.2).toFixed(2) + "s";
       b.style.animationDelay = (Math.random() * 0.8).toFixed(2) + "s";
       bubbles.appendChild(b);
     }
 
     // auto hilang
-    setTimeout(removeOpeningOverlay, 3250);
+    setTimeout(removeOpeningOverlay, 3300);
 
     // safety kalau user klik print pas overlay masih tampil
     window.addEventListener("beforeprint", removeOpeningOverlay, { once: true });
@@ -318,9 +358,8 @@ for(let i=0;i<8;i++){
   });
   if (elDate) elDate.textContent = `📅 Tanggal: ${tgl}`;
 
-  // ===== PRINT SAFETY (cuma bantu fallback) =====
+  // ===== PRINT SAFETY =====
   function prepareForPrint() {
-    // overlay animasi jangan ikut kebawa
     removeOpeningOverlay();
 
     const cert = document.getElementById("certBox");
@@ -329,7 +368,6 @@ for(let i=0;i<8;i++){
       cert.style.transform = "none";
     }
 
-    // fallback ekstra: kalau browser ngeyel gradient text pas print
     const lulus = document.querySelector(".lulusWord");
     if (lulus) {
       lulus.style.background = "none";
@@ -341,7 +379,7 @@ for(let i=0;i<8;i++){
 
   window.addEventListener("beforeprint", prepareForPrint);
 
-  // bikin tombol print lebih stabil di HP
+  // tombol print lebih stabil di HP
   const btnPrint = document.querySelector('.btn.btn-yellow[onclick*="window.print"]');
   if (btnPrint) {
     btnPrint.onclick = (e) => {
