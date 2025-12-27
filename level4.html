@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <title>GESYA - Level 4</title>
 
+  <!-- style umum (kalau dipakai) -->
   <link rel="stylesheet" href="./js/level1.css?v=1" />
+  <!-- style level4 -->
   <link rel="stylesheet" href="./js/level4.css?v=final" />
 </head>
 
@@ -54,30 +56,35 @@
           <div class="sit-mini" id="sitMini">Tarik atau tap, lalu pilih lingkaran</div>
         </div>
 
-        <!-- AREA PILIHAN (BISA / TIDAK) -->
-        <div class="choice-area">
-          <div class="choice-circle drop-zone" id="zoneBisa" data-zone="BISA">
-            <div class="cz-emoji">🟢</div>
-            <div class="cz-title">BISA AKU ATUR</div>
-            <div class="cz-mini">contoh: sikap, pilihan</div>
+        <!-- AREA SWAP: PILIHAN <-> SIKAP -->
+        <div class="swap-area" id="swapArea">
+
+          <!-- AREA PILIHAN (kotak merah) -->
+          <div class="choice-area" id="choiceArea">
+            <div class="choice-circle drop-zone" id="zoneBisa" data-zone="BISA">
+              <div class="cz-emoji">🟢</div>
+              <div class="cz-title">BISA AKU ATUR</div>
+              <div class="cz-mini">contoh: sikap, pilihan</div>
+            </div>
+
+            <div class="choice-circle drop-zone" id="zoneTidak" data-zone="TIDAK">
+              <div class="cz-emoji">🔵</div>
+              <div class="cz-title">TIDAK BISA</div>
+              <div class="cz-mini">contoh: cuaca, orang lain</div>
+            </div>
           </div>
 
-          <div class="choice-circle drop-zone" id="zoneTidak" data-zone="TIDAK">
-            <div class="cz-emoji">🔵</div>
-            <div class="cz-title">TIDAK BISA</div>
-            <div class="cz-mini">contoh: cuaca, orang lain</div>
+          <!-- PANEL SIKAP (muncul menggantikan kotak merah) -->
+          <div class="attitude-panel hidden" id="attitudePanel">
+            <div class="att-title">Kalau ini terjadi, aku bisa pilih sikap:</div>
+            <div class="att-options" id="attOptions"></div>
           </div>
+
         </div>
 
-        <!-- notif (dibikin sticky biar aman 1 layar) -->
+        <!-- NOTIF -->
         <div class="hint" id="hint">Tarik kartu ke lingkaran yang benar</div>
         <div class="answer-feedback" id="answerFeedback"></div>
-
-        <!-- PANEL SIKAP (bottom sheet overlay) -->
-        <div class="attitude-panel hidden" id="attitudePanel" aria-live="polite">
-          <div class="att-title">Kalau ini terjadi, aku bisa pilih sikap:</div>
-          <div class="att-options" id="attOptions"></div>
-        </div>
 
       </section>
     </main>
