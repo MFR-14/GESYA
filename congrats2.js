@@ -33,12 +33,12 @@ window.addEventListener("DOMContentLoaded", ()=>{
 
   // Ambil dari URL dulu (paling pasti), kalau kosong baru dari localStorage
   const nama   = (p.get("nama")   || localStorage.getItem("ek_nama") || "Teman").trim();
-  const level  = (p.get("level")  || localStorage.getItem("ek_last_level") || "1").trim();
+  const level  = (p.get("level")  || localStorage.getItem("ek_last_level") || "2").trim();
 
   // skor bisa beda tiap level, jadi fallback-nya kita cek berdasarkan level terakhir
   const skorUrl = (p.get("skor") || "").trim();
-  const skorLs  = (level === "1")
-    ? (localStorage.getItem("ek_level1_skor") || "0")
+  const skorLs  = (level === "2")
+    ? (localStorage.getItem("ek_level2_skor") || "0")
     : (localStorage.getItem(`ek_level${level}_skor`) || "0");
 
   const skor   = (skorUrl || skorLs).trim();
@@ -50,7 +50,7 @@ window.addEventListener("DOMContentLoaded", ()=>{
   const cgMsg    = document.getElementById("cgMsg");
 
   if (cgName) cgName.textContent = nama.toUpperCase();
-  if (cgMeta) cgMeta.textContent = `Level ${level} • Skor ${skor}/8`;
+  if (cgMeta) cgMeta.textContent = `Level ${level} • Skor ${skor}/15`;
   if (cgAvatar) cgAvatar.textContent = pickAvatarByName(nama);
 
   const msg =
