@@ -44,13 +44,21 @@ window.addEventListener("DOMContentLoaded", ()=>{
   const skor   = (skorUrl || skorLs).trim();
   const alasan = (p.get("alasan") || localStorage.getItem("ek_level4_alasan") || "Selesai").trim();
 
+  // ambil max score (biar bisa 12/12)
+  const maxUrl = (p.get("max") || "").trim();
+  const maxLs  = (level === "4")
+    ? (localStorage.getItem("ek_level4_max") || "12")
+    : (localStorage.getItem(`ek_level${level}_max`) || "8");
+
+  const maxScore = (maxUrl || maxLs).trim();
+
   const cgName   = document.getElementById("cgName");
   const cgMeta   = document.getElementById("cgMeta");
   const cgAvatar = document.getElementById("cgAvatar");
   const cgMsg    = document.getElementById("cgMsg");
 
   if (cgName) cgName.textContent = nama.toUpperCase();
-  if (cgMeta) cgMeta.textContent = `Level ${level} • Skor ${skor}/8`;
+  if (cgMeta) cgMeta.textContent = `Level ${level} • Skor ${skor}/${maxScore}`;
   if (cgAvatar) cgAvatar.textContent = pickAvatarByName(nama);
 
   const msg =
@@ -58,10 +66,10 @@ window.addEventListener("DOMContentLoaded", ()=>{
 Terima kasih sudah bermain, ${nama}!
 Besok main lagi biar makin jago ya 😄`;
 
-  // ✅ ini yang bikin \n jadi baris baru
+  // ini yang bikin \n jadi baris baru
   if (cgMsg) cgMsg.innerHTML = msg.replace(/\n/g, "<br>");
 
-  // ✅ tombol pintar: ulang sesuai level terakhir
+  // tombol pintar: ulang sesuai level terakhir
   const btnUlang = document.getElementById("btnUlang");
   const btnHome  = document.getElementById("btnHome");
 
