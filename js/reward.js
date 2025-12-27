@@ -187,6 +187,26 @@
     overlay.appendChild(card);
 
     document.body.appendChild(overlay);
+// BALON EMOJI
+const balloons = ["🎈","🎉","🎊"];
+for(let i=0;i<6;i++){
+  const b = document.createElement("div");
+  b.className = "ekBalloon";
+  b.textContent = balloons[Math.floor(Math.random()*balloons.length)];
+  b.style.left = (Math.random()*90)+"vw";
+  b.style.animationDelay = (Math.random()*1.2)+"s";
+  overlay.appendChild(b);
+}
+
+// BINTANG MUTER DI SEKITAR CARD
+for(let i=0;i<8;i++){
+  const s = document.createElement("div");
+  s.className = "ekStar";
+  s.textContent = "⭐";
+  s.style.left = (45 + Math.cos(i)*18)+"vw";
+  s.style.top  = (45 + Math.sin(i)*18)+"vh";
+  overlay.appendChild(s);
+}
 
     const colors = [
       "#ff5d8f", "#ffd166", "#06d6a0", "#4dabf7",
