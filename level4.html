@@ -2,12 +2,11 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <title>GESYA - Level 4</title>
 
-  <!-- reuse style umum level (kalau kamu mau) -->
   <link rel="stylesheet" href="./js/level1.css?v=1" />
-  <link rel="stylesheet" href="./js/level4.css?v=4" />
+  <link rel="stylesheet" href="./js/level4.css?v=final" />
 </head>
 
 <body class="level-page">
@@ -52,7 +51,7 @@
         <div class="situation-card" id="situationCard" draggable="true">
           <div class="sit-emoji" id="sitEmoji">☔</div>
           <div class="sit-text" id="sitText">HUJAN</div>
-          <div class="sit-mini" id="sitMini">Tarik ke lingkaran yang tepat</div>
+          <div class="sit-mini" id="sitMini">Tarik atau tap, lalu pilih lingkaran</div>
         </div>
 
         <!-- AREA PILIHAN (BISA / TIDAK) -->
@@ -70,20 +69,20 @@
           </div>
         </div>
 
-        <!-- PANEL SIKAP (muncul kalau masuk "TIDAK") -->
-        <div class="attitude-panel hidden" id="attitudePanel">
+        <!-- notif (dibikin sticky biar aman 1 layar) -->
+        <div class="hint" id="hint">Tarik kartu ke lingkaran yang benar</div>
+        <div class="answer-feedback" id="answerFeedback"></div>
+
+        <!-- PANEL SIKAP (bottom sheet overlay) -->
+        <div class="attitude-panel hidden" id="attitudePanel" aria-live="polite">
           <div class="att-title">Kalau ini terjadi, aku bisa pilih sikap:</div>
           <div class="att-options" id="attOptions"></div>
         </div>
-
-        <!-- notif -->
-        <div class="hint" id="hint">Tarik kartu ke lingkaran yang benar</div>
-        <div class="answer-feedback" id="answerFeedback"></div>
 
       </section>
     </main>
   </div>
 
-  <script src="./level4.js?v=4"></script>
+  <script src="./level4.js?v=final"></script>
 </body>
 </html>
