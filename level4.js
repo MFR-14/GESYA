@@ -32,7 +32,7 @@ const QUESTIONS = [
     att:{ prompt:"Kalau hujan, aku bisa…", options:[
       {emoji:"📺", text:"Main di rumah", good:true},
       {emoji:"😠", text:"Ngambek terus", good:false},
-      {emoji:"📚", text:"Baca/ambar", good:true},
+      {emoji:"📚", text:"Baca/Gambar", good:true},
     ]}
   },
   { emoji:"👦", text:"ORANG LAIN", zone:"TIDAK",
