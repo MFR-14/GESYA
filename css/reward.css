@@ -493,4 +493,39 @@ body.home{ overflow-x:hidden; }
     text-shadow:none !important;
   }
 }
+/* BALON JATUH */
+.ekBalloon{
+  position:absolute;
+  top:-10vh;
+  font-size: 32px;
+  animation: ekBalloonFall 2.4s ease-in-out infinite;
+}
+@keyframes ekBalloonFall{
+  0%{ transform: translateY(-10vh) rotate(0deg); opacity:0 }
+  20%{ opacity:1 }
+  70%{ transform: translateY(80vh) rotate(10deg) }
+  85%{ transform: translateY(72vh) rotate(-6deg) }
+  100%{ transform: translateY(85vh) rotate(0deg); opacity:0 }
+}
+
+/* BINTANG MUTER */
+.ekStar{
+  position:absolute;
+  font-size: 20px;
+  animation: ekStarSpin 1.4s linear infinite;
+}
+@keyframes ekStarSpin{
+  from{ transform: rotate(0deg) scale(1) }
+  to{ transform: rotate(360deg) scale(1.2) }
+}
+
+/* CARD DEG-DEG */
+.ekOpeningCard{
+  animation: ekCardIn .85s cubic-bezier(.2,.9,.2,1) forwards,
+             ekPulse .9s ease-in-out infinite alternate;
+}
+@keyframes ekPulse{
+  from{ transform: scale(1) }
+  to{ transform: scale(1.04) }
+}
 
