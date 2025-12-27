@@ -71,6 +71,10 @@ const QUESTIONS = [
 
 const TOTAL = QUESTIONS.length;
 
+// ====== MAX SCORE (12/12) ======
+const BONUS_MAX = QUESTIONS.filter(q => q.zone === "TIDAK" && q.att).length; // 4
+const MAX_SCORE = TOTAL + BONUS_MAX; // 12
+
 // ====== STATE ======
 let idx = 0;
 let score = 0;
@@ -178,7 +182,8 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderScore(){
-    scoreEl.textContent = `Skor: ${score}`;
+    // tampilkan skor berjalan + max biar konsisten 12/12
+    scoreEl.textContent = `Skor: ${score}/${MAX_SCORE}`;
   }
 
   function resetFeedback(){
@@ -265,6 +270,9 @@ window.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("ek_level4_skor", String(score));
     localStorage.setItem("ek_level4_selesai", "1");
     localStorage.setItem("ek_level4_alasan", alasan || "Selesai");
+
+    // simpan max biar congrats bisa 12/12
+    localStorage.setItem("ek_level4_max", String(MAX_SCORE));
 
     localStorage.setItem("ek_last_level", String(LEVEL));
     localStorage.setItem("ek_last_level_time", new Date().toISOString());
@@ -355,16 +363,14 @@ window.addEventListener("DOMContentLoaded", () => {
     score += 1;
     renderScore();
 
-    // sesuai konsep kamu: setelah pilih kotak merah, auto scroll & ganti jadi prompt sikap
-    // kalau zona TIDAK: prompt sikap wajib muncul
-    // kalau zona BISA: lanjut normal tanpa prompt
+    // sesuai konsep: kalau zona TIDAK, muncul prompt sikap
     if (q.zone === "TIDAK" && q.att){
       setTimeout(() => {
         showAttitudeReplaceChoice(q, (opt, btn) => {
           const good = !!opt.good;
           btn.classList.add(good ? "good" : "bad");
 
-          // bonus kalau sikap baik
+          // bonus kalau sikap baik (ini yang bikin max 12)
           if (good) score += 1;
           renderScore();
 
