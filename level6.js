@@ -17,8 +17,8 @@ const QUESTIONS = [
     title:"Kamu melambaikan tangan ke temanmu, tapi temanmu tidak membalas.",
     neg:"Dia nggak suka aku.",
     options:[
-      {emoji:"👀", text:"Mungkin dia nggak lihat karena sedang tidak memperhatikan.", score:1},
       {emoji:"😐", text:"Ya sudah, mungkin dia lagi sibuk.", score:0},
+      {emoji:"👀", text:"Mungkin dia nggak lihat karena sedang tidak memperhatikan.", score:1},
       {emoji:"💢", text:"Dia sengaja biar aku sedih.", score:0},
     ]
   },
@@ -27,9 +27,9 @@ const QUESTIONS = [
     title:"Kamu ngajak teman sepedaan, tapi dia menolak.",
     neg:"Dia gak suka main sama aku.",
     options:[
+      {emoji:"😠", text:"Berarti dia teman yang jelek.", score:0},
       {emoji:"😴", text:"Mungkin dia capek karena baru pulang sekolah.", score:1},
       {emoji:"📅", text:"Mungkin dia ada kegiatan lain hari ini.", score:1},
-      {emoji:"😠", text:"Berarti dia teman yang jelek.", score:0},
     ]
   },
   {
@@ -37,9 +37,9 @@ const QUESTIONS = [
     title:"Temanmu melewatimu tanpa menyapa.",
     neg:"Dia sombong.",
     options:[
+      {emoji:"🧨", text:"Dia sengaja merendahkan aku.", score:0},
       {emoji:"💭", text:"Mungkin dia lagi kepikiran sesuatu jadi tidak sadar.", score:1},
       {emoji:"🔊", text:"Mungkin dia nggak dengar karena ramai.", score:1},
-      {emoji:"🧨", text:"Dia sengaja merendahkan aku.", score:0},
     ]
   },
   {
@@ -57,9 +57,9 @@ const QUESTIONS = [
     title:"Pesanmu lama dibalas.",
     neg:"Aku nggak penting.",
     options:[
-      {emoji:"🧩", text:"Mungkin dia lagi belajar / bantu orang tua dulu.", score:1},
       {emoji:"📴", text:"Mungkin dia lagi nggak pegang HP.", score:1},
       {emoji:"😞", text:"Dia pasti nggak peduli sama aku.", score:0},
+      {emoji:"🧩", text:"Mungkin dia lagi belajar / bantu orang tua dulu.", score:1},
     ]
   },
   {
@@ -68,8 +68,8 @@ const QUESTIONS = [
     neg:"Aku nggak bisa apa-apa.",
     options:[
       {emoji:"🤝", text:"Mungkin kelompoknya sudah penuh duluan.", score:1},
-      {emoji:"🧠", text:"Aku bisa bilang: “Aku bisa bantu bagian ini ya.”", score:1},
       {emoji:"🫥", text:"Aku nggak usah ikut-ikut lagi.", score:0},
+      {emoji:"🧠", text:"Aku bisa bilang: “Aku bisa bantu bagian ini ya.”", score:1},
     ]
   },
   {
@@ -77,9 +77,10 @@ const QUESTIONS = [
     title:"Temanmu tidak mengajakmu main game yang mereka mainkan.",
     neg:"Aku nggak dianggap.",
     options:[
+      {emoji:"💥", text:"Mereka pasti jahat sama aku.", score:0},
       {emoji:"🙋", text:"Aku bisa tanya baik-baik: “Boleh aku ikut?”", score:1},
       {emoji:"🕹️", text:"Mungkin mereka pikir aku lagi sibuk.", score:1},
-      {emoji:"💥", text:"Mereka pasti jahat sama aku.", score:0},
+      
     ]
   },
   {
@@ -87,9 +88,9 @@ const QUESTIONS = [
     title:"Gurumu terlihat serius saat kamu maju ke depan.",
     neg:"Aku pasti bakal dimarahi.",
     options:[
+      {emoji:"🏃", text:"Aku mending nggak usah maju.", score:0},
       {emoji:"🙂", text:"Mungkin itu wajah fokus guru, bukan marah.", score:1},
       {emoji:"✅", text:"Aku bisa jawab pelan-pelan, kalau salah ya belajar.", score:1},
-      {emoji:"🏃", text:"Aku mending nggak usah maju.", score:0},
     ]
   },
   {
@@ -97,9 +98,9 @@ const QUESTIONS = [
     title:"Temanmu tidak mau mencicipi bekalmu.",
     neg:"Bekalku tidak enak.",
     options:[
-      {emoji:"🥗", text:"Mungkin dia sudah kenyang atau ada pantangan makanan.", score:1},
       {emoji:"😷", text:"Mungkin dia lagi kurang enak badan.", score:1},
       {emoji:"😤", text:"Dia menghina aku dan keluargaku.", score:0},
+      {emoji:"🥗", text:"Mungkin dia sudah kenyang atau ada pantangan makanan.", score:1},
     ]
   },
   {
@@ -107,9 +108,9 @@ const QUESTIONS = [
     title:"Kamu nggak dapat umpan saat main bola.",
     neg:"Mereka sengaja nggak mau kasih aku.",
     options:[
-      {emoji:"👀", text:"Mungkin mereka belum lihat posisiku bebas.", score:1},
-      {emoji:"📣", text:"Aku bisa teriak sopan: “Aku di sini!”", score:1},
       {emoji:"💢", text:"Aku marah dan keluar dari permainan.", score:0},
+      {emoji:"👀", text:"Mungkin mereka belum lihat posisiku bebas.", score:1},
+      {emoji:"📣", text:"Aku bisa teriak sopan: “Aku di sini!”", score:1},  
     ]
   },
 ];
