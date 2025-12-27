@@ -231,21 +231,7 @@
       overlay.appendChild(b);
     }
 
-    // BINTANG MUTER DI SEKITAR CARD (lingkaran rapi)
-    for (let i = 0; i < 10; i++) {
-      const s = document.createElement("div");
-      s.className = "ekStar";
-      s.textContent = "⭐";
-      const angle = (Math.PI * 2) * (i / 10);
-      const rx = 180; // radius X px
-      const ry = 90;  // radius Y px
-      // posisi base di tengah viewport
-      s.style.left = "50%";
-      s.style.top = "50%";
-      s.style.transform = `translate(calc(-50% + ${Math.cos(angle) * rx}px), calc(-50% + ${Math.sin(angle) * ry}px))`;
-      s.style.animationDelay = (Math.random() * 0.6).toFixed(2) + "s";
-      overlay.appendChild(s);
-    }
+
 
     const colors = [
       "#ff5d8f", "#ffd166", "#06d6a0", "#4dabf7",
