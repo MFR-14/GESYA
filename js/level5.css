@@ -97,3 +97,81 @@
 @media (max-width:420px){
   .opt-btn .txt{ font-size:13px; }
 }
+/* =========================================================
+   LEVEL 5 — FIX NOTIF BIAR MUAT 1 LAYAR DI HP
+   Target: .hint dan .answer-feedback
+   ========================================================= */
+
+.hint,
+.answer-feedback{
+  width: min(560px, 96vw);
+}
+
+/* Mobile */
+@media (max-width: 420px){
+
+  /* rapetin layout keseluruhan */
+  .lvl5-layout{ padding: 6px 12px 12px; }
+  .lvl5-wrap{ gap: 10px; }
+
+  /* rapetin kartu pertanyaan */
+  .lvl5-round{
+    padding: 10px 12px;
+    border-radius: 16px;
+    font-size: 14px;
+  }
+
+  .lvl5-card{
+    padding: 10px 12px;
+    border-radius: 18px;
+    gap: 6px;
+  }
+  .q-emoji{ font-size: 44px; }
+  .q-title{ font-size: 15px; line-height: 1.2; }
+  .q-mini{ font-size: 12px; }
+
+  /* opsi sedikit dipendekin */
+  .lvl5-options{ gap: 10px; }
+  .opt-btn{
+    padding: 11px 10px;
+    border-radius: 16px;
+    gap: 10px;
+  }
+  .opt-btn .emo{
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    font-size: 20px;
+    flex: 0 0 38px;
+  }
+  .opt-btn .txt{
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  /* ✅ INI INTINYA: kecilkan NOTIF (yang merah itu) */
+  .hint{
+    margin-top: 6px !important;
+    padding: 10px 12px !important;
+    border-radius: 14px !important;
+    font-size: 14px !important;
+    line-height: 1.15 !important;
+  }
+
+  .answer-feedback{
+    margin-top: 6px !important;
+    min-height: 0 !important;      /* biar nggak maksa tinggi */
+    padding: 10px 12px !important;
+    border-radius: 14px !important;
+    font-size: 14px !important;
+    line-height: 1.15 !important;
+  }
+}
+
+/* HP super kecil */
+@media (max-width: 360px){
+  .hint, .answer-feedback{
+    font-size: 13px !important;
+    padding: 9px 10px !important;
+  }
+}
