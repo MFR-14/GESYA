@@ -21,7 +21,7 @@
   }
 
   // ===============================
-  // OPENING ANIMATION (MERIAH BANGET)
+  // OPENING ANIMATION (TERANG + MERIAH + GERAK TERUS)
   // ===============================
   function injectOpeningCSS() {
     if (document.getElementById("ek-opening-css")) return;
@@ -29,115 +29,118 @@
     const style = document.createElement("style");
     style.id = "ek-opening-css";
     style.textContent = `
-      /* overlay */
-      .ekOpening {
+      .ekOpening{
         position: fixed;
         inset: 0;
         z-index: 99999;
         display: grid;
         place-items: center;
         overflow: hidden;
+
+        /* pastel cerah */
         background:
-          radial-gradient(1200px 600px at 20% 20%, rgba(255,183,3,.35), transparent 55%),
-          radial-gradient(1000px 500px at 80% 25%, rgba(59,130,246,.35), transparent 55%),
-          radial-gradient(900px 500px at 50% 85%, rgba(168,85,247,.25), transparent 60%),
-          linear-gradient(180deg, #070a18, #0b1026 55%, #070a18);
-        animation: ekFadeOut .6s ease forwards;
-        animation-delay: 2.15s;
+          radial-gradient(1000px 600px at 15% 20%, rgba(255, 220, 120, .90), transparent 55%),
+          radial-gradient(900px 600px at 85% 20%, rgba(168, 255, 214, .85), transparent 55%),
+          radial-gradient(1100px 700px at 50% 85%, rgba(181, 203, 255, .85), transparent 60%),
+          linear-gradient(180deg, #fff7fd, #f2fbff 45%, #fffdf2);
+
+        animation: ekFadeOut .55s ease forwards;
+        animation-delay: 2.6s;
       }
       @keyframes ekFadeOut { to { opacity: 0; visibility: hidden; } }
 
-      /* title + sub */
-      .ekOpeningCard {
+      .ekOpeningCard{
         text-align: center;
         padding: 22px 18px;
-        border-radius: 22px;
-        background: rgba(255,255,255,.06);
-        border: 1px solid rgba(255,255,255,.12);
-        backdrop-filter: blur(10px);
-        box-shadow: 0 18px 60px rgba(0,0,0,.45);
-        transform: translateY(12px) scale(.98);
-        animation: ekCardIn .9s cubic-bezier(.2,.9,.2,1) forwards;
+        border-radius: 24px;
+        background: rgba(255,255,255,.78);
+        border: 2px solid rgba(255,255,255,.92);
+        box-shadow: 0 18px 60px rgba(0,0,0,.12);
+        backdrop-filter: blur(8px);
+        transform: translateY(14px) scale(.98);
+        animation: ekCardIn .85s cubic-bezier(.2,.9,.2,1) forwards;
       }
-      @keyframes ekCardIn {
-        0% { opacity: 0; transform: translateY(18px) scale(.95); }
-        60% { opacity: 1; transform: translateY(-6px) scale(1.01); }
-        100% { opacity: 1; transform: translateY(0) scale(1); }
+      @keyframes ekCardIn{
+        0%{opacity:0; transform: translateY(20px) scale(.95);}
+        70%{opacity:1; transform: translateY(-6px) scale(1.02);}
+        100%{opacity:1; transform: translateY(0) scale(1);}
       }
 
-      .ekOpeningTitle {
-        font-weight: 900;
-        letter-spacing: .6px;
-        font-size: clamp(24px, 5vw, 44px);
+      .ekOpeningTitle{
         margin: 0 0 8px;
-        line-height: 1.05;
-        color: #fff;
-        text-shadow: 0 10px 30px rgba(0,0,0,.45);
-        animation: ekPop 1.1s cubic-bezier(.2,.9,.2,1) both;
+        font-weight: 900;
+        letter-spacing: .4px;
+        font-size: clamp(26px, 5vw, 46px);
+        color: #111827;
+        animation: ekBounce 1.2s cubic-bezier(.2,.9,.2,1) both;
       }
-      @keyframes ekPop {
-        0% { transform: scale(.75) rotate(-2deg); filter: blur(2px); opacity: 0; }
-        55% { transform: scale(1.08) rotate(1deg); filter: blur(0); opacity: 1; }
-        100% { transform: scale(1) rotate(0); }
+      @keyframes ekBounce{
+        0%{transform: scale(.7) translateY(8px); opacity:0;}
+        60%{transform: scale(1.08) translateY(-6px); opacity:1;}
+        100%{transform: scale(1) translateY(0);}
       }
 
-      .ekOpeningSub {
+      .ekOpeningSub{
         margin: 0;
         font-size: clamp(13px, 2.8vw, 16px);
-        color: rgba(255,255,255,.82);
+        color: rgba(17,24,39,.78);
+        font-weight: 800;
       }
 
-      /* sparkle dots */
-      .ekSparkle {
-        position: absolute;
-        width: 6px;
-        height: 6px;
-        border-radius: 999px;
-        opacity: .9;
-        filter: drop-shadow(0 0 10px rgba(255,255,255,.35));
-        animation: ekSpark 1.25s ease-out forwards;
+      /* CONFETTI HUJAN (loop) */
+      .ekRain{
+        position:absolute;
+        top:-10vh;
+        left:0;
+        width:100%;
+        height:120vh;
+        pointer-events:none;
       }
-      @keyframes ekSpark {
-        0%   { transform: translate(0,0) scale(1); opacity: 0; }
-        20%  { opacity: 1; }
-        100% { transform: translate(var(--dx), var(--dy)) scale(.2); opacity: 0; }
-      }
-
-      /* radial fireworks pieces */
-      .ekFire {
-        position: absolute;
+      .ekRain i{
+        position:absolute;
+        top:-12vh;
         width: 10px;
-        height: 10px;
+        height: 16px;
         border-radius: 3px;
         opacity: .95;
-        transform: translate(-50%, -50%) scale(1);
-        animation: ekFire 1.2s ease-out forwards;
+        animation-name: ekFall, ekSpin;
+        animation-timing-function: linear, linear;
+        animation-iteration-count: infinite, infinite;
       }
-      @keyframes ekFire {
-        0%   { transform: translate(-50%, -50%) scale(.4); opacity: 0; }
-        20%  { opacity: 1; }
-        100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) rotate(260deg) scale(.15); opacity: 0; }
+      @keyframes ekFall{
+        0%{ transform: translateY(-10vh); }
+        100%{ transform: translateY(130vh); }
+      }
+      @keyframes ekSpin{
+        0%{ rotate: 0deg; }
+        100%{ rotate: 720deg; }
       }
 
-      /* burst confetti */
-      .ekBurst {
-        position: absolute;
-        width: 8px;
-        height: 14px;
-        border-radius: 2px;
-        opacity: .95;
-        animation: ekBurst 1.55s cubic-bezier(.12,.9,.2,1) forwards;
-        transform: translate(-50%, -50%);
+      /* BUBBLE / BALON NAIK (loop) */
+      .ekBubbles{
+        position:absolute;
+        inset:0;
+        pointer-events:none;
       }
-      @keyframes ekBurst {
-        0%   { transform: translate(-50%, -50%) translate(0,0) rotate(0deg) scale(1); opacity: 0; }
-        15%  { opacity: 1; }
-        100% { transform: translate(-50%, -50%) translate(var(--bx), var(--by)) rotate(720deg) scale(.35); opacity: 0; }
+      .ekBubble{
+        position:absolute;
+        bottom:-20vh;
+        width: 26px;
+        height: 26px;
+        border-radius: 999px;
+        opacity: .75;
+        animation: ekFloat 7s ease-in infinite;
+        box-shadow: inset 0 0 0 2px rgba(255,255,255,.75);
+      }
+      @keyframes ekFloat{
+        0%{ transform: translateY(0) translateX(0) scale(.9); opacity:0; }
+        15%{ opacity:.85; }
+        100%{ transform: translateY(-145vh) translateX(var(--dx)) scale(1.25); opacity:0; }
       }
 
       /* safety: jangan ikut print */
-      @media print {
-        .ekOpening { display: none !important; }
+      @media print{
+        .ekOpening{ display:none !important; }
       }
     `;
     document.head.appendChild(style);
@@ -149,7 +152,6 @@
   }
 
   function createOpeningOverlay(namaText) {
-    // kalau overlay pernah dibuat, jangan dobel
     if (document.getElementById("ekOpening")) return;
 
     injectOpeningCSS();
@@ -158,6 +160,17 @@
     overlay.className = "ekOpening";
     overlay.id = "ekOpening";
 
+    // layer confetti hujan
+    const rain = document.createElement("div");
+    rain.className = "ekRain";
+    overlay.appendChild(rain);
+
+    // layer bubbles
+    const bubbles = document.createElement("div");
+    bubbles.className = "ekBubbles";
+    overlay.appendChild(bubbles);
+
+    // card tengah
     const card = document.createElement("div");
     card.className = "ekOpeningCard";
 
@@ -175,79 +188,53 @@
 
     document.body.appendChild(overlay);
 
-    // warna biar heboh
-    const colors = ["#ffb703", "#3b82f6", "#10b981", "#ef4444", "#a855f7", "#f59e0b", "#22c55e", "#e11d48"];
+    const colors = [
+      "#ff5d8f", "#ffd166", "#06d6a0", "#4dabf7",
+      "#b197fc", "#ffa94d", "#63e6be", "#74c0fc"
+    ];
 
-    // sparkle random
-    for (let i = 0; i < 28; i++) {
-      const s = document.createElement("i");
-      s.className = "ekSparkle";
-      s.style.left = (Math.random() * 100) + "vw";
-      s.style.top = (Math.random() * 100) + "vh";
-      s.style.background = colors[Math.floor(Math.random() * colors.length)];
-      s.style.setProperty("--dx", ((Math.random() * 220) - 110) + "px");
-      s.style.setProperty("--dy", ((Math.random() * 220) - 110) + "px");
-      s.style.animationDelay = (Math.random() * 0.35) + "s";
-      overlay.appendChild(s);
+    // confetti hujan
+    const totalConfetti = 85;
+    for (let i = 0; i < totalConfetti; i++) {
+      const c = document.createElement("i");
+      c.style.left = (Math.random() * 100) + "vw";
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.width = (7 + Math.random() * 8) + "px";
+      c.style.height = (10 + Math.random() * 16) + "px";
+      c.style.opacity = (0.6 + Math.random() * 0.4).toFixed(2);
+
+      const dur = (2.8 + Math.random() * 2.8).toFixed(2);
+      const delay = (Math.random() * 0.9).toFixed(2);
+
+      c.style.animationDuration = `${dur}s, ${(1.8 + Math.random() * 1.8).toFixed(2)}s`;
+      c.style.animationDelay = `${delay}s, ${delay}s`;
+
+      rain.appendChild(c);
     }
 
-    // firework radial (3 titik ledakan)
-    const bursts = [
-      { x: 18, y: 28 },
-      { x: 82, y: 30 },
-      { x: 50, y: 22 },
-    ];
-    bursts.forEach((b, bi) => {
-      const cx = b.x + "vw";
-      const cy = b.y + "vh";
+    // bubbles/balon
+    const totalBubbles = 16;
+    for (let i = 0; i < totalBubbles; i++) {
+      const b = document.createElement("div");
+      b.className = "ekBubble";
+      b.style.left = (Math.random() * 100) + "vw";
+      b.style.width = (18 + Math.random() * 26) + "px";
+      b.style.height = b.style.width;
 
-      // pecahan kembang api
-      for (let i = 0; i < 26; i++) {
-        const p = document.createElement("i");
-        p.className = "ekFire";
-        p.style.left = cx;
-        p.style.top = cy;
-        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      // warna bubble pastel
+      const col = colors[Math.floor(Math.random() * colors.length)];
+      b.style.background = `radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), ${col})`;
 
-        const angle = (Math.PI * 2) * (i / 26);
-        const dist = 120 + Math.random() * 110;
-        const dx = Math.cos(angle) * dist;
-        const dy = Math.sin(angle) * dist;
+      b.style.setProperty("--dx", ((Math.random() * 120) - 60) + "px");
+      b.style.animationDuration = (5.8 + Math.random() * 4.2).toFixed(2) + "s";
+      b.style.animationDelay = (Math.random() * 0.8).toFixed(2) + "s";
+      bubbles.appendChild(b);
+    }
 
-        p.style.setProperty("--x", dx + "px");
-        p.style.setProperty("--y", dy + "px");
-        p.style.animationDelay = (0.05 * bi) + (Math.random() * 0.12) + "s";
-        p.style.width = (7 + Math.random() * 7) + "px";
-        p.style.height = (7 + Math.random() * 7) + "px";
-        overlay.appendChild(p);
-      }
+    // auto hilang
+    setTimeout(removeOpeningOverlay, 3250);
 
-      // confetti burst dari titik yang sama (lebih “rame”)
-      for (let i = 0; i < 34; i++) {
-        const c = document.createElement("i");
-        c.className = "ekBurst";
-        c.style.left = cx;
-        c.style.top = cy;
-        c.style.background = colors[Math.floor(Math.random() * colors.length)];
-        c.style.width = (6 + Math.random() * 7) + "px";
-        c.style.height = (10 + Math.random() * 16) + "px";
-
-        const ang = (Math.PI * 2) * Math.random();
-        const d = 180 + Math.random() * 180;
-        const bx = Math.cos(ang) * d;
-        const by = Math.sin(ang) * d;
-
-        c.style.setProperty("--bx", bx + "px");
-        c.style.setProperty("--by", by + "px");
-        c.style.animationDelay = (0.03 * bi) + (Math.random() * 0.12) + "s";
-        overlay.appendChild(c);
-      }
-    });
-
-    // auto hilang (match sama CSS fade)
-    setTimeout(removeOpeningOverlay, 2850);
-
-    // safety: kalau user tiba-tiba print pas overlay lagi tampil
+    // safety kalau user klik print pas overlay masih tampil
     window.addEventListener("beforeprint", removeOpeningOverlay, { once: true });
   }
 
@@ -256,8 +243,7 @@
   const umur = (localStorage.getItem("ek_umur") || "").trim();
   const sekolah = (localStorage.getItem("ek_sekolah") || "").trim();
 
-  // tampilkan opening party setelah DOM siap (biar nggak nge-lag)
-  // kalau kamu pengin lebih cepet, pindah ke bawah createOpeningOverlay tanpa requestAnimationFrame
+  // tampilkan opening party setelah DOM siap
   requestAnimationFrame(() => createOpeningOverlay(nama ? nama.toUpperCase() : "TEMAN"));
 
   const elNama = document.getElementById("cNama");
@@ -314,7 +300,7 @@
 
   // ===== PRINT SAFETY (cuma bantu fallback) =====
   function prepareForPrint() {
-    // hilangkan opening overlay kalau masih ada
+    // overlay animasi jangan ikut kebawa
     removeOpeningOverlay();
 
     const cert = document.getElementById("certBox");
@@ -345,7 +331,7 @@
     };
   }
 
-  // ===== CONFETTI (MERIAH LAGI, tapi nanti disembunyikan saat print oleh CSS) =====
+  // ===== CONFETTI HALAMAN (yang lama tetap ada) =====
   const confetti = document.getElementById("confetti");
   if (confetti) {
     const colors = ["#ffb703", "#3b82f6", "#10b981", "#ef4444", "#a855f7", "#f59e0b"];
