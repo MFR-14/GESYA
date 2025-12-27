@@ -194,3 +194,57 @@
   to{ box-shadow: 0 0 0 6px rgba(27,127,58,.25); }
 }
 .ok{ animation: okflash .45s ease; }
+
+/* =========================================================
+   FIX: KUNCI UKURAN KEPALA BIAR GA BERUBAH DI HP
+   ========================================================= */
+
+/* kotak kepala dibuat punya rasio tetap */
+.head-slot{
+  aspect-ratio: 1 / 1.08;   /* sedikit lebih tinggi (sesuaikan kalau perlu) */
+}
+
+/* gambar kepala dipaksa ngisi kotak, tapi tidak merusak */
+.head-base{
+  width: 100%;
+  height: 100%;            /* 🔥 kunci tinggi */
+  object-fit: contain;     /* aman, gak kepotong kepala */
+  display: block;
+}
+
+/* face-holder tetap di tengah, aman */
+.face-holder{
+  pointer-events: none;
+}
+
+/* tempelan muka ikut stabil (jangan ikut bikin layout berubah) */
+.face-holder img{
+  width: 56%;
+  height: auto;
+  object-fit: contain;
+  transform: translateY(6%);
+}
+
+/* HP kecil: kotak kepala sedikit dipendekin supaya 1 layar */
+@media (max-width: 420px){
+  .head-slot{
+    width: min(280px, 88vw);
+    aspect-ratio: 1 / 1.02;  /* lebih pendek biar gak kepanjangan */
+  }
+  .face-holder img{
+    width: 52%;
+    transform: translateY(4%);
+  }
+}
+
+@media (max-width: 360px){
+  .head-slot{
+    width: min(260px, 86vw);
+    aspect-ratio: 1 / 1;     /* paling pendek */
+  }
+  .face-holder img{
+    width: 48%;
+    transform: translateY(3%);
+  }
+}
+
