@@ -360,112 +360,11 @@ body.home{ overflow-x:hidden; }
   .lulusWord{ font-size:48px; }
 }
 
-/* PRINT: 1 lembar */
+/* =========================
+   PRINT: 1 lembar & aman warna
+   ========================= */
 @page { size: A4 portrait; margin: 10mm; }
 
-@media print{
-  .fx-bg,.confetti,.hero,.actions{ display:none !important; }
-  body{ background:#fff !important; }
-  .cert-wrap{
-    margin:0 !important;
-    padding:0 !important;
-    max-width:none !important;
-    page-break-inside: avoid;
-  }
-  .cert{
-    box-shadow:none !important;
-    border-radius:0 !important;
-    padding:18px !important;
-    page-break-inside: avoid;
-  }
-  .cert::before{ filter:none !important; opacity:.25 !important; }
-}
-/* =========================================================
-   NO ANIMATION (biar clean, nggak goyang-goyang)
-   ========================================================= */
-*{
-  animation: none !important;
-  transition: none !important;
-}
-
-/* matiin confetti total (kalau memang gak dipakai lagi) */
-.confetti{ display:none !important; }
-
-/* hilangkan state awal yang bikin cert sempet transparan */
-.cert{
-  transform:none !important;
-  opacity:1 !important;
-}
-
-/* beberapa efek animasi yang sebelumnya dipakai */
-.hero .mascot,
-.badge,
-.checkBadge,
-.checkBadge::before,
-.lvlRow,
-.cert::before{
-  animation:none !important;
-}
-
-/* =========================================================
-   BOLD yang aman (font-weight 1000/1100 kadang gak kebaca di printer)
-   ========================================================= */
-.brand .t1,
-.brand .t2,
-.badge,
-.lulusSub,
-.info .k,
-.info .v,
-.levelsBox h3,
-.lvlRow .left,
-.pill,
-.stars,
-.chip,
-.btn{
-  font-weight: 800 !important; /* aman, kebanyakan font support */
-}
-
-.lulusWord{
-  font-weight: 900 !important;
-}
-
-/* =========================================================
-   PRINT SETTINGS: full color + LULUS gak hilang
-   ========================================================= */
-@media print{
-  /* paksa browser mempertahankan warna */
-  *{
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  /* tetep sembunyiin elemen yang gak perlu saat print */
-  .fx-bg,.confetti,.hero,.actions{ display:none !important; }
-
-  body{ background:#fff !important; }
-
-  /* Biar cert tetap keliatan "full color" tanpa animasi */
-  .cert{
-    box-shadow:none !important;
-    border-radius:0 !important;
-    padding:18px !important;
-  }
-
-  /* FIX UTAMA: gradient text sering jadi transparan saat print */
-  .lulusWord{
-    background: none !important;
-    color: #16a34a !important;
-    -webkit-text-fill-color: #16a34a !important; /* penting buat Chrome/Safari */
-    text-shadow: none !important;
-  }
-
-  /* opsional: kalau kamu mau badge tetap pekat di print */
-  .badge{
-    background:#0f172a !important;
-    color:#fff !important;
-  }
-}
-/* PRINT: full color + tanpa animasi (cuma saat print) */
 @media print{
   *{
     -webkit-print-color-adjust: exact !important;
@@ -477,55 +376,50 @@ body.home{ overflow-x:hidden; }
   .fx-bg,.confetti,.hero,.actions{ display:none !important; }
   body{ background:#fff !important; }
 
+  .cert-wrap{
+    margin:0 !important;
+    padding:0 !important;
+    max-width:none !important;
+    page-break-inside: avoid;
+  }
+
   .cert{
     box-shadow:none !important;
     border-radius:0 !important;
     padding:18px !important;
     transform:none !important;
     opacity:1 !important;
+    page-break-inside: avoid;
   }
 
-  /* FIX UTAMA: LULUS jangan pakai gradient saat print */
+  /* FIX UTAMA: gradient text sering transparan saat print */
   .lulusWord{
     background:none !important;
     color:#16a34a !important;
     -webkit-text-fill-color:#16a34a !important;
     text-shadow:none !important;
   }
-}
-/* BALON JATUH */
-.ekBalloon{
-  position:absolute;
-  top:-10vh;
-  font-size: 32px;
-  animation: ekBalloonFall 2.4s ease-in-out infinite;
-}
-@keyframes ekBalloonFall{
-  0%{ transform: translateY(-10vh) rotate(0deg); opacity:0 }
-  20%{ opacity:1 }
-  70%{ transform: translateY(80vh) rotate(10deg) }
-  85%{ transform: translateY(72vh) rotate(-6deg) }
-  100%{ transform: translateY(85vh) rotate(0deg); opacity:0 }
-}
 
-/* BINTANG MUTER */
-.ekStar{
-  position:absolute;
-  font-size: 20px;
-  animation: ekStarSpin 1.4s linear infinite;
-}
-@keyframes ekStarSpin{
-  from{ transform: rotate(0deg) scale(1) }
-  to{ transform: rotate(360deg) scale(1.2) }
-}
+  .badge{
+    background:#0f172a !important;
+    color:#fff !important;
+  }
 
-/* CARD DEG-DEG */
-.ekOpeningCard{
-  animation: ekCardIn .85s cubic-bezier(.2,.9,.2,1) forwards,
-             ekPulse .9s ease-in-out infinite alternate;
-}
-@keyframes ekPulse{
-  from{ transform: scale(1) }
-  to{ transform: scale(1.04) }
+  /* bold aman untuk printer */
+  .brand .t1,
+  .brand .t2,
+  .badge,
+  .lulusSub,
+  .info .k,
+  .info .v,
+  .levelsBox h3,
+  .lvlRow .left,
+  .pill,
+  .stars,
+  .chip,
+  .btn{
+    font-weight:800 !important;
+  }
+  .lulusWord{ font-weight:900 !important; }
 }
 
