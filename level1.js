@@ -11,14 +11,14 @@ const FEEDBACK_DELAY_MS = 2200;  // lama tampil notif benar/salah
 const LEVEL = 1;
 
 const ROUNDS = [
-  { emosi: "BAHAGIA",  img: "./img/bahagia.jpg" },
-  { emosi: "SEDIH",    img: "./img/sedih.jpg" },
-  { emosi: "TAKUT",    img: "./img/takut.jpg" },
-  { emosi: "TERKEJUT", img: "./img/terkejut.jpg" },
-  { emosi: "BINGUNG",  img: "./img/bingung.jpg" },
-  { emosi: "MALU",     img: "./img/malu.jpg" },
-  { emosi: "MARAH",    img: "./img/marah.jpg" },
-  { emosi: "CINTA",    img: "./img/cinta.jpg" },
+  { emosi: "BAHAGIA",  img: "./img/bahagia.png" },
+  { emosi: "SEDIH",    img: "./img/sedih.png" },
+  { emosi: "TAKUT",    img: "./img/takut.png" },
+  { emosi: "TERKEJUT", img: "./img/terkejut.png" },
+  { emosi: "BINGUNG",  img: "./img/bingung.png" },
+  { emosi: "MALU",     img: "./img/malu.png" },
+  { emosi: "MARAH",    img: "./img/marah.png" },
+  { emosi: "CINTA",    img: "./img/cinta.png" },
 ];
 
 // ====== STATE ======
